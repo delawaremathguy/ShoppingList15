@@ -95,28 +95,24 @@ extension Item {
 	
 	*/
 	
-	// MARK: - Computed Properties
+		//MARK: - Fronting Properties
 	
-	// the date last purchased.  this fronts a Core Data optional attribute
-	// when no date is available, we'll set the date to ReferenceDate, for purposes of
-	// always having one for comparisons ("today" versus "earlier")
-	var dateLastPurchased: Date { dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 1) }
-	
-	var hasBeenPurchased: Bool { dateLastPurchased_ != nil }
-	
-	// the name.  this fronts a Core Data optional attribute
+		// the name.  this fronts a Core Data optional attribute
 	var name: String {
 		get { name_ ?? "Not Available" }
 		set { name_ = newValue }
 	}
 	
-	// whether the item is available.  this fronts a Core Data boolean
-	var isAvailable: Bool { isAvailable_ }
+		// whether the item is available.  this fronts a Core Data boolean
+	var isAvailable: Bool {
+		get { isAvailable_ }
+		set { isAvailable_ = newValue }
+	}
 	
-	// whether the item is on the list.  this fronts a Core Data boolean,
-	// but when changed from true to false, it signals a purchase, so update
-	// the lastDatePurchased
-	var onList: Bool { 
+		// whether the item is on the list.  this fronts a Core Data boolean,
+		// but when changed from true to false, it signals a purchase, so update
+		// the lastDatePurchased
+	var onList: Bool {
 		get { onList_ }
 		set {
 			onList_ = newValue
@@ -126,16 +122,16 @@ extension Item {
 		}
 	}
 	
-	// quantity of the item.   this fronts a Core Data optional attribute
-	// but we need to do an Int <--> Int32 conversion
+		// quantity of the item.   this fronts a Core Data optional attribute
+		// but we need to do an Int <--> Int32 conversion
 	var quantity: Int {
 		get { Int(quantity_) }
 		set { quantity_ = Int32(newValue) }
 	}
 	
-	// an item's associated location.  this fronts a Core Data optional attribute.
-	// if you change an item's location, the old and the new Location may want to
-	// know that some of their computed properties could be invalidated
+		// an item's associated location.  this fronts a Core Data optional attribute.
+		// if you change an item's location, the old and the new Location may want to
+		// know that some of their computed properties could be invalidated
 	var location: Location {
 		get { location_! }
 		set {
@@ -145,6 +141,16 @@ extension Item {
 		}
 	}
 	
+		
+		// MARK: - Computed Properties
+	
+	// the date last purchased.  this fronts a Core Data optional attribute
+	// when no date is available, we'll set the date to ReferenceDate, for purposes of
+	// always having one for comparisons ("today" versus "earlier")
+	var dateLastPurchased: Date { dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 1) }
+	
+	var hasBeenPurchased: Bool { dateLastPurchased_ != nil }
+	
 	// the name of its associated location
 	var locationName: String { location_?.name_ ?? "Not Available" }
 	
@@ -153,7 +159,10 @@ extension Item {
 		location_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
 	}
 	
-	var canBeSaved: Bool { true }
+	var canBeSaved: Bool {
+		guard let name = name_ else { return false }
+		return name.count > 0
+	}
 	
 	
 	// MARK: - Useful Fetch Requests
@@ -171,6 +180,13 @@ extension Item {
 		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
 		return request
 	}
+	
+	class func allItemsFR() -> NSFetchRequest<Item> {
+		let request: NSFetchRequest<Item> = Item.fetchRequest()
+		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+		return request
+	}
+
 
 	// MARK: - Class functions for CRUD operations
 	
@@ -195,7 +211,12 @@ extension Item {
 	class func addNewItem() -> Item {
 		let context = PersistentStore.shared.context
 		let newItem = Item(context: context)
+		newItem.name = ""
+		newItem.quantity = 1
+		newItem.isAvailable = true
+		newItem.onList = true
 		newItem.id = UUID()
+		newItem.location = Location.unknownLocation()
 		return newItem
 	}
 	

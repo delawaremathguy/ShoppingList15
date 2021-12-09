@@ -21,8 +21,7 @@
 		D63FE41F25D09E760090F6C1 /* SectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63FE41E25D09E760090F6C1 /* SectionData.swift */; };
 		D640329D24BB2F4A00CC0B94 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */; };
 		D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC2276182D50001371D /* AddINewtemView.swift */; };
-		D641BAC52761855C0001371D /* EditableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC42761855C0001371D /* EditableItemView.swift */; };
-		D6450BD7245F49DB0074DA16 /* AddOrModifyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6450BD6245F49DB0074DA16 /* AddOrModifyItemView.swift */; };
+		D641BAC52761855C0001371D /* EditableItemDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC42761855C0001371D /* EditableItemDataView.swift */; };
 		D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64898E824B0E95E008FE512 /* PersistentStore.swift */; };
 		D648D349246388C100CD881B /* Location+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D648D348246388C100CD881B /* Location+Extensions.swift */; };
 		D65A509F2565789900D43229 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A509E2565789900D43229 /* String+Extensions.swift */; };
@@ -72,8 +71,7 @@
 		D63FE41E25D09E760090F6C1 /* SectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionData.swift; sourceTree = "<group>"; };
 		D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		D641BAC2276182D50001371D /* AddINewtemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddINewtemView.swift; sourceTree = "<group>"; };
-		D641BAC42761855C0001371D /* EditableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableItemView.swift; sourceTree = "<group>"; };
-		D6450BD6245F49DB0074DA16 /* AddOrModifyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrModifyItemView.swift; sourceTree = "<group>"; };
+		D641BAC42761855C0001371D /* EditableItemDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableItemDataView.swift; sourceTree = "<group>"; };
 		D64898E824B0E95E008FE512 /* PersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
 		D648D348246388C100CD881B /* Location+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extensions.swift"; sourceTree = "<group>"; };
 		D65A15D22465A137004ACCBB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -200,10 +198,9 @@
 				D62B88312451162D0051A7CE /* ShoppingListTabView.swift */,
 				D6CD65DF25D09AA5006F8FAF /* ShoppingListDisplay.swift */,
 				D6EF557C246D7421007D636B /* PurchasedItemsTabView.swift */,
-				D6450BD6245F49DB0074DA16 /* AddOrModifyItemView.swift */,
 				D641BAC2276182D50001371D /* AddINewtemView.swift */,
 				D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */,
-				D641BAC42761855C0001371D /* EditableItemView.swift */,
+				D641BAC42761855C0001371D /* EditableItemDataView.swift */,
 				D6C75D3224B4B123003E445B /* ContextMenuBuilder.swift */,
 				D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */,
 				D63FE41E25D09E760090F6C1 /* SectionData.swift */,
@@ -334,13 +331,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6C7685C2572B3B500E0F4B0 /* SelectableItemRowView.swift in Sources */,
-				D6450BD7245F49DB0074DA16 /* AddOrModifyItemView.swift in Sources */,
 				D60F14A724686BA80077AD3F /* ItemCodableProxy.swift in Sources */,
 				D6B8A95424636711005F8EF2 /* MainView.swift in Sources */,
 				D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */,
 				D65A509F2565789900D43229 /* String+Extensions.swift in Sources */,
 				D6F375D62485593D005559E6 /* LocationRowView.swift in Sources */,
-				D641BAC52761855C0001371D /* EditableItemView.swift in Sources */,
+				D641BAC52761855C0001371D /* EditableItemDataView.swift in Sources */,
 				D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */,
 				D6CD65E025D09AA5006F8FAF /* ShoppingListDisplay.swift in Sources */,
 				D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */,
@@ -515,6 +511,7 @@
 				DEVELOPMENT_TEAM = 96RUUR8S34;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ShoppingList/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -536,6 +533,7 @@
 				DEVELOPMENT_TEAM = 96RUUR8S34;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ShoppingList/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -84,7 +84,8 @@ struct AddOrModifyLocationView: View {
 		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
 			NavigationView {
-				AddOrModifyItemView(location: location)
+				AddNewItemView(location: location)
+				//AddOrModifyItemView(location: location)
 					.environment(\.managedObjectContext, PersistentStore.shared.context)
 			}
 		}
@@ -137,7 +138,7 @@ struct SimpleItemsList: View {
 	var body: some View {
 		Section(header: ItemsListHeader()) {
 			ForEach(items) { item in
-				NavigationLink(destination: AddOrModifyItemView(editableItem: item)) {
+				NavigationLink(destination: ModifyExistingItemView(editableItem: item)) {
 					Text(item.name)
 				}
 			}

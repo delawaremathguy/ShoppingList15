@@ -46,7 +46,7 @@ struct SelectableItemRowView: View {
 						.font(.subheadline)
 				}
 			} // end of ZStack
-			.animation(Animation.easeInOut(duration: 0.5))
+			.animation(.easeInOut, value: 0.5)
 			.frame(width: 24, height: 24)
 			.onTapGesture { respondToTapOnSelector() }
 			

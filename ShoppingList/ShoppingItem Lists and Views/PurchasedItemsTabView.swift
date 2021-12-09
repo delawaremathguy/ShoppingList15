@@ -54,7 +54,7 @@ struct PurchasedItemsTabView: View {
 				
 				/* ---------
 				1. search bar & add new item "button" is at top.  note that the button action will put up the
-				AddorModifyItemView inside its own NavigationView (so the Picker will work!)
+				 AddNewItemView inside its own NavigationView (so the Picker will work!)
 				---------- */
 				
 				SearchBarView(text: $searchText)
@@ -66,7 +66,7 @@ struct PurchasedItemsTabView: View {
 				}
 				.sheet(isPresented: $isAddNewItemSheetShowing) {
 					NavigationView {
-						AddOrModifyItemView(initialItemName: searchText)
+						AddNewItemView(initialItemName: searchText)
 					}
 				}
 				

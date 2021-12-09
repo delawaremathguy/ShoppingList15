@@ -25,10 +25,9 @@ import SwiftUI
 // off the list).
 struct ShoppingListDisplay: View {
 	
-	// this is the @FetchRequest that ties this view to Core Data Items
-	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
-	private var itemsToBePurchased: FetchedResults<Item>
-
+	// this is the incoming @FetchRequest from ShoppingListTabView
+	var itemsToBePurchased: FetchedResults<Item>
+	
 	// display format: one big section of Items, or sectioned by Location?
 	// (not sure we need a Binding here ... we only read the value)
 	@Binding var multiSectionDisplay: Bool

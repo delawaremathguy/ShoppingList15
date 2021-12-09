@@ -23,6 +23,7 @@ struct MainView: View {
 			NavigationView { ShoppingListTabView() }
 				.tabItem { Label("Shopping List", systemImage: "cart") }
 				.tag(1)
+
 			
 			NavigationView { PurchasedItemsTabView() }
 				.tabItem { Label("Purchased", systemImage: "purchased") }
@@ -41,7 +42,7 @@ struct MainView: View {
 				.tag(5)
 			
 		} // end of TabView
-		.navigationViewStyle(StackNavigationViewStyle())
+		.navigationViewStyle(.stack)
 
 	} // end of var body: some View
 	

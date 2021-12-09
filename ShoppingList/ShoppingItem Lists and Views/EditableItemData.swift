@@ -44,6 +44,8 @@ struct EditableItemData {
 		isAvailable = item.isAvailable
 		if item.hasBeenPurchased {
 			dateText = item.dateLastPurchased.dateText(style: .medium)
+		} else {
+			dateText = "(Never)"
 		}
 	}
 	

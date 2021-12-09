@@ -28,17 +28,17 @@ struct ShoppingListTabView: View {
 	@State private var showMailSheet: Bool = false
 	var mailViewData = MailViewData()
 	
-//	// this implements a seemingly well-known strategy to get the list drawn
-//	// cleanly without any highlighting
-//	@State private var listDisplayID = UUID()
-
+	// we have an init, just to see when this view is initialized
+	init() {
+		print("ShoppingListTabView initialized")
+	}
 	
 	var body: some View {
 			VStack(spacing: 0) {
 				
 /* ---------
 1. add new item "button" is at top.  note that this will put up the
-AddorModifyItemView inside its own NavigationView (so the Picker will work!)
+ AddNewItemView inside its own NavigationView (so the Picker will work!)
 ---------- */
 				
 				Button(action: { isAddNewItemSheetShowing = true }) {
@@ -64,8 +64,7 @@ of the sectioning, so we push it off to a specialized View.
 				if itemsToBePurchased.count == 0 {
 					EmptyListView(listName: "Shopping")
 				} else {
-					ShoppingListDisplay(multiSectionDisplay: $multiSectionDisplay)
-//						.id(listDisplayID)
+					ShoppingListDisplay(itemsToBePurchased: itemsToBePurchased, multiSectionDisplay: $multiSectionDisplay)
 				}
 				
 /* ---------
@@ -78,7 +77,6 @@ of the sectioning, so we push it off to a specialized View.
 					
 					SLCenteredButton(title: "Move All Items Off-list", action: {
 						confirmMoveAllItemsOffShoppingListAlert = ConfirmMoveAllItemsOffShoppingListAlert()
-						//confirmationAlert.trigger(type: .moveAllOffShoppingList)
 						})
 					.alert(item: $confirmMoveAllItemsOffShoppingListAlert) { item in item.alert() }
 						.padding([.bottom, .top], 6)
@@ -104,10 +102,9 @@ of the sectioning, so we push it off to a specialized View.
 			MailView(isShowing: $showMailSheet, mailViewData: mailViewData, resultHandler: mailResultHandler)
 				.safe()
 		}
-//		.onAppear {
-//			logAppear(title: "ShoppingListTabView")
-//			listDisplayID = UUID()
-//		}
+		.onAppear {
+			logAppear(title: "ShoppingListTabView")
+		}
 		.onDisappear {
 			logDisappear(title: "ShoppingListTabView")
 			PersistentStore.shared.saveContext()

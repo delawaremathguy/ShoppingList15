@@ -8,13 +8,15 @@
 
 import SwiftUI
 
-struct EditableItemView: View {
+struct EditableItemDataView: View {
 	
-	// incoming parameters
-	// -- the item we're editing (this is a live edit)
-	// -- whether the item can be deleted (true if the item exists, false if we're adding a new item)
-	@ObservedObject var editableItem: Item
-	var itemExists: Bool
+		// incoming parameters
+		// -- the item we're editing (this is a live edit)
+		// -- whether the item can be deleted (true if the item exists, false if we're adding a new item)
+		//	@ObservedObject var editableItem: Item
+	@Binding var editableItemData: EditableItemData
+	private var deleteActionTrigger: (() -> ())?
+	private var itemExists: Bool
 	
 		// we need all locations so we can populate the Picker.  it may be curious that i
 		// use a @FetchRequest here; the problem is that if this Add/ModifyItem view is open
@@ -22,7 +24,12 @@ struct EditableItemView: View {
 		// we have to be sure the Picker's list of locations is updated.
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
-
+	
+	init(editableItemData: Binding<EditableItemData>, deleteActionTrigger: (() -> ())?) {
+		_editableItemData = editableItemData
+		self.deleteActionTrigger = deleteActionTrigger
+		itemExists = (deleteActionTrigger != nil)
+	}
 	
 	var body: some View {
 		Form {
@@ -31,17 +38,17 @@ struct EditableItemView: View {
 				
 				HStack(alignment: .firstTextBaseline) {
 					SLFormLabelText(labelText: "Name: ")
-					TextField("Item name", text: $editableItem.name)
+					TextField("Item name", text: $editableItemData.name)
 				}
 				
-				Stepper(value: $editableItem.quantity, in: 1...10) {
+				Stepper(value: $editableItemData.quantity, in: 1...10) {
 					HStack {
 						SLFormLabelText(labelText: "Quantity: ")
-						Text("\(editableItem.quantity)")
+						Text("\(editableItemData.quantity)")
 					}
 				}
 				
-				Picker(selection: $editableItem.location, label: SLFormLabelText(labelText: "Location: ")) {
+				Picker(selection: $editableItemData.location, label: SLFormLabelText(labelText: "Location: ")) {
 					ForEach(locations) { location in
 						Text(location.name).tag(location)
 					}
@@ -54,13 +61,13 @@ struct EditableItemView: View {
 				// and only make this change once we leave??  perhaps this should be hidden in these
 				// cases??
 				HStack(alignment: .firstTextBaseline) {
-					Toggle(isOn: $editableItem.onList) {
+					Toggle(isOn: $editableItemData.onList) {
 						SLFormLabelText(labelText: "On Shopping List: ")
 					}
 				}
 				
 				HStack(alignment: .firstTextBaseline) {
-					Toggle(isOn: $editableItem.isAvailable_) {
+					Toggle(isOn: $editableItemData.isAvailable) {
 						SLFormLabelText(labelText: "Is Available: ")
 					}
 				}
@@ -68,7 +75,7 @@ struct EditableItemView: View {
 				if itemExists {
 					HStack(alignment: .firstTextBaseline) {
 						SLFormLabelText(labelText: "Last Purchased: ")
-						Text("\(editableItem.dateLastPurchased.dateText(style: .medium))")
+						Text("\(editableItemData.dateText)")
 					}
 				}
 				
@@ -78,14 +85,13 @@ struct EditableItemView: View {
 			if itemExists {
 				Section(header: Text("Shopping Item Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Shopping Item",
-													 action: { }
+													 action: { deleteActionTrigger?() }
 					)
 						.foregroundColor(Color.red)
 				} // end of Section 2
 			} // end of if ...
 			
 		} // end of Form
-		
 	}
 }
 

@@ -25,7 +25,7 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 	var title: String { "Delete \'\(item.name)\'?" }
 	
 	var message: String {
-		"Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone"
+		"Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone."
 	}
 	
 	func destructiveAction() {

@@ -10,28 +10,39 @@ import SwiftUI
 
 struct ModifyExistingItemView: View {
 	
-		// addItemToShoppingList just means that by default, a new item will be added to
-		// the shopping list, and so this is initialized to true.
-		// however, if inserting a new item from the Purchased item list, perhaps
-		// you might want the new item to go to the Purchased item list (?)
-	var addItemToShoppingList: Bool = true
+	@Environment(\.dismiss) private var dismiss: DismissAction
 	
-	@ObservedObject var editableItem: Item
+	@State private var editableItemData: EditableItemData
 	
 		// custom init here to set up editableData state
 	init(editableItem: Item) {
-		self.editableItem = editableItem
+		_editableItemData = State(initialValue: EditableItemData(item: editableItem))
 	}
 	
+		// alert to confirm deletion of an Item
+	@State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
+		// if we really do go ahead and delete the Item, then we want the destructive action
+		// (delete) to be recorded so that we don't try  to update the item (that we just deleted)
+		// on the way out of this view in .onDisappear
+	@State private var itemWasDeleted: Bool = false
+
 	var body: some View {
 		
-		EditableItemView(editableItem: editableItem, itemExists: true)
+		EditableItemDataView(editableItemData: $editableItemData) {
+			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: editableItemData.associatedItem) {
+				itemWasDeleted = true
+				dismiss()
+			}
+		}
 			.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
 			.onDisappear {
-				PersistentStore.shared.saveContext()
+				if !itemWasDeleted && editableItemData.canBeSaved {
+					Item.update(using: editableItemData)
+					PersistentStore.shared.saveContext()
+				}
 			}
-			//.alert(isPresented: $confirmationAlert.isShowing) { confirmationAlert.alert() }
-			//.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+			.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+
 	}
 	
 	
