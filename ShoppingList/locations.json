@@ -1,0 +1,186 @@
+[
+	{
+		"opacity" : 0.5,
+		"visitationOrder" : 9,
+		"red" : 0.92485547065734863,
+		"name" : "Beyond Deli",
+		"blue" : 0.5,
+		"green" : 0.89595377445220947
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 89,
+		"red" : 0.90000000000000002,
+		"name" : "Service Desk",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.40000000000000002,
+		"visitationOrder" : 25,
+		"red" : 0,
+		"name" : "Pain Relief (15)",
+		"blue" : 0.85260117053985596,
+		"green" : 0
+	},
+	{
+		"opacity" : 0.40000000000000002,
+		"visitationOrder" : 82,
+		"red" : 1,
+		"name" : "Beverages (5)",
+		"blue" : 1,
+		"green" : 0.41040462255477905
+	},
+	{
+		"opacity" : 0.53468209505081177,
+		"visitationOrder" : 4,
+		"red" : 0.060693640261888504,
+		"name" : "Fruits & Vegetables",
+		"blue" : 0.10000000000000001,
+		"green" : 0.9190751314163208
+	},
+	{
+		"opacity" : 0.52601158618927002,
+		"visitationOrder" : 8,
+		"red" : 0.90000000000000002,
+		"name" : "Deli",
+		"blue" : 0.10000000000000001,
+		"green" : 0.89595377445220947
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 53,
+		"red" : 0.90000000000000002,
+		"name" : "Laundry (11)",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 70,
+		"red" : 0.90000000000000002,
+		"name" : "Baking Supplies (8)",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.28901734948158264,
+		"visitationOrder" : 75,
+		"red" : 1,
+		"name" : "Cereal (7)",
+		"blue" : 0.50578033924102783,
+		"green" : 0
+	},
+	{
+		"opacity" : 0.54335260391235352,
+		"visitationOrder" : 64,
+		"red" : 1,
+		"name" : "Italian & Ethnic (9)",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 85,
+		"red" : 0,
+		"name" : "Snacks & Chips (4)",
+		"blue" : 0.67919075489044189,
+		"green" : 0.65606933832168579
+	},
+	{
+		"opacity" : 0.28034681081771851,
+		"visitationOrder" : 76,
+		"red" : 1,
+		"name" : "Candy (7)",
+		"blue" : 0.53757226467132568,
+		"green" : 0
+	},
+	{
+		"opacity" : 0.08959537744522092,
+		"visitationOrder" : 18,
+		"red" : 0.90000000000000002,
+		"name" : "Dairy (18)",
+		"blue" : 0.90462428331375122,
+		"green" : 0.89884394407272339
+	},
+	{
+		"opacity" : 0.53757226467132568,
+		"visitationOrder" : 65,
+		"red" : 1,
+		"name" : "Canned Vegetables (9)",
+		"blue" : 0.10115607082843781,
+		"green" : 0.10115607082843781
+	},
+	{
+		"opacity" : 0.40000000000000002,
+		"visitationOrder" : 100,
+		"red" : 0.25,
+		"name" : "Liquor Store",
+		"blue" : 0.25,
+		"green" : 0.25
+	},
+	{
+		"opacity" : 0.5,
+		"visitationOrder" : 60,
+		"red" : 0.5,
+		"name" : "Kitchen gadgets (10)",
+		"blue" : 0.5,
+		"green" : 0.5
+	},
+	{
+		"opacity" : 0.10982658714056015,
+		"visitationOrder" : 80,
+		"red" : 0.5,
+		"name" : "Coffee & Tea (6)",
+		"blue" : 0.5,
+		"green" : 0.5
+	},
+	{
+		"opacity" : 0.36127167940139771,
+		"visitationOrder" : 45,
+		"red" : 0,
+		"name" : "Bags & Paper Goods (12)",
+		"blue" : 1,
+		"green" : 0
+	},
+	{
+		"opacity" : 0.53468209505081177,
+		"visitationOrder" : 30,
+		"red" : 0.78323698043823242,
+		"name" : "Office Supplies (14)",
+		"blue" : 0,
+		"green" : 0.81213873624801636
+	},
+	{
+		"opacity" : 0.11560693383216858,
+		"visitationOrder" : 5,
+		"red" : 0.25,
+		"name" : "Bakery",
+		"blue" : 0.25,
+		"green" : 0.25
+	},
+	{
+		"opacity" : 0.15606936812400818,
+		"visitationOrder" : 21,
+		"red" : 0,
+		"name" : "Frozen Vegetables (17)",
+		"blue" : 0,
+		"green" : 1
+	},
+	{
+		"opacity" : 0.22832369804382324,
+		"visitationOrder" : 15,
+		"red" : 0.89306360483169556,
+		"name" : "Meats",
+		"blue" : 0.92196530103683472,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.15895953774452209,
+		"visitationOrder" : 59,
+		"red" : 0.24855491518974304,
+		"name" : "Bread & Salad Dressings (10)",
+		"blue" : 0.25144508481025696,
+		"green" : 1
+	}
+]
