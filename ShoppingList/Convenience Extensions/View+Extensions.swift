@@ -22,3 +22,9 @@ extension View {
 		modifier(SectionHeader())
 	}
 }
+
+extension View {
+	func eraseToAnyView() -> AnyView {
+		AnyView(self)
+	}
+}

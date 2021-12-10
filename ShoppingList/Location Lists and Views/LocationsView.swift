@@ -8,41 +8,27 @@
 
 import SwiftUI
 
-struct LocationsTabView: View {
+struct LocationsView: View {
 	
 	// this is the @FetchRequest that ties this view to CoreData Locations
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
 	
 	// local state to trigger a sheet to appear to add a new location
-	@State private var isAddNewLocationSheetShowing = false
+	//@State private var isAddNewLocationSheetShowing = false
+	
+	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
 	// parameters to control triggering an Alert and defining what action
 	// to take upon confirmation
 	//@State private var confirmationAlert = ConfirmationAlert(type: .none)
 	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
 
-	// this implements a seemingly well-known strategy to get the list drawn
-	// cleanly without any highlighting
-	@State private var listDisplayID = UUID()
-	
 	var body: some View {
 		VStack(spacing: 0) {
 			
-//			// 1. add new location "button" is at top.  note that this will put up the
-//			// AddorModifyLocationView inside its own NavigationView (so the Picker will work!)
-//			Button(action: { isAddNewLocationSheetShowing = true }) {
-//				Text("Add New Location")
-//					.foregroundColor(Color.blue)
-//					.padding(10)
-//			}
-//			.sheet(isPresented: $isAddNewLocationSheetShowing) {
-//				NavigationView { AddOrModifyLocationView() }
-//			}
-			
 			Rectangle()
 				.frame(height: 1)
-			
 			
 			// 2. then the list of locations
 			List {
@@ -63,6 +49,11 @@ struct LocationsTabView: View {
 		.toolbar { ToolbarItem(placement: .navigationBarTrailing, content: addNewButton) }
 		//.alert(isPresented: $confirmationAlert.isShowing) { confirmationAlert.alert() }
 		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
+		.sheet(item: $identifiableSheetItem) { item in
+			NavigationView {
+				item.content()
+			}
+		}
 		.onAppear {
 			logAppear(title: "LocationsTabView")
 			handleOnAppear()
@@ -75,9 +66,6 @@ struct LocationsTabView: View {
 	} // end of var body: some View
 	
 	func handleOnAppear() {
-		// updating listDisplayID makes SwiftUI think the list of locations is a whole new
-		// list, thereby removing any highlighting.
-		listDisplayID = UUID()
 		// because the unknown location is created lazily, this will make sure that
 		// we'll not be left with an empty screen
 		if locations.count == 0 {
@@ -87,7 +75,9 @@ struct LocationsTabView: View {
 	
 	// defines the usual "+" button to add a Location
 	func addNewButton() -> some View {
-		Button(action: { isAddNewLocationSheetShowing = true }) {
+		Button {
+			identifiableSheetItem = AddNewLocationSheetItem(dismiss: { identifiableSheetItem = nil })
+		} label: {
 			Image(systemName: "plus")
 				.font(.title2)
 		}

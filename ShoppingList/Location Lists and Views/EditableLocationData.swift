@@ -21,7 +21,7 @@ struct EditableLocationData {
 	// this copies all the editable data from an incoming Location
 	// updated 17-Apr to copy the id (obvious regression issue)
 	// and also updated to allow nil argument ...
-	init(location: Location?) {
+	init(location: Location? = nil) {
 		if let location = location {
 			id = location.id!
 			locationName = location.name

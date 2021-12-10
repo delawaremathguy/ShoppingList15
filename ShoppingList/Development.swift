@@ -23,7 +23,7 @@ import UIKit
 
 // one of the things that has changed from release to release of XCode 12/iOS 14 is when
 // the view modifiers .onAppear and .onDisappear are called.  so throughout the app, you
-// find .onAppear and .onDisappear modifiers that print out when these actually do
+// will find .onAppear and .onDisappear modifiers that print out when these actually do
 // something by calling back to these two little functions.  you can turn this logging
 // off by just commenting out the print statement (or deleting their calling from code).
 func logAppear(title: String) {

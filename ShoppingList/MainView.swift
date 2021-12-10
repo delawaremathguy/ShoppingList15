@@ -29,7 +29,7 @@ struct MainView: View {
 				.tabItem { Label("Purchased", systemImage: "purchased") }
 				.tag(2)
 			
-			NavigationView { LocationsTabView() }
+			NavigationView { LocationsView() }
 				.tabItem { Label("Locations", systemImage: "map") }
 				.tag(3)
 			

@@ -15,7 +15,7 @@ struct AddOrModifyLocationView: View {
 	
 	// all editableData is packaged here. its initial values are set using
 	// a custom init.
-	@State private var editableData: EditableLocationData
+	@State private var editableLocationData: EditableLocationData
 	var location: Location?
 	
 	// parameter to control triggering an Alert and defining what action
@@ -27,7 +27,7 @@ struct AddOrModifyLocationView: View {
 	// custom init to set up editable data
 	init(location: Location? = nil) {
 //		print("AddorModifyLocationView initialized")
-		_editableData = State(initialValue: EditableLocationData(location: location))
+		_editableLocationData = State(initialValue: EditableLocationData(location: location))
 		self.location = location
 	}
 
@@ -37,28 +37,28 @@ struct AddOrModifyLocationView: View {
 			Section(header: Text("Basic Information").sectionHeader()) {
 				HStack {
 					SLFormLabelText(labelText: "Name: ")
-					TextField("Location name", text: $editableData.locationName)
+					TextField("Location name", text: $editableLocationData.locationName)
 				}
 				
-				if editableData.visitationOrder != kUnknownLocationVisitationOrder {
-					Stepper(value: $editableData.visitationOrder, in: 1...100) {
+				if editableLocationData.visitationOrder != kUnknownLocationVisitationOrder {
+					Stepper(value: $editableLocationData.visitationOrder, in: 1...100) {
 						HStack {
 							SLFormLabelText(labelText: "Visitation Order: ")
-							Text("\(editableData.visitationOrder)")
+							Text("\(editableLocationData.visitationOrder)")
 						}
 					}
 				}
 				
-				ColorPicker("Location Color", selection: $editableData.color)
+				ColorPicker("Location Color", selection: $editableLocationData.color)
 			} // end of Section 1
 			
 			// Section 2: Delete button, if present (must be editing a user location)
-			if editableData.representsExistingLocation && !editableData.associatedLocation.isUnknownLocation {
+			if editableLocationData.representsExistingLocation && !editableLocationData.associatedLocation.isUnknownLocation {
 				Section(header: Text("Location Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Location",
 													 action: {
 														confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
-															location: editableData.associatedLocation,
+															location: editableLocationData.associatedLocation,
 															destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
 //														confirmationAlert.trigger(type: .deleteLocation(editableData.associatedLocation),
 //																											completion: { presentationMode.wrappedValue.dismiss() })
@@ -68,8 +68,8 @@ struct AddOrModifyLocationView: View {
 			} // end of Section 2
 			
 			// Section 3: Items assigned to this Location, if we are editing a Location
-			if editableData.representsExistingLocation {
-				SimpleItemsList(location: editableData.associatedLocation,
+			if editableLocationData.representsExistingLocation {
+				SimpleItemsList(location: editableLocationData.associatedLocation,
 												isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
 			}
 			
@@ -79,7 +79,7 @@ struct AddOrModifyLocationView: View {
 		.navigationBarBackButtonHidden(true)
 		.toolbar {
 			ToolbarItem(placement: .cancellationAction, content: cancelButton)
-			ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canBeSaved) }
+			ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableLocationData.canBeSaved) }
 		}
 		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
@@ -93,7 +93,7 @@ struct AddOrModifyLocationView: View {
 	}
 	
 	func barTitle() -> Text {
-		return editableData.representsExistingLocation ? Text("Modify Location") : Text("Add New Location")
+		return editableLocationData.representsExistingLocation ? Text("Modify Location") : Text("Add New Location")
 	}
 	
 	func deleteAndDismiss(_ location: Location) {
@@ -117,7 +117,7 @@ struct AddOrModifyLocationView: View {
 
 	func commitData() {
 		presentationMode.wrappedValue.dismiss()
-		Location.updateData(using: editableData)
+		Location.updateData(using: editableLocationData)
 	}
 	
 }

@@ -8,10 +8,13 @@
 
 import SwiftUI
 
-// the EditableItemDataView allows the user to edit the fields associated with an Item.
+	// the EditableItemDataView is a simple Form that allows the user to edit
+	// the default fields for a new Item, of the fields associated with a Item
+	// that already exists.
 struct EditableItemDataView: View {
 	
-	@Binding var editableItemData: EditableItemData
+	// data we work with
+	@Binding private var editableItemData: EditableItemData
 	private var deleteActionTrigger: (() -> ())?
 	private var itemExists: Bool
 	
@@ -22,6 +25,8 @@ struct EditableItemDataView: View {
 		// incoming parameters
 		// -- the item we're editing (this is a pseudo-live edit)
 		// -- whether the item can be deleted and what to do after the user deletes the Item
+		// note that deleteActionTrigger = nil if and only if this is initial data for an Item
+		// that does not yet exist.
 	init(editableItemData: Binding<EditableItemData>, deleteActionTrigger: (() -> ())?) {
 		_editableItemData = editableItemData
 		self.deleteActionTrigger = deleteActionTrigger

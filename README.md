@@ -12,17 +12,17 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further,  to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update of 20 November, 2021
+### Most Recent Update of XX December, 2021
 
-This is the first update of this two-year-old, on-ging project, for iOS 15.  Major code-related items that you will find in this project are:
+This is the first update of my two-year-old ShoppingList project for Xcode 13/iOS 15.  Major changes that you will find in this release of the project are:
 
-* Cloud-syncing across devices on the same Apple ID is implemented. (Note: *To use this feature, you will need an Apple Developer account, you will need to manage app signing, and you will need to specify your own bundle identifier*.)
+* Cloud-syncing across devices on the same Apple ID is implemented. (Note: *To use this feature, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier*.)
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer syntax design.  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "model" for an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheets, depending on how you set up the (Identifiable) item.  So the "one alert/sheet per view" restriction of SwiftUI is no longer a concern.
+* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern.  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheets, depending on how you set up the (Identifiable) item.  So the "one alert/one sheet per view" restriction of SwiftUI is no longer a concern with this design pattern.
 
-* The functionality of what was SearchBarView (by Simon Ng) has now been replaced using the iOS 15 native `.searchable()` view modifier.
+* The functionality of what was SearchBarView (by Simon Ng) has now been completely replaced using the iOS 15 native `.searchable()` view modifier.
 
 * UI changes: 
 
