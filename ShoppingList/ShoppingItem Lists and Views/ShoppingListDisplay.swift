@@ -11,7 +11,7 @@ import SwiftUI
 
 // MARK: - ShoppingListDisplay
 
-// this is a subview of the ShoppingListTabView and shows itemsToBePurchased
+// this is a subview of the ShoppingListView and shows itemsToBePurchased
 // as either a single section or as multiple sections, one section for each Location.
 // it uses a somewhat intricate, but standard,Form/ForEach/Section/ForEach construct
 // to present the list in sections and requires some preliminary work to perform the
@@ -25,7 +25,7 @@ import SwiftUI
 // off the list).
 struct ShoppingListDisplay: View {
 	
-	// this is the incoming @FetchRequest from ShoppingListTabView
+	// this is the incoming @FetchRequest from ShoppingListView
 	var itemsToBePurchased: FetchedResults<Item>
 	
 	// display format: one big section of Items, or sectioned by Location?

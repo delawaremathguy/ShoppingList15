@@ -13,7 +13,7 @@ struct PreferencesTabView: View {
 	// this view is a restructured version of the older DevToolTab to now handle
 	// user preferences.  for the moment, the only preference we have is for
 	// setting the number of days back in time to section out the item in the
-	// PurchasedItemsTabView:
+	// PurchasedItemsView:
 	// -- first section: items purchased within the last N days
 	// -- second section: all other items purchased.
 	// we'll allow N here to be 0 ... 10

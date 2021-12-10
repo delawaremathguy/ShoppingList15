@@ -20,12 +20,12 @@ struct MainView: View {
 	var body: some View {
 		TabView(selection: $selectedTab) {
 			
-			NavigationView { ShoppingListTabView() }
+			NavigationView { ShoppingListView() }
 				.tabItem { Label("Shopping List", systemImage: "cart") }
 				.tag(1)
 
 			
-			NavigationView { PurchasedItemsTabView() }
+			NavigationView { PurchasedItemsView() }
 				.tabItem { Label("Purchased", systemImage: "purchased") }
 				.tag(2)
 			

@@ -29,16 +29,16 @@ struct LocationsTabView: View {
 	var body: some View {
 		VStack(spacing: 0) {
 			
-			// 1. add new location "button" is at top.  note that this will put up the
-			// AddorModifyLocationView inside its own NavigationView (so the Picker will work!)
-			Button(action: { isAddNewLocationSheetShowing = true }) {
-				Text("Add New Location")
-					.foregroundColor(Color.blue)
-					.padding(10)
-			}
-			.sheet(isPresented: $isAddNewLocationSheetShowing) {
-				NavigationView { AddOrModifyLocationView() }
-			}
+//			// 1. add new location "button" is at top.  note that this will put up the
+//			// AddorModifyLocationView inside its own NavigationView (so the Picker will work!)
+//			Button(action: { isAddNewLocationSheetShowing = true }) {
+//				Text("Add New Location")
+//					.foregroundColor(Color.blue)
+//					.padding(10)
+//			}
+//			.sheet(isPresented: $isAddNewLocationSheetShowing) {
+//				NavigationView { AddOrModifyLocationView() }
+//			}
 			
 			Rectangle()
 				.frame(height: 1)

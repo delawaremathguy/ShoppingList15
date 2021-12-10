@@ -25,7 +25,7 @@ protocol ConfirmationAlertProtocol: Identifiable {
 	func nonDestructiveAction()
 	
 	// completion handlers for after we do what we do. generally, these
-	// will execute view-specific code (dismiss() or an animation?) and are
+	// will execute view-specific code (dismiss() or an animation?), can only be
 	// determined at the call site when creating the alert, and are
 	// not code performed on model data such as deleting a Core Data object
 	var destructiveCompletion: (() -> Void)? { get set }

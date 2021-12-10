@@ -10,14 +10,14 @@ import Foundation
 import SwiftUI
 
 // the app will hold an object of type Today, which keeps track of the "start of
-// today."  the PurchasedItemsTabView needs to know what "today" means to properly
-// section out its data, and it might seem to you that the PurchasedItemsTabView
+// today."  the PurchasedItemsView needs to know what "today" means to properly
+// section out its data, and it might seem to you that the PurchasedItemsView
 // could handle that by itself.  however, if you push the app into the background
-// when the PurchasedItemsTabView is showing and then bring it back a few days later,
-// the PurchasedItemsTabView will show the same display as when it went into the background
+// when the PurchasedItemsView is showing and then bring it back a few days later,
+// the PurchasedItemsView will show the same display as when it went into the background
 // and not know about the change; so its view will need to be updated.  that's why
 // this is here: the app certainly knows when it becomes active, and can update what
-// "today" means, and the PurchasedItemsTabView will pick up on that in its environment
+// "today" means, and the PurchasedItemsView will pick up on that in its environment
 class Today: ObservableObject {
 	@Published var start: Date = Calendar.current.startOfDay(for: Date())
 	func update() {
@@ -31,7 +31,7 @@ class Today: ObservableObject {
 // this is the new App structure for iOS 14.  it pushes the managedObjectContext of the
 // singleton (global) PersistentStore into the environment of the MainView -- this makes
 // sure that all the @FetchRequets will work.  it pushes a Today object into the environment,
-// primarily for the PurchasedItemsTabView.  and it applies the .onReceive modifiers
+// primarily for the PurchasedItemsView.  and it applies the .onReceive modifiers
 // to the MainView to watch being moved into and out of the background
 
 // as an alternative structure, consider the comments on the Apple Developer Forums in this thread

@@ -37,8 +37,11 @@ final class PersistentStore: ObservableObject {
 		// you will have to make some changes in the project settings. see
 		//    https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/setting_up_core_data_with_cloudkit
 		
+#if targetEnvironment(simulator)
 		let container = NSPersistentContainer(name: "ShoppingList")
-		// let container = NSPersistentCloudKitContainer(name: "ShoppingList")
+#else
+		let container = NSPersistentCloudKitContainer(name: "ShoppingList")
+#endif
 
 		// some of what follows are suggestions by "Apple Staff" on the Apple Developer Forums
 		// for the case when you have an NSPersistentCloudKitContainer and iCloud synching

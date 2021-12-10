@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ShoppingListView.swift
 //  ShoppingList
 //
 //  Created by Jerry on 4/22/20.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ShoppingListTabView: View {
+struct ShoppingListView: View {
 		
 	// this is the @FetchRequest that ties this view to CoreData Items
 	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
@@ -30,27 +30,11 @@ struct ShoppingListTabView: View {
 	
 	// we use an init, just to track when this view is initialized.  it can be removed (!)
 	init() {
-		print("ShoppingListTabView initialized")
+		print("ShoppingListView initialized")
 	}
 	
 	var body: some View {
 			VStack(spacing: 0) {
-				
-/* ---------
-1. add new item "button" is at top.  note that this will put up the
- AddNewItemView inside its own NavigationView (so the Picker will work!)
----------- */
-				
-				Button(action: { isAddNewItemSheetShowing = true }) {
-					Text("Add New Item")
-						.foregroundColor(Color.blue)
-						.padding(10)
-				}
-				.sheet(isPresented: $isAddNewItemSheetShowing) {
-					NavigationView {
-						AddNewItemView()
-					}
-				}
 				
 				Rectangle()
 					.frame(height: 1)
@@ -72,21 +56,10 @@ of the sectioning, so we push it off to a specialized View.
 ---------- */
 
 				if itemsToBePurchased.count > 0 {
-					Rectangle()
-						.frame(height: 1)
+					Divider()
 					
-					SLCenteredButton(title: "Move All Items Off-list", action: {
+					ShoppingListBottomButtons(itemsToBePurchased: itemsToBePurchased) {
 						confirmMoveAllItemsOffShoppingListAlert = ConfirmMoveAllItemsOffShoppingListAlert()
-						})
-					.alert(item: $confirmMoveAllItemsOffShoppingListAlert) { item in item.alert() }
-						.padding([.bottom, .top], 6)
-					
-					if !itemsToBePurchased.allSatisfy({ $0.isAvailable }) {
-						SLCenteredButton(title: "Mark All Items Available",
-														 action: { itemsToBePurchased.forEach({ $0.markAvailable() }) })
-							.padding([.bottom], 6)
-
-						
 					}
 				} //end of if itemsToBePurchased.count > 0
 
@@ -102,11 +75,13 @@ of the sectioning, so we push it off to a specialized View.
 			MailView(isShowing: $showMailSheet, mailViewData: mailViewData, resultHandler: mailResultHandler)
 				.safe()
 		}
+		.alert(item: $confirmMoveAllItemsOffShoppingListAlert) { item in item.alert() }
+
 		.onAppear {
-			logAppear(title: "ShoppingListTabView")
+			logAppear(title: "ShoppingListView")
 		}
 		.onDisappear {
-			logDisappear(title: "ShoppingListTabView")
+			logDisappear(title: "ShoppingListView")
 			PersistentStore.shared.saveContext()
 		}
 		
@@ -194,6 +169,44 @@ of the sectioning, so we push it off to a specialized View.
 	}
 
 	
-} // end of ShoppingListTabView
+} // end of ShoppingListView
 
 
+struct ShoppingListBottomButtons: View {
+	
+		// incoming list of items to be purchased
+	var itemsToBePurchased: FetchedResults<Item>
+		// incoming function: what to do when the user wants to move all items of the shopping list
+	var moveAllItemsOffShoppingList: () -> ()
+	
+	var showMarkAllAvailable: Bool { !itemsToBePurchased.allSatisfy({ $0.isAvailable }) }
+	
+	var body: some View {
+		
+		HStack {
+			Spacer()
+			
+			Button {
+				moveAllItemsOffShoppingList()
+			} label: {
+				Text("Move All Off List")
+			}
+			
+			if showMarkAllAvailable {
+				Spacer()
+				
+				Button {
+					itemsToBePurchased.forEach { $0.markAvailable() }
+				} label: {
+					Text("Mark All Available")
+				}
+			}
+			
+			Spacer()
+		}
+		.padding(.vertical, 6)
+		.animation(.easeInOut(duration: 0.4), value: showMarkAllAvailable)
+
+	}
+	
+} // end of ShoppingListBottomButtons

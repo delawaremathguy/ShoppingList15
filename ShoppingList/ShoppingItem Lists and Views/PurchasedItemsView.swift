@@ -1,5 +1,5 @@
 //
-//  PurchasedItemView.swift
+//  PurchasedItemsView.swift
 //  ShoppingList
 //
 //  Created by Jerry on 5/14/20.
@@ -14,7 +14,7 @@ import SwiftUI
 // catalog, of sorts, although we only show items that we know about
 // that are not already on the shopping list.
 
-struct PurchasedItemsTabView: View {
+struct PurchasedItemsView: View {
 	
 	// this is the @FetchRequest that ties this view to CoreData
 	@FetchRequest(fetchRequest: Item.allItemsFR(onList: false))
@@ -53,21 +53,22 @@ struct PurchasedItemsTabView: View {
 				 AddNewItemView inside its own NavigationView (so the Picker will work!)
 				---------- */
 				
-				SearchBarView(text: $searchText)
+//				SearchBarView(text: $searchText)
 				
-				Button(action: { isAddNewItemSheetShowing = true }) {
-					Text("Add New Item")
-						.foregroundColor(Color.blue)
-						.padding(10)
-				}
-				.sheet(isPresented: $isAddNewItemSheetShowing) {
-					NavigationView {
-						AddNewItemView(initialItemName: searchText)
-					}
-				}
+//				Button(action: { isAddNewItemSheetShowing = true }) {
+//					Text("Add New Item")
+//						.foregroundColor(Color.blue)
+//						.padding(10)
+//				}
+//				.sheet(isPresented: $isAddNewItemSheetShowing) {
+//					NavigationView {
+//						AddNewItemView(initialItemName: searchText)
+//					}
+//				}
 				
 				Rectangle()
 					.frame(height: 1)
+//					.padding(.vertical, 5)
 				
 				/* ---------
 				2. we display either a "List is Empty" view, or the sectioned list of purchased
@@ -78,12 +79,12 @@ struct PurchasedItemsTabView: View {
 				if purchasedItems.count == 0 {
 					EmptyListView(listName: "Purchased")
 				} else {
-					// notice use of sectioning strategy that is described in ShoppingListDisplay.swift
+						// notice use of sectioning strategy that is described in ShoppingListDisplay.swift
 					List {
 						ForEach(sectionData()) { section in
 							Section(header: Text(section.title).sectionHeader()) {
 								ForEach(section.items) { item in
-									// display of a single item
+										// display of a single item
 									NavigationLink(destination: ModifyExistingItemView(editableItem: item)) {
 										SelectableItemRowView(item: item,
 																					selected: itemsChecked.contains(item),
@@ -92,13 +93,13 @@ struct PurchasedItemsTabView: View {
 											.contextMenu {
 												itemContextMenu(item: item,
 																				deletionTrigger: {
-																					confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: item)
-																				})
+													confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: item)
+												})
 											} // end of contextMenu
 									} // end of NavigationLink
 								} // end of ForEach
 							} // end of Section
-						} // end of ForEach						
+						} // end of ForEach
 					}  // end of List
 					.listStyle(InsetGroupedListStyle())
 
@@ -120,6 +121,7 @@ struct PurchasedItemsTabView: View {
 				ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 			}
 			.alert(item: $confirmDeleteItemAlert) { item in item.alert()}
+			.searchable(text: $searchText)
 			
 	}
 	
@@ -150,7 +152,7 @@ struct PurchasedItemsTabView: View {
 	func handleItemTapped(_ item: Item) {
 		// we keep track of what's on it's way to going off screen; if this
 		// item is already going off screen, don;t add it again.
-		guard itemsChecked.contains(item) else {
+		guard !itemsChecked.contains(item) else {
 			return
 		}
 		
@@ -162,6 +164,8 @@ struct PurchasedItemsTabView: View {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
 			item.toggleOnListStatus()
 			itemsChecked.removeAll(where: { $0 == item })
+			// this UI changed in ShoppingList15: clear the search text to allow new search
+			searchText = ""
 		}
 	}
 	

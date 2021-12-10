@@ -131,9 +131,22 @@ extension Item {
 	
 		// an item's associated location.  this fronts a Core Data optional attribute.
 		// if you change an item's location, the old and the new Location may want to
-		// know that some of their computed properties could be invalidated
+		// know that some of their computed properties could be invalidated.
+	//
+	// just in case: if the location is not set for an item, this will self-correct
+	// and set it to the unknown location.  this should not really happen, but
+	// i have found that when you load the app onto a second device on your
+	// iCloud account, data will start arriving from the cloud as an initial download
+	// and ... it could be the case that we try to access an Item that's been downloaded
+	// before its associated Location has been brought down to the device.
 	var location: Location {
-		get { location_! }
+		get {
+			if let location = location_ {
+				return location
+			}
+			location_ = Location.unknownLocation()
+			return location_!
+		}
 		set {
 			location_?.objectWillChange.send()
 			location_ = newValue

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-	// the ModifyExistingItemView is opened via a navigation link from the ShoppingListTabView and the
+	// the ModifyExistingItemView is opened via a navigation link from the ShoppingListView and the
 	// PurchasedItemTabView o do as it says: edit an existing shopping item.  this will be a "live edit,"
 	// in the sense that when the user touches the <Back button, we update the values of the
 	// Item with the edited values.

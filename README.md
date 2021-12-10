@@ -4,7 +4,7 @@
 
 ShoppingList15 is a simple iOS app to process a shopping list that you can take to the grocery store with you, and move items off the list as you pick them up.  It persists data in CoreData and uses SwiftUI.  The project should be compiled with XCode 13.2 or later and will run on iOS 15.2 or later.
 
-* An [earlier version of this project](https://github.com/delawaremathguy/ShoppingList14) is available that works with XCode 12.5/iOS 13.  If you have not yet made the move to XCode 113 and iOS 115, you should use this earlier project instead.
+* An [earlier version of this project](https://github.com/delawaremathguy/ShoppingList14) is available that works with XCode 12.5/iOS 13.  If you have not yet made the move to XCode 13 and iOS 15, you should use this earlier project instead.
 
 * An [even earlier version of this project](https://github.com/delawaremathguy/ShoppingList) is available that works with XCode 11.7/iOS 13.7. 
 
@@ -14,13 +14,21 @@ Feel free to use this as is, to develop further,  to completely ignore, or even 
 
 ### Most Recent Update of 20 November, 2021
 
-This is the first update of this two-year-old, onging project.  Major code-related items that you will find in this project are:
+This is the first update of this two-year-old, on-ging project, for iOS 15.  Major code-related items that you will find in this project are:
 
-* There is a new dis-ambigulation strategy being used to combine what have been "AddOrModify" views for Items and Locations so that we now have a "Modify" view that performs a live-edit and is presented via a NavigationLink, and an "Add" view that is brought up by a sheet.  This replaces a previous strategy used that would off-load all of an Item's/Location's editable data into a struct, edit the struct's values, and once the edit is confirmed, either update an existing Item/Location with the new data, or create a new Item with the data.
+* Cloud-syncing across devices on the same Apple ID is implemented. (Note: *To use this feature, you will need an Apple Developer account, you will need to manage app signing, and you will need to specify your own bundle identifier*.)
 
-* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`.  There is an obvious advantage here -- once you "get" the implementation idea -- any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheet, depending on how you set up the (Identifiable) item.
+* I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-For earlier, more detailed changes that could possibly be of interest, please consult the **Changelog** at the end of this document.
+* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer syntax design.  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "model" for an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheets, depending on how you set up the (Identifiable) item.  So the "one alert/sheet per view" restriction of SwiftUI is no longer a concern.
+
+* The functionality of what was SearchBarView (by Simon Ng) has now been replaced using the iOS 15 native `.searchable()` view modifier.
+
+* UI changes: 
+
+  * The "Add New Item/Location" button at the top of the ShoppingList, PurchasedItems, and Locations view have been removed.  Each screen already has a "+" at the top, right of the screen to add a new shopping item or location.
+  * The "Mark All Items Available" and "Move All Items Off-list" buttons on the shopping list view are now in an HStack (not a VStack), with some animation managing the transition if the "Mark All Items Available" button need not appear.
+  
 
 ## General App Structure
 
@@ -128,15 +136,14 @@ The code of this app **follows the three rules above**, and I think the result w
 
 ## License
 
-* The SearchBarView in the Purchased items view was created by Simon Ng.  It appeared in [an article in AppCoda](https://www.appcoda.com/swiftui-search-bar/) and is copyright ©2020 by AppCoda. You can find it on GitHub as [AppCoda/SwiftUISearchBar](https://github.com/AppCoda/SwiftUISearchBar). 
 * The app icon was created by Wes Breazell from [the Noun Project](https://thenounproject.com). 
 * The extension I use on Bundle to load JSON files is due to Paul Hudson (@twostraws, [hackingwithswift.com](https://hackingwithswift.com)) 
-* The MailView used in the ShoppingListTabView was created by [Mohammad Rahchamani](https://github.com/mohammad-rahchamani/MailView), copyright © 1399 AP BetterSleep.
+* The MailView used in the ShoppingListView was created by [Mohammad Rahchamani](https://github.com/mohammad-rahchamani/MailView), copyright © 1399 AP BetterSleep.
 
 Otherwise, just about all of the code is original, and it's yours if you want it -- please see LICENSE for the usual details and disclaimers.
 
 
 ## ChangeLog
 
-This section contains a more detailed list of changes made to ShoppingList15 (since the final release of ShoppingList14) prior to the most recent changes of note listed above.
+This section will list changes made to ShoppingList15, from its initial release onward.
 
