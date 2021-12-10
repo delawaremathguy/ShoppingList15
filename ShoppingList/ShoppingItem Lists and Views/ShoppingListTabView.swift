@@ -28,7 +28,7 @@ struct ShoppingListTabView: View {
 	@State private var showMailSheet: Bool = false
 	var mailViewData = MailViewData()
 	
-	// we have an init, just to see when this view is initialized
+	// we use an init, just to track when this view is initialized.  it can be removed (!)
 	init() {
 		print("ShoppingListTabView initialized")
 	}

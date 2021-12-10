@@ -57,7 +57,7 @@ struct SearchBarView: View { // the only change i made to this file is to rename
 				}
 				.padding(.trailing, 10)
 				.transition(.move(edge: .trailing))
-				.animation(.easeInOut, value: 0.5)
+				.animation(.easeInOut, value: isEditing)
 			}
 		}
 	}

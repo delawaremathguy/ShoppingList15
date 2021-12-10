@@ -8,23 +8,20 @@
 
 import SwiftUI
 
+// the EditableItemDataView allows the user to edit the fields associated with an Item.
 struct EditableItemDataView: View {
 	
-		// incoming parameters
-		// -- the item we're editing (this is a live edit)
-		// -- whether the item can be deleted (true if the item exists, false if we're adding a new item)
-		//	@ObservedObject var editableItem: Item
 	@Binding var editableItemData: EditableItemData
 	private var deleteActionTrigger: (() -> ())?
 	private var itemExists: Bool
 	
-		// we need all locations so we can populate the Picker.  it may be curious that i
-		// use a @FetchRequest here; the problem is that if this Add/ModifyItem view is open
-		// to add a new item, then we tab over to the Locations tab to add a new location,
-		// we have to be sure the Picker's list of locations is updated.
+		// we need all locations so we can populate the Picker.
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
 	
+		// incoming parameters
+		// -- the item we're editing (this is a pseudo-live edit)
+		// -- whether the item can be deleted and what to do after the user deletes the Item
 	init(editableItemData: Binding<EditableItemData>, deleteActionTrigger: (() -> ())?) {
 		_editableItemData = editableItemData
 		self.deleteActionTrigger = deleteActionTrigger
@@ -54,12 +51,6 @@ struct EditableItemDataView: View {
 					}
 				}
 				
-				// comment on this one: changing this from either the shopping list or the purchased list
-				// on a live edit with an existing item will pop you back in the navigation, because this
-				// is a live edit and this will change the basic content of those lists ... that may not be
-				// what we want ... so how to watch for this?  we might treat this one as a local variable
-				// and only make this change once we leave??  perhaps this should be hidden in these
-				// cases??
 				HStack(alignment: .firstTextBaseline) {
 					Toggle(isOn: $editableItemData.onList) {
 						SLFormLabelText(labelText: "On Shopping List: ")

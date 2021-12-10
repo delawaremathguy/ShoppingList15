@@ -12,10 +12,6 @@ import SwiftUI
 // this is common code for both the shopping list tab and the purchased tab to build a
 // context menu associated with an Item
 
-// note for itemContextMenu below: in XCode 11.5/iOS 13.5, you'll get plenty of layout
-// messages about unsatisfiable constraints in the console when displaying a contextMenu.
-// that's apparently a SwiftUI problem that seems to not be present in XCode 12/iOS 14 so much
-
 /// Builds out a context menu for an Item that can be used in the shopping list
 /// or the purchased list to quickly move the item to the other list, toggle the state
 /// of the availability, and delete the item.

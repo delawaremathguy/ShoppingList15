@@ -44,10 +44,6 @@ struct PurchasedItemsTabView: View {
 	// number of days in the past for the first section when using sections
 	@AppStorage(wrappedValue: 3, "PurchasedHistoryMarker") private var historyMarker
 	
-	// this implements a seemingly well-known strategy to get the list drawn
-	// cleanly without any highlighting
-	@State private var listDisplayID = UUID()
-		
 	var body: some View {
 		//NavigationView {
 			VStack(spacing: 0) {
@@ -97,7 +93,6 @@ struct PurchasedItemsTabView: View {
 												itemContextMenu(item: item,
 																				deletionTrigger: {
 																					confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: item)
-																					//confirmationAlert.trigger(type: .deleteItem(item))
 																				})
 											} // end of contextMenu
 									} // end of NavigationLink
@@ -133,8 +128,6 @@ struct PurchasedItemsTabView: View {
 		searchText = ""
 		// and also recompute what "today" means, so the sectioning is correct
 		today.update()
-		
-		listDisplayID = UUID()
 	}
 	
 	// makes a simple "+" to add a new item
@@ -155,16 +148,20 @@ struct PurchasedItemsTabView: View {
 	
 	
 	func handleItemTapped(_ item: Item) {
-		if !itemsChecked.contains(item) {
+		// we keep track of what's on it's way to going off screen; if this
+		// item is already going off screen, don;t add it again.
+		guard itemsChecked.contains(item) else {
+			return
+		}
+		
 			// put into our list of what's about to be removed, and because
 			// itemsChecked is a @State variable, we will see a momentary
 			// animation showing the change.
-			itemsChecked.append(item)
+		itemsChecked.append(item)
 			// queue the removal to allow animation to run
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
-				item.toggleOnListStatus()
-				itemsChecked.removeAll(where: { $0 == item })
-			}
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
+			item.toggleOnListStatus()
+			itemsChecked.removeAll(where: { $0 == item })
 		}
 	}
 	

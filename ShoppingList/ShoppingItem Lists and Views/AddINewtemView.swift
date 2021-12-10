@@ -8,6 +8,18 @@
 
 import SwiftUI
 
+// the AddNewItemView is opened via a sheet from both the ShoppingListTabView and the
+// PurchasedItemTabView, within a NavigationView, to do as it says: add a new shopping item.
+// the strategy is simple:
+//
+// -- create a default set of values for a new shopping item (a struct)
+// -- the body shows a Form in which the user can edit the default data
+// -- we supply buttons in the navigation bar to dismiss (which can be accomplished
+//     just by pulling down on the sheet) and to save the data as a new item
+//
+// in the case of a save, we call a method on Item to create a new item from
+// the edited data.
+
 struct AddNewItemView: View {
 		// we need this so we can dismiss ourself -- we are presented as a .sheet()
 	@Environment(\.dismiss) var dismiss: DismissAction
@@ -27,7 +39,6 @@ struct AddNewItemView: View {
 	var body: some View {
 		EditableItemDataView(editableItemData: $editableItemData, deleteActionTrigger: nil)
 			.navigationBarTitle("Add New Item", displayMode: .inline)
-			.navigationBarBackButtonHidden(true)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) { cancelButton() }
 				ToolbarItem(placement: .confirmationAction) { saveButton() }
