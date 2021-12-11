@@ -172,9 +172,10 @@ extension Location: Comparable {
 		try? context?.save()
 	}
 	
-	class func updateData(using editableData: EditableLocationData) {
-		// if the incoming location is not nil, then this is just a straight update.
-		// otherwise, we must create the new Location here and add it
+	class func update(using editableData: EditableLocationData) {
+		// if the incoming location data represents an existing Location, so this is just
+		// a straight update.  otherwise, we must create the new Location here and add it
+		// before updating it with the new values
 		if let id = editableData.id,
 			 let location = Location.object(id: id, context: PersistentStore.shared.context) {
 			location.updateValues(from: editableData)

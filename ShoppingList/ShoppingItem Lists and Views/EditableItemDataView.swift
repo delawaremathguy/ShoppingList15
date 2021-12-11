@@ -13,9 +13,9 @@ import SwiftUI
 	// that already exists.
 struct EditableItemDataView: View {
 	
-	// data we work with
+	// incoming data: 
 	@Binding private var editableItemData: EditableItemData
-	private var deleteActionTrigger: (() -> ())?
+	var deleteActionTrigger: (() -> ())?
 	private var itemExists: Bool
 	
 		// we need all locations so we can populate the Picker.

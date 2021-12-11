@@ -34,19 +34,13 @@ struct ModifyExistingItemView: View {
 	
 		// alert trigger item to confirm deletion of an Item
 	@State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
-		// if we really do go ahead and delete the Item, then we want the destructive action
-		// (delete) to be recorded so that we don't try  to update the item (that we just deleted)
-		// on the way out of this view in .onDisappear
-	@State private var itemWasDeleted: Bool = false
 
 	var body: some View {
 		
-		// the trailing closure provides the EditableItemDataView with what to do
-		// after the user has deleted the item, namely dismiss and be sure not to
-		// do the usual "live update" when we go away
+		// the trailing closure provides the EditableItemDataView with what to do after the user has
+		// deleted the item, namely "dismiss" so we "bo back" up the navigation stack
 		EditableItemDataView(editableItemData: $editableItemData) {
 			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: editableItemData.associatedItem) {
-				itemWasDeleted = true
 				dismiss()
 			}
 		}
@@ -54,9 +48,8 @@ struct ModifyExistingItemView: View {
 			.onDisappear {
 				// we were doing a pseudo-live edit, so update on the way out, unless
 				// we opted to delete the associated item
-				if !itemWasDeleted {
+				if editableItemData.representsExistingItem {
 					Item.update(using: editableItemData)
-					PersistentStore.shared.saveContext()
 				}
 			}
 			.alert(item: $confirmDeleteItemAlert) { item in item.alert() }

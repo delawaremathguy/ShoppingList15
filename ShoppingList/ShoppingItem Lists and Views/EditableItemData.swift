@@ -62,7 +62,7 @@ struct EditableItemData {
 	var canBeSaved: Bool { name.count > 0 }
 	// we also want to know if this itemData is attached to a real Item that
 	// exists, or is data that will be used to create a new Item
-	var representsExistingItem: Bool { id != nil }
+	var representsExistingItem: Bool { id != nil && Item.object(withID: id!) != nil }
 	// useful to know the associated Item (which we'll force unwrap, so
 	// be sure you check representsExistingItem first (!)
 	var associatedItem: Item { Item.object(withID: id!)! }

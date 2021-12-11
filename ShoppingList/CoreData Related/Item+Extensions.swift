@@ -240,12 +240,12 @@ extension Item {
 		// if we can find an Item with the right id, use it, else create one
 		if let id = editableData.id,
 			let item = Item.object(id: id, context: PersistentStore.shared.context) {
-		//if let item = allItems().first(where: { $0.id == editableData.id }) {
 			item.updateValues(from: editableData)
 		} else {
 			let newItem = Item.addNewItem()
 			newItem.updateValues(from: editableData)
 		}
+		PersistentStore.shared.saveContext()
 	}
 
 	class func delete(_ item: Item) {

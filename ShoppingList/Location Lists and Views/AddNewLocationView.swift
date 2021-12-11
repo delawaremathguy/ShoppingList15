@@ -8,13 +8,12 @@
 
 import SwiftUI
 
+// see AddNewItemView.swift for similar comments and explanation of how this works
 struct AddNewLocationView: View {
 	
-	//@Environment(\.dismiss) var dismiss: DismissAction
-	
-	// incoming dismissal actions
+	// incoming dismiss action.  we're a View presented as a sheet via an
+	// identifiableSheetItem, so the presenter needs to tell us how it will dismiss us
 	var dismiss: () -> Void
-
 		// default editableLocationData is initialized here
 	@State private var editableLocationData = EditableLocationData()
 	
@@ -38,7 +37,7 @@ struct AddNewLocationView: View {
 	func saveButton() -> some View {
 		Button {
 			dismiss()
-			Location.updateData(using: editableLocationData)
+			Location.update(using: editableLocationData)
 		} label: {
 			Text("Save")
 		}
