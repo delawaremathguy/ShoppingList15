@@ -20,9 +20,11 @@ This is the first update of my two-year-old ShoppingList project for Xcode 13/iO
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern.  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheets, depending on how you set up the (Identifiable) item.  So the "one alert/one sheet per view" restriction of SwiftUI is no longer a concern with this design pattern.
+* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects (and not structs with protocol requirements).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheets, depending on how you set up the (Identifiable) item.  So the "one alert/one sheet per view" restriction of SwiftUI is not necessarily (!) a concern with this design pattern.
 
 * The functionality of what was SearchBarView (by Simon Ng) has now been completely replaced using the iOS 15 native `.searchable()` view modifier.
+
+* The coding for the display of Items in the shopping list view and purchased list view has, thankfully, been cleanly merged, removing much code duplication. 
 
 * UI changes: 
 

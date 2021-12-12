@@ -25,7 +25,7 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 	// to function, we just need to know what item we're talking about, and how to do
 	// the deletion as the destructive action.
 	init(item: Item, destructiveCompletion: (() -> Void)?) {
-		// init this objects custom data, then call its superclass's initializer
+		// init this object's custom data, then call its superclass's initializer
 		self.item = item
 		super.init()
 		// now update appropriate messages and actions
@@ -38,19 +38,15 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 
 // MARK: - Confirm MOVE ALL ITEMS OF LIST Alert
 
-struct ConfirmMoveAllItemsOffShoppingListAlert: ConfirmationAlertProtocol {
-	var id = UUID()
+class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 	
-	var title: String { "Move All Items Off-List" }
-	
-	var message: String { "" }
-	
-	func destructiveAction() {
-		Item.moveAllItemsOffShoppingList()
+	init(destructiveCompletion: (() -> Void)?) {
+		super.init()
+		title = "Move All Items Off-List"
+		destructiveAction = Item.moveAllItemsOffShoppingList
+		self.destructiveCompletion = destructiveCompletion
 	}
 	
-	var destructiveCompletion: (() -> Void)?
-	var nonDestructiveCompletion: (() -> Void)?
 }
 
 // MARK: - Confirm DELETE LOCATION Alert

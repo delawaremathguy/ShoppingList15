@@ -12,13 +12,14 @@ struct ShoppingListView: View {
 		
 	// this is the @FetchRequest that ties this view to CoreData Items
 	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
-	private var itemsToBePurchased: FetchedResults<Item>
+	private var items: FetchedResults<Item>
 
 	// local state to trigger showing a sheet to add a new item
 	@State private var isAddNewItemSheetShowing = false
 	
-	// alert to move all item off the shopping list
-	@State private var confirmMoveAllItemsOffShoppingListAlert: ConfirmMoveAllItemsOffShoppingListAlert?
+	// alert to move all items off the shopping list, and it is also used to trigger an
+	// alert to delete an item in the shopping list
+	@State private var identifiableAlertItem: IdentifiableAlertItem?
 	
 	// local state for are we a multi-section display or not.  the default here is false,
 	// but an eager developer could easily store this default value in UserDefaults (?)
@@ -45,25 +46,24 @@ or multi-section shopping list view.  the list display has some complexity to it
 of the sectioning, so we push it off to a specialized View.
 ---------- */
 
-				ZStack {
+				if items.count == 0 {
 					EmptyListView(listName: "Shopping")
-						.opacity(itemsToBePurchased.count == 0 ? 1 : 0)
-						.zIndex(-1)
-
-					ShoppingListDisplay(itemsToBePurchased: itemsToBePurchased,
-															multiSectionDisplay: $multiSectionDisplay)
-						.opacity(itemsToBePurchased.count == 0 ? 0 : 1)
-				} // end of ZStack
+				} else {
+					ItemListView(items: items, sfSymbolName: "cart",
+											 identifiableAlertItem: $identifiableAlertItem, sectionData: sectionData)
+				}
 				
 /* ---------
 and for non-empty lists, we have a few buttons at the end for bulk operations
 ---------- */
 
-				if itemsToBePurchased.count > 0 {
+				if items.count > 0 {
 					Divider()
 					
-					ShoppingListBottomButtons(itemsToBePurchased: itemsToBePurchased) {
-						confirmMoveAllItemsOffShoppingListAlert = ConfirmMoveAllItemsOffShoppingListAlert()
+					ShoppingListBottomButtons(itemsToBePurchased: items) {
+						identifiableAlertItem = ConfirmMoveAllItemsOffShoppingListAlert() {
+							identifiableAlertItem = nil
+						}
 					}
 				} //end of if itemsToBePurchased.count > 0
 
@@ -79,7 +79,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			MailView(isShowing: $showMailSheet, mailViewData: mailViewData, resultHandler: mailResultHandler)
 				.safe()
 		}
-		.alert(item: $confirmMoveAllItemsOffShoppingListAlert) { item in item.alert() }
+		.alert(item: $identifiableAlertItem) { item in item.alert() }
 
 		.onAppear {
 			logAppear(title: "ShoppingListView")
@@ -90,6 +90,29 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		}
 		
 	} // end of body: some View
+	
+	func sectionData() -> [ItemsSectionData] {
+		
+			// the easy case: if this is not a multi-section list, there will be one section with a title
+			// and an array of all the items
+		if !multiSectionDisplay {
+				// if you want to change the sorting when this is a single section to "by name"
+				// then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by name
+			let sortedItems = items
+				.sorted(by: { $0.location.visitationOrder < $1.location.visitationOrder })
+			return [ItemsSectionData(title: "Items Remaining: \(items.count)", items: sortedItems)
+			]
+		}
+		
+			// otherwise, one section for each location, please.  break the data out by location first
+		let dictionaryByLocation = Dictionary(grouping: items, by: { $0.location })
+			// then reassemble the sections by sorted keys of this dictionary
+		var completedSectionData = [ItemsSectionData]()
+		for key in dictionaryByLocation.keys.sorted() {
+			completedSectionData.append(ItemsSectionData(title: key.name, items: dictionaryByLocation[key]!))
+		}
+		return completedSectionData
+	}
 	
 	// MARK: - ToolbarItems
 	
@@ -140,7 +163,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		
 		// pull out Locations appearing in the shopping list as a dictionary, keyed by location
 		// and write the mail message = one big string
-		let dictionary = Dictionary(grouping: itemsToBePurchased, by: { $0.location })
+		let dictionary = Dictionary(grouping: items, by: { $0.location })
 		for key in dictionary.keys.sorted() {
 			let items = dictionary[key]!
 			messageString += "\n\(key.name), \(items.count) item(s)\n\n"

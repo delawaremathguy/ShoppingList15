@@ -18,7 +18,7 @@ struct PurchasedItemsView: View {
 	
 		// this is the @FetchRequest that ties this view to CoreData
 	@FetchRequest(fetchRequest: Item.allItemsFR(onList: false))
-	private var purchasedItems: FetchedResults<Item>
+	private var items: FetchedResults<Item>
 	
 		// the usual @State variables to handle the Search field and control
 		// the action of the confirmation alert that you really do want to
@@ -28,7 +28,7 @@ struct PurchasedItemsView: View {
 		// parameters to control triggering an Alert and defining what action
 		// to take upon confirmation
 		//@State private var confirmationAlert = ConfirmationAlert(type: .none)
-	@State private var confirmDeleteItemAlert: IdentifiableAlertItem?
+	@State private var identifiableAlertItem: IdentifiableAlertItem?
 	@State private var isAddNewItemSheetShowing = false
 	
 		// local state for are we a multi-section display or not.  the default here is false,
@@ -51,34 +51,11 @@ struct PurchasedItemsView: View {
 				.frame(height: 1)
 			
 				// display either a "List is Empty" view, or the sectioned list of purchased items.
-			if purchasedItems.count == 0 {
+			if items.count == 0 {
 				EmptyListView(listName: "Purchased")
 			} else {
-					// notice use of sectioning strategy that is described in ShoppingListDisplay.swift
-				List {
-					ForEach(sectionData()) { section in
-						Section(header: Text(section.title).sectionHeader()) {
-							ForEach(section.items) { item in
-									// display of a single item
-								NavigationLink(destination: ModifyExistingItemView(editableItem: item)) {
-									SelectableItemRowView(item: item,
-																				selected: itemsChecked.contains(item),
-																				sfSymbolName: "cart",
-																				respondToTapOnSelector: { handleItemTapped(item) })
-										.contextMenu {
-											itemContextMenu(item: item, deletionTrigger: {
-												confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: item) {
-													confirmDeleteItemAlert = nil
-												}
-											})
-										} // end of contextMenu
-								} // end of NavigationLink
-							} // end of ForEach
-						} // end of Section
-					} // end of ForEach
-				}  // end of List
-				.listStyle(InsetGroupedListStyle())
-				
+				ItemListView(items: items, sfSymbolName: "purchased",
+										 identifiableAlertItem: $identifiableAlertItem, sectionData: sectionData)				
 			} // end of if-else
 			
 			Divider() // keeps list from overrunning the tab bar in iOS 15
@@ -96,16 +73,14 @@ struct PurchasedItemsView: View {
 			ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
-		.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+		.alert(item: $identifiableAlertItem) { item in item.alert() }
 		.searchable(text: $searchText)
 		
 	}
 	
 	func handleOnAppear() {
-			// clear searchText, get a clean screen
-		searchText = ""
-			// and also recompute what "today" means, so the sectioning is correct
-		today.update()
+		searchText = "" // clear searchText, get a clean screen
+		today.update() // also recompute what "today" means, so the sectioning is correct
 	}
 	
 		// makes a simple "+" to add a new item
@@ -140,25 +115,25 @@ struct PurchasedItemsView: View {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
 			item.toggleOnListStatus()
 			itemsChecked.removeAll(where: { $0 == item })
-				// this UI changed in ShoppingList15: clear the search text to allow new search
+				// this UI element changed in ShoppingList15: clear the search text to allow new search
 			searchText = ""
 		}
 	}
 	
 		// the idea of this function is to break out the purchased Items into
 		// 2 sections: those purchased today (within the last N days), and everything else
-	func sectionData() -> [SectionData] {
+	func sectionData() -> [ItemsSectionData] {
 			// reduce items by search criteria
-		let searchQualifiedItems = purchasedItems.filter({ searchText.appearsIn($0.name) })
+		let searchQualifiedItems = items.filter({ searchText.appearsIn($0.name) })
 		
 			// do we show one big section, or Today and then everything else?  one big section
 			// is pretty darn easy:
 		if !multiSectionDisplay {
 			if searchText.isEmpty {
-				return [SectionData(title: "Items Purchased: \(purchasedItems.count)",
-														items: purchasedItems.map({ $0 }))]
+				return [ItemsSectionData(title: "Items Purchased: \(items.count)",
+														items: items.map({ $0 }))]
 			}
-			return [SectionData(title: "Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)",
+			return [ItemsSectionData(title: "Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)",
 													items: searchQualifiedItems)]
 		}
 		
@@ -174,12 +149,12 @@ struct PurchasedItemsView: View {
 		}
 		
 			// return two sections only
-		return [SectionData(title: section1Title(searchText: searchText,
-																						 historyMarker: historyMarker,
-																						 count: recentItems.count),
-												items: recentItems),
-						SectionData(title: section2Title,
-												items: allOlderItems)
+		return [
+			ItemsSectionData(title: section1Title(searchText: searchText,
+																			 historyMarker: historyMarker,
+																			 count: recentItems.count),
+									items: recentItems),
+			ItemsSectionData(title: section2Title, items: allOlderItems)
 		]
 	}
 	

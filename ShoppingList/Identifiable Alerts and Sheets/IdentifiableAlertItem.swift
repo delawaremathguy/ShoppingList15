@@ -17,8 +17,7 @@ import SwiftUI
 class IdentifiableAlertItem: Identifiable {
 		// must be Identifiable to work with .alert(item: ...)
 	var id = UUID()
-	
-		// strings for title and message
+		// strings for title and message -- you will always want to set these yourself
 	var title: String = "Alert title"
 	var message: String = "Alert message"
 	
@@ -31,9 +30,9 @@ class IdentifiableAlertItem: Identifiable {
 	var nonDestructiveAction: (() -> Void)?
 	
 		// completion handlers for after we do what we do. generally, these
-		// will execute view-specific code (dismiss() or an animation?) and are
-		// determined at the call site when creating the alert (e.g.,
-		// not code performed on model data such as deleting a Core Data object)
+		// will execute view-specific code (dismiss() or an animation?) that is
+		// determined at the call site when creating the alert (e.g., not code performed
+		// on model data such as deleting a Core Data object)
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
 	

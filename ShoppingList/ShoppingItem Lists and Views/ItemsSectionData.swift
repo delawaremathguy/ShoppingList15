@@ -28,7 +28,7 @@ import Foundation
 // rearrange your data as a [SectionData] and "plug it in" to the structure
 // above.
 
-struct SectionData: Identifiable, Hashable {
+struct ItemsSectionData: Identifiable, Hashable {
 	var id: Int { hashValue }
 	let title: String
 	let items: [Item]
