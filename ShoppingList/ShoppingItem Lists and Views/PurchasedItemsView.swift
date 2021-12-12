@@ -100,26 +100,6 @@ struct PurchasedItemsView: View {
 	}
 	
 	
-	func handleItemTapped(_ item: Item) {
-			// we keep track of what's on it's way to going off screen; if this
-			// item is already going off screen, don;t add it again.
-		guard !itemsChecked.contains(item) else {
-			return
-		}
-		
-			// put into our list of what's about to be removed, and because
-			// itemsChecked is a @State variable, we will see a momentary
-			// animation showing the change.
-		itemsChecked.append(item)
-			// queue the removal to allow animation to run
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
-			item.toggleOnListStatus()
-			itemsChecked.removeAll(where: { $0 == item })
-				// this UI element changed in ShoppingList15: clear the search text to allow new search
-			searchText = ""
-		}
-	}
-	
 		// the idea of this function is to break out the purchased Items into
 		// 2 sections: those purchased today (within the last N days), and everything else
 	func sectionData() -> [ItemsSectionData] {
