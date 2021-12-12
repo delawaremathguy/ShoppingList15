@@ -31,6 +31,8 @@
 		D648D349246388C100CD881B /* Location+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D648D348246388C100CD881B /* Location+Extensions.swift */; };
 		D65A509F2565789900D43229 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A509E2565789900D43229 /* String+Extensions.swift */; };
 		D65C931824C5DC9B003E6EB7 /* GlobalTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C931724C5DC9B003E6EB7 /* GlobalTimer.swift */; };
+		D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */; };
+		D6603E3C27664FBB008F1667 /* IdentifiableAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6603E3A27664FBB008F1667 /* IdentifiableAlerts.swift */; };
 		D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */; };
 		D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */; };
 		D677946224D58F34006EB9CF /* EditableLocationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D677946124D58F34006EB9CF /* EditableLocationData.swift */; };
@@ -87,6 +89,8 @@
 		D65A15D22465A137004ACCBB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D65A509E2565789900D43229 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		D65C931724C5DC9B003E6EB7 /* GlobalTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTimer.swift; sourceTree = "<group>"; };
+		D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableAlertItem.swift; sourceTree = "<group>"; };
+		D6603E3A27664FBB008F1667 /* IdentifiableAlerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableAlerts.swift; sourceTree = "<group>"; };
 		D6661E0A25645D2200BA47E9 /* ShoppingList 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 2.xcdatamodel"; sourceTree = "<group>"; };
 		D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTabView.swift; sourceTree = "<group>"; };
 		D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCenteredButton.swift; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 			children = (
 				D6BE939126444E3F00B3FB1A /* ConfirmationAlertProtocol.swift */,
 				D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */,
+				D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */,
+				D6603E3A27664FBB008F1667 /* IdentifiableAlerts.swift */,
 				D614343C2763B95A009CC73B /* IdentifiableSheetItem.swift */,
 				D614343D2763B95B009CC73B /* IdentifiableSheets.swift */,
 			);
@@ -363,6 +369,7 @@
 				D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */,
 				D6CD65E025D09AA5006F8FAF /* ShoppingListDisplay.swift in Sources */,
 				D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */,
+				D6603E3C27664FBB008F1667 /* IdentifiableAlerts.swift in Sources */,
 				D610C3BE2451D8DC009F7F36 /* Item+Extensions.swift in Sources */,
 				D60F14A924686D710077AD3F /* LocationCodableProxy.swift in Sources */,
 				D62B88322451162D0051A7CE /* ShoppingListView.swift in Sources */,
@@ -391,6 +398,7 @@
 				D6FC7A0A24635D950096F018 /* ShoppingList.xcdatamodeld in Sources */,
 				D6DBE724258A7F93007679E8 /* ConfirmationAlerts.swift in Sources */,
 				D648D349246388C100CD881B /* Location+Extensions.swift in Sources */,
+				D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */,
 				D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */,
 				D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */,
 				D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */,

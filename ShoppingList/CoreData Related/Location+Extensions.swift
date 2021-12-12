@@ -155,11 +155,10 @@ extension Location: Comparable {
 	
 	class func delete(_ location: Location) {
 		// you cannot delete the unknownLocation
-		guard location.visitationOrder_ != kUnknownLocationVisitationOrder else { return }
+		guard location != Location.unknownLocation() else { return }
 
 		// retrieve the context of this Location and get a list of
 		// all items for this location so we can work with them
-		let context = location.managedObjectContext
 		let itemsAtThisLocation = location.items
 		
 		// reset location associated with each of these to the unknownLocation
@@ -167,9 +166,11 @@ extension Location: Comparable {
 		// this could affect each item's computed properties
 		let theUnknownLocation = Location.unknownLocation()
 		itemsAtThisLocation.forEach({ $0.location = theUnknownLocation })
+		
 		// now finish the deletion and save
-		context?.delete(location)
-		try? context?.save()
+		let context = PersistentStore.shared.context
+		context.delete(location)
+		PersistentStore.shared.saveContext()
 	}
 	
 	class func update(using editableData: EditableLocationData) {
@@ -182,7 +183,8 @@ extension Location: Comparable {
 		} else {
 			let newLocation = Location.addNewLocation()
 			newLocation.updateValues(from: editableData)
-		}		
+		}
+		PersistentStore.shared.saveContext()
 	}
 	
 	class func object(withID id: UUID) -> Location? {

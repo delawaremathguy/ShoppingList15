@@ -236,7 +236,6 @@ extension Item {
 	// updates data for an Item that the user has directed from an Add or Modify View.
 	// if the incoming data is not associated with an item, we need to create it first
 	class func update(using editableData: EditableItemData) {
-		
 		// if we can find an Item with the right id, use it, else create one
 		if let id = editableData.id,
 			let item = Item.object(id: id, context: PersistentStore.shared.context) {
@@ -250,12 +249,17 @@ extension Item {
 
 	class func delete(_ item: Item) {
 		// remove the reference to this item from its associated location
-		// by resetting its (real, Core Data) location to nil
+		// that location will need to know (for SwiftUI display) that some
+		// computed properties (e.g., its itemCount) may change with this deletion.
+		if let location = item.location_ {
+			location.objectWillChange.send()
+		}
 		item.location_ = nil
+		
 		// now delete and save
-		let context = item.managedObjectContext
-		context?.delete(item)
-		try? context?.save()
+		let context = PersistentStore.shared.context
+		context.delete(item)
+		PersistentStore.shared.saveContext()
 	}
 	
 	class func moveAllItemsOffShoppingList() {

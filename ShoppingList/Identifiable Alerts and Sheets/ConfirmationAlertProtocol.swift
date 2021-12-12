@@ -1,6 +1,6 @@
 //
 //  ConfirmationAlertProtocol.swift
-//  Chicago Bridge Scorer
+//  ShoppingList
 //
 //  Created by Jerry on 5/4/21.
 //  Copyright © 2021 Jerry. All rights reserved.

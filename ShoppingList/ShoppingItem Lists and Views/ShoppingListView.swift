@@ -40,19 +40,23 @@ struct ShoppingListView: View {
 					.frame(height: 1)
 				
 /* ---------
-2. we display either a "List is Empty" view, a single-section shopping list view
+we display either a "List is Empty" view, a single-section shopping list view
 or multi-section shopping list view.  the list display has some complexity to it because
 of the sectioning, so we push it off to a specialized View.
 ---------- */
 
-				if itemsToBePurchased.count == 0 {
+				ZStack {
 					EmptyListView(listName: "Shopping")
-				} else {
-					ShoppingListDisplay(itemsToBePurchased: itemsToBePurchased, multiSectionDisplay: $multiSectionDisplay)
-				}
+						.opacity(itemsToBePurchased.count == 0 ? 1 : 0)
+						.zIndex(-1)
+
+					ShoppingListDisplay(itemsToBePurchased: itemsToBePurchased,
+															multiSectionDisplay: $multiSectionDisplay)
+						.opacity(itemsToBePurchased.count == 0 ? 0 : 1)
+				} // end of ZStack
 				
 /* ---------
-3. for non-empty lists, we have a few buttons at the end for bulk operations
+and for non-empty lists, we have a few buttons at the end for bulk operations
 ---------- */
 
 				if itemsToBePurchased.count > 0 {

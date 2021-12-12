@@ -1,6 +1,6 @@
 //
 //  IdentifiableSheetItem.swift
-//  Chicago Bridge Scorer
+//  ShoppingList
 //
 //  Created by Jerry on 10/9/21.
 //  Copyright © 2021 Jerry. All rights reserved.
@@ -8,10 +8,18 @@
 
 import SwiftUI
 
-	// IdentifiableSheetItem is a base class used to trigger sheet displays
-// one property and one method are required:
+	// IdentifiableSheetItem is a base class used to trigger sheet displays.
+	// one property and one method are required:
 	// -- an id, needed to work with .sheet(item: ...)
 	// -- a method to generate a view to put into the sheet
+	//
+	// create a subclass of IdentifiableSheetItem for every sheet instance you
+	// want to open.  for each, you'll want a custom initializer to bring in the
+	// data necessary to create the view being presented by the sheet, and you'll
+	// also probably bring in and pass along to that View a function that will ultimately
+	// close the sheet (e.g., after touching a close or a cancel button).  typically,
+	// such a dismiss will set the identifiable sheet item variable you use to
+	// open the sheet back to nil, to dismiss the sheet.
 
 class IdentifiableSheetItem: Identifiable {
 

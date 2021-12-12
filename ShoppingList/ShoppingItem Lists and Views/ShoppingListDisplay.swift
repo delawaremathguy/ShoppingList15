@@ -25,6 +25,13 @@ import SwiftUI
 // off the list).
 struct ShoppingListDisplay: View {
 	
+	// this really should not need to be here, but when we put up a confirmation alert to
+	// delete an item, SwiftUI complains if we proceed to delete the item because we never
+	// really let it know we were going to make changes to a managed object context
+	// that it does not know about.
+	@Environment(\.managedObjectContext) var moc
+
+	
 	// this is the incoming @FetchRequest from ShoppingListView
 	var itemsToBePurchased: FetchedResults<Item>
 	
@@ -34,7 +41,7 @@ struct ShoppingListDisplay: View {
 	
 	// state variable to control triggering confirmation of a delete, which is
 	// one of three context menu actions that can be applied to an item
-	@State var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
+	@State var confirmDeleteItemAlert: IdentifiableAlertItem?
 	
 	// this is a temporary holding array for items being moved to the other list.  it's a
 	// @State variable, so if any SelectableItemRowView or a context menu adds an Item
@@ -57,7 +64,9 @@ struct ShoppingListDisplay: View {
 																		respondToTapOnSelector:  { handleItemTapped(item) })
 								.contextMenu {
 									itemContextMenu(item: item, deletionTrigger: {
-										confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: item)
+										confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: item) {
+											confirmDeleteItemAlert = nil
+										}
 									})
 								} // end of contextMenu
 						} // end of NavigationLink

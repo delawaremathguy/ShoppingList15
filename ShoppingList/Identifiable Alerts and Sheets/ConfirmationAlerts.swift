@@ -17,26 +17,21 @@ import SwiftUI
 
 // MARK: - Confirm DELETE ITEM Alert
 
-struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
-	var id = UUID()
+class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 	
+	// the item to delete
 	var item: Item
 	
-	var title: String { "Delete \'\(item.name)\'?" }
-	
-	var message: String {
-		"Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone."
-	}
-	
-	func destructiveAction() {
-		Item.delete(item)
-	}
-	
-	var destructiveCompletion: (() -> Void)?
-	var nonDestructiveCompletion: (() -> Void)?
-	
-	init(item: Item, destructiveCompletion: (() -> Void)? = nil) {
+	// to function, we just need to know what item we're talking about, and how to do
+	// the deletion as the destructive action.
+	init(item: Item, destructiveCompletion: (() -> Void)?) {
+		// init this objects custom data, then call its superclass's initializer
 		self.item = item
+		super.init()
+		// now update appropriate messages and actions
+		self.title = "Delete \'\(item.name)\'?"
+		self.message = "Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone."
+		self.destructiveAction = { Item.delete(item) }
 		self.destructiveCompletion = destructiveCompletion
 	}
 }
