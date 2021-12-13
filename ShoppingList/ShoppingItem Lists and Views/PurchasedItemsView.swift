@@ -29,8 +29,10 @@ struct PurchasedItemsView: View {
 		// to take upon confirmation
 		//@State private var confirmationAlert = ConfirmationAlert(type: .none)
 	@State private var identifiableAlertItem: IdentifiableAlertItem?
-	@State private var isAddNewItemSheetShowing = false
-	
+
+		// sheet used to add a new item
+	@State private var identifiableSheetItem: IdentifiableSheetItem?
+
 		// local state for are we a multi-section display or not.  the default here is false,
 		// but an eager developer could easily store this default value in UserDefaults (?)
 	@State var multiSectionDisplay: Bool = false
@@ -60,6 +62,8 @@ struct PurchasedItemsView: View {
 			
 			Divider() // keeps list from overrunning the tab bar in iOS 15
 		} // end of VStack
+		.searchable(text: $searchText)
+
 		.onAppear {
 			logAppear(title: "PurchasedTabView")
 			handleOnAppear()
@@ -74,7 +78,9 @@ struct PurchasedItemsView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
-		.searchable(text: $searchText)
+		.sheet(item: $identifiableSheetItem) { item in
+			NavigationView { item.content() }
+		}
 		
 	}
 	
@@ -85,17 +91,15 @@ struct PurchasedItemsView: View {
 	
 		// makes a simple "+" to add a new item
 	func addNewButton() -> some View {
-		Button(action: { isAddNewItemSheetShowing = true }) {
-			Image(systemName: "plus")
-				.font(.title2)
+		NavBarImageButton("plus") {
+			identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
 		}
 	}
 	
 		// a toggle button to change section display mechanisms
 	func sectionDisplayButton() -> some View {
-		Button(action: { multiSectionDisplay.toggle() }) {
-			Image(systemName: multiSectionDisplay ? "tray.2" : "tray")
-				.font(.title2)
+		NavBarImageButton(multiSectionDisplay ? "tray.2" : "tray") {
+			multiSectionDisplay.toggle()
 		}
 	}
 	

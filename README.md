@@ -2,34 +2,36 @@
 
 * This repo was first made publicly available on XXX December, XXXX.
 
-ShoppingList15 is a simple iOS app to process a shopping list that you can take to the grocery store with you, and move items off the list as you pick them up.  It persists data in CoreData and uses SwiftUI.  The project should be compiled with XCode 13.2 or later and will run on iOS 15.2 or later.
+ShoppingList15 is a simple iOS app to process a shopping list that you can take to the grocery store with you, and move items off the list as you pick them up.  It persists data in CoreData and uses SwiftUI.  This project was posted using XCode 13.2 and requires iOS 15.0 or later.
 
-* An [earlier version of this project](https://github.com/delawaremathguy/ShoppingList14) is available that works with XCode 12.5/iOS 13.  If you have not yet made the move to XCode 13 and iOS 15, you should use this earlier project instead.
+* An [earlier version of this project](https://github.com/delawaremathguy/ShoppingList14) is available that works with XCode 12.5/iOS 14.5.  If you have not yet made the move to XCode 13/iOS 15, you should use this earlier project instead.
 
-* An [even earlier version of this project](https://github.com/delawaremathguy/ShoppingList) is available that works with XCode 11.7/iOS 13.7. 
+* An [even earlier version of this project](https://github.com/delawaremathguy/ShoppingList) is available that was posted with XCode 11.7/iOS 13.7. 
 
 
-Feel free to use this as is, to develop further,  to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
+Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
 ### Most Recent Update of XX December, 2021
 
-This is the first update of my two-year-old ShoppingList project for Xcode 13/iOS 15.  Major changes that you will find in this release of the project are:
+Major changes that you will find in this release of the project are:
 
-* Cloud-syncing across devices on the same Apple ID is implemented. (Note: *To use this feature, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier*.)
+* Cloud-syncing across devices on the same Apple ID is implemented with the proper entitlements having been added to the project. 
+
+  * To use Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  Be sure that in PersistentStore.swift you define the container to be an NSPersistentCloudKitContainer and not NSPersistentCloudKitContainer.  
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-* Alerts and sheets more often than not prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects (and not structs with protocol requirements).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier that handles any number of possible alerts and sheets, depending on how you set up the (Identifiable) item.  So the "one alert/one sheet per view" restriction of SwiftUI is not necessarily (!) a concern with this design pattern.
+* Alerts and sheets may prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects (and not structs with protocol requirements).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts and sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI is no longer (necessarily!) a concern with this design pattern.
 
-* The functionality of what was SearchBarView (by Simon Ng) has now been completely replaced using the iOS 15 native `.searchable()` view modifier.
+* The functionality of what was SearchBarView (by Simon Ng) has been replaced using the iOS 15 native `.searchable()` view modifier.
 
-* The coding for the display of Items in the shopping list view and purchased list view has, thankfully, been cleanly merged, removing much code duplication. 
+* The coding for the display of Items in each of the shopping list and purchased list views has, thankfully, been cleanly merged, removing what was an irritating example of needless code duplication. 
 
 * UI changes: 
 
   * The "Add New Item/Location" button at the top of the ShoppingList, PurchasedItems, and Locations view have been removed.  Each screen already has a "+" at the top, right of the screen to add a new shopping item or location.
-  * The "Mark All Items Available" and "Move All Items Off-list" buttons on the shopping list view are now in an HStack (not a VStack), with some animation managing the transition if the "Mark All Items Available" button need not appear.
+  * The "Mark All Items Available" and "Move All Items Off-list" buttons on the shopping list view are now in an HStack (not a VStack), with some animation aiding the transition if the "Mark All Items Available" button need not appear.
   
 
 ## General App Structure
@@ -100,14 +102,7 @@ Here are some of the major, code-level changes:
 
 ### Core Data Notes
 
-There have been no changes to the Core Data model since ShoppingList14. The CoreData model still has only two entities named `Item` and `Location`, with every `Item` having a to-one relationship to a `Location` (the inverse is to-many).
-
-* `Item`s have an id (UUID), a name, a quantity, a boolean that indicates whether the item is on the list for today's shopping exercise, or not on the list (and so available in the purchased list for future promotion to the shopping list), and also a boolean that provides an italic, strike-through appearance for the item when false (sometimes an item is on the list, but not available today, and I want to remember that when planning the future shopping list).  New to this project is the addition of a Date for an Item to keep track of when the Item was last purchased.
-
-* `Location`s have an id (UUID), a name, a visitation order (an integer, as in, go to the dairy first, then the deli, then the canned vegetables, etc), and then values red, green, blue, opacity to define a color that is used to color every item listed in the shopping list. 
-
-* Almost all of the attribute names for the `Item` and `Location` entities are "fronted" using (computed) variables in the Item and Location classes.  Example: the Item entity has a `name_` attribute (an *optional* String) in the Core Data model, but we define a set/get variable `name` in Item+Extensions.swift of type `String` to make it available to all code outside of the Core Data bubble, as it were, to read and write the name.  (Reading `name` does a nil-coalesce of the optional `name_` property of the Item class in Swift.)  You will read about this strategy of fronting Core Data attributes in code comments.
-
+There have been no changes to the Core Data model since [ShoppingList14](https://github.com/delawaremathguy/ShoppingList14). 
 
 ### App Architecture
 

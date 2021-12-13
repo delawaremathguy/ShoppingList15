@@ -79,7 +79,6 @@ struct LocationsView: View {
 			identifiableSheetItem = AddNewLocationSheetItem(dismiss: { identifiableSheetItem = nil })
 		} label: {
 			Image(systemName: "plus")
-				.font(.title2)
 		}
 	}
 	
@@ -87,12 +86,11 @@ struct LocationsView: View {
 	// in the view code above
 	@ViewBuilder
 	func contextMenuButton(for location: Location) -> some View {
-		Button(action: {
+		Button {
 			if !location.isUnknownLocation {
 				confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
-				//confirmationAlert.trigger(type: .deleteLocation(location))
 			}
-		}) {
+		} label: {
 			Text(location.isUnknownLocation ? "(Cannot be deleted)" : "Delete This Location")
 			Image(systemName: location.isUnknownLocation ? "trash.slash" : "trash")
 		}

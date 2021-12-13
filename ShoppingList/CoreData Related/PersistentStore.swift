@@ -38,8 +38,17 @@ final class PersistentStore: ObservableObject {
 		//    https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/setting_up_core_data_with_cloudkit
 		
 #if targetEnvironment(simulator)
+		// i try to avoid using the cloud from the simulator.
 		let container = NSPersistentContainer(name: "ShoppingList")
 #else
+		// but use one of use NSPersistentContainer or NSPersistentCloudKitContainer on a device.
+		// remember that if you want to use the cloud, you'll need to manage signing
+		// and definition of the cloudKit container in the Signing & Capabilities section
+		// of your app's target.
+		
+		// USE EITHER THIS for on-device only data storage:
+		// let container = NSPersistentContainer(name: "ShoppingList")
+		// OR THIS for data storage shared via the cloud
 		let container = NSPersistentCloudKitContainer(name: "ShoppingList")
 #endif
 

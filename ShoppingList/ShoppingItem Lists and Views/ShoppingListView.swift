@@ -14,12 +14,12 @@ struct ShoppingListView: View {
 	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
 	private var items: FetchedResults<Item>
 
-	// local state to trigger showing a sheet to add a new item
-	@State private var isAddNewItemSheetShowing = false
-	
 	// alert to move all items off the shopping list, and it is also used to trigger an
 	// alert to delete an item in the shopping list
 	@State private var identifiableAlertItem: IdentifiableAlertItem?
+	
+	// sheet used to add a new item
+	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
 	// local state for are we a multi-section display or not.  the default here is false,
 	// but an eager developer could easily store this default value in UserDefaults (?)
@@ -75,11 +75,21 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
-		.sheet(isPresented: self.$showMailSheet) {
+		.alert(item: $identifiableAlertItem) { item in item.alert() }
+		
+		// here's a curiosity: i though you could not put two sheet modifiers on the same view,
+		// but apparently it's OK if one used .sheet(item:) and the other uses .sheet(isPresented).
+		// that's good news, because MailView was written in a way that expects to be called
+		// with .sheet(isPresented) to match up with its isShowing parameter.  to move that into
+		// an IdentifiableSheetItem mechanism is possible, but that sheet then itself has to
+		// present the MailView with isShowing, which results in two sheets being opened (!).
+		.sheet(item: $identifiableSheetItem) { item in
+			NavigationView { item.content() }
+		}
+		.sheet(isPresented: $showMailSheet) {
 			MailView(isShowing: $showMailSheet, mailViewData: mailViewData, resultHandler: mailResultHandler)
 				.safe()
 		}
-		.alert(item: $identifiableAlertItem) { item in item.alert() }
 
 		.onAppear {
 			logAppear(title: "ShoppingListView")
@@ -116,39 +126,26 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 	
 	// MARK: - ToolbarItems
 	
-	// a "+" symbol to support adding a new item
-	func addNewButton() -> some View {
-		Button(action: { isAddNewItemSheetShowing = true })
-			{ Image(systemName: "plus")
-			.font(.title2)
-		}
-	}
-	
 	func trailingButtons() -> some View {
 		HStack(spacing: 12) {
-			Button() {
+			Button {
 				prepareDataForMail()
-				self.showMailSheet = true
+				showMailSheet = true
 			} label: {
 				Image(systemName: "envelope")
-					.font(.title2)
 			}
-			.disabled(!MailView.canSendMail)
-			
-			Button(action: { isAddNewItemSheetShowing = true })
-				{ Image(systemName: "plus")
-				.font(.title2)
+//			.disabled(!MailView.canSendMail)
+
+			NavBarImageButton("plus") {
+				identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
 			}
 		}
 	}
 	
 	// a toggle button to change section display mechanisms
 	func sectionDisplayButton() -> some View {
-		Button() {
+		NavBarImageButton(multiSectionDisplay ? "tray.2" : "tray") {
 			multiSectionDisplay.toggle()
-		} label: {
-			Image(systemName: multiSectionDisplay ? "tray.2" : "tray")
-				.font(.title2)
 		}
 	}
 	

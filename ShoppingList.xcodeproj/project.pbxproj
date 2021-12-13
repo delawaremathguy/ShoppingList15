@@ -18,6 +18,7 @@
 		D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434402763BAA1009CC73B /* AddNewLocationView.swift */; };
 		D61434432763BB65009CC73B /* EditableLocationDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434422763BB65009CC73B /* EditableLocationDataView.swift */; };
 		D61434452764E0C1009CC73B /* ModifyExistingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */; };
+		D61EABFF27679C9B008186CF /* NavBarImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61EABFE27679C9B008186CF /* NavBarImageButton.swift */; };
 		D62B88322451162D0051A7CE /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B88312451162D0051A7CE /* ShoppingListView.swift */; };
 		D62B88342451162E0051A7CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D62B88332451162E0051A7CE /* Assets.xcassets */; };
 		D62B88372451162E0051A7CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D62B88362451162E0051A7CE /* Preview Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		D6ADB3B2247C266F00376271 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = D6ADB3B1247C266E00376271 /* locations.json */; };
 		D6ADB3B4247C267900376271 /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = D6ADB3B3247C267900376271 /* items.json */; };
 		D6AE3643246F035400F7A237 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE3642246F035400F7A237 /* Bundle+Extensions.swift */; };
+		D6B753162766976C0050AF52 /* SectionHeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B753152766976C0050AF52 /* SectionHeaderButton.swift */; };
 		D6B8A95424636711005F8EF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A95324636711005F8EF2 /* MainView.swift */; };
 		D6B8A9562463693D005F8EF2 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A9552463693D005F8EF2 /* LocationsView.swift */; };
 		D6BE939226444E3F00B3FB1A /* ConfirmationAlertProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BE939126444E3F00B3FB1A /* ConfirmationAlertProtocol.swift */; };
@@ -71,6 +73,7 @@
 		D61434402763BAA1009CC73B /* AddNewLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewLocationView.swift; sourceTree = "<group>"; };
 		D61434422763BB65009CC73B /* EditableLocationDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLocationDataView.swift; sourceTree = "<group>"; };
 		D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyExistingLocationView.swift; sourceTree = "<group>"; };
+		D61EABFE27679C9B008186CF /* NavBarImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarImageButton.swift; sourceTree = "<group>"; };
 		D62B88272451162D0051A7CE /* ShoppingList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoppingList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62B88312451162D0051A7CE /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		D62B88332451162E0051A7CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,6 +101,7 @@
 		D6ADB3B1247C266E00376271 /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		D6ADB3B3247C267900376271 /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
 		D6AE3642246F035400F7A237 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
+		D6B753152766976C0050AF52 /* SectionHeaderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderButton.swift; sourceTree = "<group>"; };
 		D6B8A95324636711005F8EF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6B8A9552463693D005F8EF2 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		D6BE939126444E3F00B3FB1A /* ConfirmationAlertProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmationAlertProtocol.swift; sourceTree = "<group>"; };
@@ -245,10 +249,12 @@
 		D6DD785F259BC08B0004478A /* Custom Views and Other */ = {
 			isa = PBXGroup;
 			children = (
+				D6B753152766976C0050AF52 /* SectionHeaderButton.swift */,
 				D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */,
 				D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */,
 				D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */,
 				D6DD7860259BC0A50004478A /* MailView.swift */,
+				D61EABFE27679C9B008186CF /* NavBarImageButton.swift */,
 			);
 			path = "Custom Views and Other";
 			sourceTree = "<group>";
@@ -368,6 +374,7 @@
 				D62B88322451162D0051A7CE /* ShoppingListView.swift in Sources */,
 				D6AE3643246F035400F7A237 /* Bundle+Extensions.swift in Sources */,
 				D6AAFF8A2582778E00B1CBAC /* View+Extensions.swift in Sources */,
+				D61EABFF27679C9B008186CF /* NavBarImageButton.swift in Sources */,
 				D63FE41F25D09E760090F6C1 /* ItemsSectionData.swift in Sources */,
 				D63C05562566B9DE000A63FC /* ShoppingListApp.swift in Sources */,
 				D677946224D58F34006EB9CF /* EditableLocationData.swift in Sources */,
@@ -394,6 +401,7 @@
 				D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */,
 				D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */,
 				D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */,
+				D6B753162766976C0050AF52 /* SectionHeaderButton.swift in Sources */,
 				D614343F2763B95B009CC73B /* IdentifiableSheets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

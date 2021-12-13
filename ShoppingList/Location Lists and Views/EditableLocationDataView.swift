@@ -105,7 +105,6 @@ struct SimpleItemsList: View {
 				isAddNewItemSheetShowing = true
 			} label: {
 				Image(systemName: "plus")
-					.font(.title2)
 			}
 		}
 	}
