@@ -10,11 +10,10 @@ import Foundation
 extension Bundle {
 	
 	// code courtesy of/copyright Paul Hudson (hackingwithswift.com, github.com/twostraws, @twostraws)
-	// -- greatly simplifies loading json files from
-	// the app bundle.  note that this code throws a fatal error if there's a problem,
-	// under the thinking that the file we're reading must be there and this cannot fail.
-	// if it does fail, we want to know about it.  additionally, Paul recently added a number of
-	// catch handlers which might be helpful in diagnosing possible failures.
+	// -- greatly simplifies loading json files from the app bundle.
+	// note that this code throws a fatal error if there's a problem,  under the thinking that the file we're
+	// reading must be there and this cannot fail. if it does fail, we want to know about it.  additionally,
+	// Paul recently added a number of catch handlers which might be helpful in diagnosing possible failures.
 	
 	func decode<T: Decodable>(from filename: String) -> T {
 		

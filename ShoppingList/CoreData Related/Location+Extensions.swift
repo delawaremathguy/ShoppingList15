@@ -119,9 +119,9 @@ extension Location: Comparable {
 		return newLocation
 	}
 	
-	// parameters for the Unknown Location.  call this only upon startup if
-	// the Core Data database has not yet been initialized
-	class func createUnknownLocation() -> Location {
+	// parameters for the Unknown Location.  this is called only if we try to fetch the
+	// unknown location and it is not present.
+	private class func createUnknownLocation() -> Location {
 		let unknownLocation = addNewLocation()
 		unknownLocation.name_ = kUnknownLocationName
 		unknownLocation.red_ = 0.5
@@ -157,8 +157,7 @@ extension Location: Comparable {
 		// you cannot delete the unknownLocation
 		guard location != Location.unknownLocation() else { return }
 
-		// retrieve the context of this Location and get a list of
-		// all items for this location so we can work with them
+		// get a list of all items for this location so we can work with them
 		let itemsAtThisLocation = location.items
 		
 		// reset location associated with each of these to the unknownLocation

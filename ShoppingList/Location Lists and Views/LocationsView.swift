@@ -10,6 +10,8 @@ import SwiftUI
 
 struct LocationsView: View {
 	
+	@Environment(\.dismiss) var dismiss: DismissAction
+	
 	// this is the @FetchRequest that ties this view to CoreData Locations
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
@@ -47,7 +49,6 @@ struct LocationsView: View {
 		} // end of VStack
 		.navigationBarTitle("Locations")
 		.toolbar { ToolbarItem(placement: .navigationBarTrailing, content: addNewButton) }
-		//.alert(isPresented: $confirmationAlert.isShowing) { confirmationAlert.alert() }
 		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
 		.sheet(item: $identifiableSheetItem) { item in
 			NavigationView {
@@ -88,7 +89,9 @@ struct LocationsView: View {
 	func contextMenuButton(for location: Location) -> some View {
 		Button {
 			if !location.isUnknownLocation {
-				confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
+				confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location) {
+					dismiss()
+				}
 			}
 		} label: {
 			Text(location.isUnknownLocation ? "(Cannot be deleted)" : "Delete This Location")

@@ -46,6 +46,12 @@ struct PreferencesTabView: View {
 				}
 			}
 			
+			// all of what follows is not the best of code -- hey, it's quick and dirty so i
+			// can add sample data to the app for testing, and also dump data from the app
+			// in case i want to reseed the data in the future.  setting kDevTools = false in
+			// Development.swift will remove this (and you should for real usage, although
+			// leaving this in on a device gives you a good way to suck out its data and later
+			// restore it after a re-install).
 			if kShowDevTools {
 				Rectangle()
 					.frame(height: 1)
@@ -70,7 +76,7 @@ struct PreferencesTabView: View {
 								dismissButton: .default(Text("OK")))
 				}
 				
-				Text("This button lets you offload existing data to JSON. On the simulator, it will dump to files on the Desktop (see Development.swift to get the path right); on a device, it will simply print to the console.  You can use that JSON later to re-seed the app data.")
+				Text("This button lets you offload existing data to JSON. On the simulator, it will dump to files on the Desktop (see Development.swift to get the path right); on a device, it will simply print to the console.  You can use that JSON output later to re-seed the app data.")
 					.padding([.leading, .trailing], 10)
 					.padding(.bottom, 20)
 				

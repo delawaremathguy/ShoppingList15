@@ -45,7 +45,6 @@
 		D6B753162766976C0050AF52 /* SectionHeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B753152766976C0050AF52 /* SectionHeaderButton.swift */; };
 		D6B8A95424636711005F8EF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A95324636711005F8EF2 /* MainView.swift */; };
 		D6B8A9562463693D005F8EF2 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A9552463693D005F8EF2 /* LocationsView.swift */; };
-		D6BE939226444E3F00B3FB1A /* ConfirmationAlertProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BE939126444E3F00B3FB1A /* ConfirmationAlertProtocol.swift */; };
 		D6C7685C2572B3B500E0F4B0 /* SelectableItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */; };
 		D6C783D925A0BCF900B7148D /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */; };
 		D6C91D8724A8EC09008C8DFF /* EditableItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */; };
@@ -104,7 +103,6 @@
 		D6B753152766976C0050AF52 /* SectionHeaderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderButton.swift; sourceTree = "<group>"; };
 		D6B8A95324636711005F8EF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6B8A9552463693D005F8EF2 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
-		D6BE939126444E3F00B3FB1A /* ConfirmationAlertProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmationAlertProtocol.swift; sourceTree = "<group>"; };
 		D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableItemRowView.swift; sourceTree = "<group>"; };
 		D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableItemData.swift; sourceTree = "<group>"; };
@@ -164,7 +162,7 @@
 			children = (
 				D61434382763AA33009CC73B /* ShoppingList.entitlements */,
 				D63C05552566B9DE000A63FC /* ShoppingListApp.swift */,
-				D6EF5586246D97C3007D636B /* Development.swift */,
+				D64B5DD12768FC4F00D249BC /* Development */,
 				D640329F24BB30BE00CC0B94 /* Convenience Extensions */,
 				D6EF5583246D9489007D636B /* CoreData Related */,
 				D6B8A95324636711005F8EF2 /* MainView.swift */,
@@ -205,6 +203,16 @@
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
 		};
+		D64B5DD12768FC4F00D249BC /* Development */ = {
+			isa = PBXGroup;
+			children = (
+				D6EF5586246D97C3007D636B /* Development.swift */,
+				D60F14A624686BA80077AD3F /* ItemCodableProxy.swift */,
+				D60F14A824686D710077AD3F /* LocationCodableProxy.swift */,
+			);
+			path = Development;
+			sourceTree = "<group>";
+		};
 		D6618D9B24D9B00E003523B5 /* ShoppingItem Lists and Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,7 +245,6 @@
 		D663A32D2762E0ED00D62574 /* Identifiable Alerts and Sheets */ = {
 			isa = PBXGroup;
 			children = (
-				D6BE939126444E3F00B3FB1A /* ConfirmationAlertProtocol.swift */,
 				D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */,
 				D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */,
 				D614343C2763B95A009CC73B /* IdentifiableSheetItem.swift */,
@@ -275,8 +282,6 @@
 				D6FC7A0824635D950096F018 /* ShoppingList.xcdatamodeld */,
 				D610C3BD2451D8DC009F7F36 /* Item+Extensions.swift */,
 				D648D348246388C100CD881B /* Location+Extensions.swift */,
-				D60F14A624686BA80077AD3F /* ItemCodableProxy.swift */,
-				D60F14A824686D710077AD3F /* LocationCodableProxy.swift */,
 			);
 			path = "CoreData Related";
 			sourceTree = "<group>";
@@ -384,7 +389,6 @@
 				D61434452764E0C1009CC73B /* ModifyExistingLocationView.swift in Sources */,
 				D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */,
 				D6C91D8724A8EC09008C8DFF /* EditableItemData.swift in Sources */,
-				D6BE939226444E3F00B3FB1A /* ConfirmationAlertProtocol.swift in Sources */,
 				D6F29CA8257544CA00A0E3E0 /* Date+Extensions.swift in Sources */,
 				D61434432763BB65009CC73B /* EditableLocationDataView.swift in Sources */,
 				D6DD7861259BC0A50004478A /* MailView.swift in Sources */,

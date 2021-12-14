@@ -25,8 +25,3 @@ struct EmptyListView: View {
 	}
 }
 
-struct EmptyListView_Previews: PreviewProvider {
-    static var previews: some View {
-			EmptyListView(listName: "ListName")
-    }
-}

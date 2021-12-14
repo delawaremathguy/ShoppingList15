@@ -80,10 +80,10 @@ struct EditableItemDataView: View {
 				// Section 2. Item Management (Delete), if present
 			if itemExists {
 				Section(header: Text("Shopping Item Management").sectionHeader()) {
-					SLCenteredButton(title: "Delete This Shopping Item",
-													 action: { deleteActionTrigger?() }
-					)
-						.foregroundColor(Color.red)
+					SLCenteredButton(title: "Delete This Shopping Item") {
+						deleteActionTrigger?()
+					}
+					.foregroundColor(Color.red)
 				} // end of Section 2
 			} // end of if ...
 			

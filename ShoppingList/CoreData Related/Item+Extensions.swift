@@ -14,7 +14,7 @@ extension Item {
 	
 	/* Discussion
 	
-	update 25 December: better reorganization and removal of previous misconceptions!
+	update 25 December, 2020: better reorganization and removal of previous misconceptions!
 	
 	(1) Fronting of Core Data Attributes
 	
@@ -194,16 +194,9 @@ extension Item {
 		return request
 	}
 	
-	class func allItemsFR() -> NSFetchRequest<Item> {
-		let request: NSFetchRequest<Item> = Item.fetchRequest()
-		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-		return request
-	}
-
-
 	// MARK: - Class functions for CRUD operations
 	
-	// this whole bunch of static functions lets me do a simple fetch and
+	// this whole bunch of static functions lets me do simple fetch and
 	// CRUD operations.
 	
 	class func count() -> Int {
@@ -218,9 +211,9 @@ extension Item {
 		return object(id: id, context: PersistentStore.shared.context) as Item?
 	}
 	
-	// addNewItem is the user-facing add of a new entity.  since these are
-	// Identifiable objects, this makes sure we give the entity a unique id, then
-	// hand it back so the user can fill in what's important to them.
+	// addNewItem is the user-facing add of a new entity.  since these are Identifiable objects, this
+	// makes sure we give the entity a unique id plus default data, then hand it back so the user
+	// can fill in what they want
 	class func addNewItem() -> Item {
 		let context = PersistentStore.shared.context
 		let newItem = Item(context: context)

@@ -19,7 +19,7 @@ struct SLCenteredButton: View {
 		HStack {
 			Spacer()
 			Button(title) {
-				self.action()
+				action()
 			}
 			Spacer()
 		}

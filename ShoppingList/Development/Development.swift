@@ -21,7 +21,7 @@ import UIKit
 	let kShowDevTools = false
 #endif
 
-// one of the things that has changed from release to release of XCode 12/iOS 14 is when
+// one of the things that seems to have changed from release to release of SwiftUI is when
 // the view modifiers .onAppear and .onDisappear are called.  so throughout the app, you
 // will find .onAppear and .onDisappear modifiers that print out when these actually do
 // something by calling back to these two little functions.  you can turn this logging
@@ -33,11 +33,9 @@ func logDisappear(title: String) {
 	print(title + " Disappears")
 }
 
-
 // i used these constants and functions below during development to import and
-// export Items and Locations via JSON.
-// these are the filenames for JSON output when dumped from the simulator
-// and also the filenames in the bundle used to load sample data.
+// export Items and Locations via JSON.  these are the filenames for JSON output
+// when dumped from the simulator and also the filenames in the bundle used to load sample data.
 let kJSONDumpDirectory = "/Users/USE_YOUR_OWN_MAC_USERNAME_HERE_HERE/Desktop/"	// dumps to the Desktop: Adjust for your Username!
 let kItemsFilename = "items.json"
 let kLocationsFilename = "locations.json"
@@ -133,7 +131,7 @@ func insertNewLocations(from codableLocations: [LocationCodableProxy]) {
 	}
 }
 
-// MARK: - USeful Extensions re: CodableStructRepresentable
+// MARK: - Useful Extensions re: CodableStructRepresentable
 
 extension Location: CodableStructRepresentable {
 	var codableProxy: some Encodable & Decodable {

@@ -8,11 +8,9 @@
 
 import SwiftUI
 
-// the MainView is where the app begins.  it is a tab view with four tabs.
-// a fifth tab also appears if kShowDevToolsTab is true (this is set in code
-// in Development.swift). not much happens here, other
-// than to track the selected tab (1, 2, 3, or 4), although we don't actually
-// use this value for anything right now.
+// the MainView is where the app begins.  it is a tab view with five tabs.
+// not much happens here, other than to track the selected tab (1, 2, 3, or 4),
+// although we don't actually use this value for anything right now.
 
 struct MainView: View {
 	@State private var selectedTab = 1
@@ -23,7 +21,6 @@ struct MainView: View {
 			NavigationView { ShoppingListView() }
 				.tabItem { Label("Shopping List", systemImage: "cart") }
 				.tag(1)
-
 			
 			NavigationView { PurchasedItemsView() }
 				.tabItem { Label("Purchased", systemImage: "purchased") }
@@ -48,8 +45,3 @@ struct MainView: View {
 	
 }
 
-struct MainView_Previews: PreviewProvider {
-	static var previews: some View {
-		MainView()
-	}
-}

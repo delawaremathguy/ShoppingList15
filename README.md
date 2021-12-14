@@ -18,7 +18,7 @@ Major changes that you will find in this release of the project are:
 
 * Cloud-syncing across devices on the same Apple ID is implemented with the proper entitlements having been added to the project. 
 
-  * To use Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  Be sure that in PersistentStore.swift you define the container to be an NSPersistentCloudKitContainer and not NSPersistentCloudKitContainer.  
+  * To use Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 

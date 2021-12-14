@@ -36,9 +36,10 @@ final class PersistentStore: ObservableObject {
 		// by the way, just choosing to use NSPersistentCloudKitContainer is not enough by itself.
 		// you will have to make some changes in the project settings. see
 		//    https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/setting_up_core_data_with_cloudkit
+		// i have already made those changes in this project.
 		
 #if targetEnvironment(simulator)
-		// i try to avoid using the cloud from the simulator.
+		// i avoid using the cloud from the simulator.
 		let container = NSPersistentContainer(name: "ShoppingList")
 #else
 		// but use one of use NSPersistentContainer or NSPersistentCloudKitContainer on a device.
@@ -46,9 +47,9 @@ final class PersistentStore: ObservableObject {
 		// and definition of the cloudKit container in the Signing & Capabilities section
 		// of your app's target.
 		
-		// USE EITHER THIS for on-device only data storage:
+		// USE EITHER THIS DEFINITION FOR CONTAINER for on-device only data storage:
 		// let container = NSPersistentContainer(name: "ShoppingList")
-		// OR THIS for data storage shared via the cloud
+		// OR THIS DEFINITION FOR CONTAINER for on-device data storage shared via the cloud
 		let container = NSPersistentCloudKitContainer(name: "ShoppingList")
 #endif
 
@@ -77,7 +78,8 @@ final class PersistentStore: ObservableObject {
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 			if let error = error as NSError? {
 				// Replace this implementation with code to handle the error appropriately.
-				// fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+				// fatalError() causes the application to generate a crash log and terminate. You should not use
+				// this function in a shipping application, although it may be useful during development.
 				
 				/*
 				Typical reasons for an error here include:

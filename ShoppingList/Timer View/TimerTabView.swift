@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-// this view is straighforward.  a time display plus three buttons.  the timer
+// this view is straightforward.  a time display plus three buttons.  the timer
 // logic is found in GlobalTimer.swift
 
 struct TimerTabView: View {
@@ -64,8 +64,3 @@ struct TimerTabView: View {
 		
 }
 
-struct TimerTabView_Previews: PreviewProvider {
-	static var previews: some View {
-		TimerTabView()
-	}
-}

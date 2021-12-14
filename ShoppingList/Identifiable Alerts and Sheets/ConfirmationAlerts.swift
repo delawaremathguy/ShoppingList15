@@ -11,9 +11,8 @@ import SwiftUI
 // two of them are used in different places throughout the app; that's why they are all
 // here and not distributed in different Views.
 //
-// please be sure to read through the file ConfirmationAlertProtocol.swift that describes
+// please be sure to read through the file IdentifiableAlertItem.swift that describes
 // how to set up alerts.
-
 
 // MARK: - Confirm DELETE ITEM Alert
 
@@ -51,26 +50,17 @@ class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 
 // MARK: - Confirm DELETE LOCATION Alert
 
-struct ConfirmDeleteLocationAlert: ConfirmationAlertProtocol {
-	var id = UUID()
+class ConfirmDeleteLocationAlert: IdentifiableAlertItem {
 	
+	// the location to delete
 	var location: Location
 	
-	var title: String { "Delete \'\(location.name)\'?" }
-	
-	var message: String {
-		"Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
-	}
-	
-	func destructiveAction() {
-		Location.delete(location)
-	}
-	
-	var destructiveCompletion: (() -> Void)?
-	var nonDestructiveCompletion: (() -> Void)?
-	
-	init(location: Location, destructiveCompletion: (() -> Void)? = nil) {
+	init(location: Location, destructiveCompletion: (() -> Void)?) {
 		self.location = location
+		super.init()
+		title = "Delete \'\(location.name)\'?"
+		message = "Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+		destructiveAction = { Location.delete(location) }
 		self.destructiveCompletion = destructiveCompletion
 	}
 	

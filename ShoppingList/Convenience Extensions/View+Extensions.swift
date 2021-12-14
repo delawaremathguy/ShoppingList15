@@ -23,8 +23,3 @@ extension View {
 	}
 }
 
-extension View {
-	func eraseToAnyView() -> AnyView {
-		AnyView(self)
-	}
-}
