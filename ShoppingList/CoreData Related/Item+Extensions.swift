@@ -265,7 +265,7 @@ extension Item {
 	
 	// toggles the availability flag for an item
 	func toggleAvailableStatus() {
-		isAvailable_ = !isAvailable_
+		isAvailable.toggle()
 	}
 
 	// changes onList flag for an item

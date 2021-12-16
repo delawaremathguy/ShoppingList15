@@ -56,7 +56,7 @@ struct PurchasedItemsView: View {
 			if items.count == 0 {
 				EmptyListView(listName: "Purchased")
 			} else {
-				ItemListView(items: items, sfSymbolName: "purchased",
+				ItemListView(items: items, sfSymbolName: "cart",
 										 identifiableAlertItem: $identifiableAlertItem, sectionData: sectionData)				
 			} // end of if-else
 			

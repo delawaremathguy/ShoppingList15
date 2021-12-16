@@ -8,11 +8,13 @@
 
 import SwiftUI
 
-	// IdentifiableAlertItem is a base class used to trigger alert displays
+	// IdentifiableAlertItem is a base class used to trigger alert displays.  each needs:
 	// -- an id, needed to work with .sheet(item: ...)
 	// -- title and message for the Alert
 	// -- destructive & non-destructive titles and actions
+	//        (yes, there could be an action to perform with a "No")
 	// -- destructive & non-destructive completion handlers
+	//        (depending on the call-site instantiation, there might be something to do when finished ...)
 
 class IdentifiableAlertItem: Identifiable {
 		// must be Identifiable to work with .alert(item: ...)

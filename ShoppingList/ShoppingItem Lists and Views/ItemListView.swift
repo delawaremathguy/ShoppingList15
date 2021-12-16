@@ -13,7 +13,7 @@ import SwiftUI
 
 	// this is a subview of the ShoppingListView and the PurchasedItemsView, and shows a
 	// sectioned list of Items that is determined by the caller (who then must supply a function
-	// that determines how the sectioning should be done)
+	// that determines how the sectioning should be done).
 	//
 	// each item that appears has a NavigationLink to a detail view and has a contextMenu
 	// associated with it; an action from the contextMenu  to delete an Item will require bringing
@@ -24,8 +24,9 @@ import SwiftUI
 	//
 struct ItemListView: View {
 	
-		// this is the incoming @FetchRequest from either ShoppingListView or PurchasedItemsViews
+		// this is the @FetchRequest that ties this view to CoreData Items
 	var items: FetchedResults<Item>
+
 		// what symbol to show for an Item that is tapped
 	var sfSymbolName: String
 	
@@ -42,7 +43,7 @@ struct ItemListView: View {
 		// the actual execution of the move to the purchased list to follow after the animation
 		// completes -- and that deletion will again change this array and redraw.
 	@State private var itemsChecked = [Item]()
-	
+		
 	var body: some View {
 		List {
 			ForEach(sectionData()) { section in
@@ -55,7 +56,7 @@ struct ItemListView: View {
 								handleItemTapped(item)
 							}
 							.contextMenu {
-								itemContextMenu(item: item) {
+								ItemContextMenu(item: item) {
 									identifiableAlertItem = ConfirmDeleteItemAlert(item: item) {
 										identifiableAlertItem = nil
 									}
@@ -84,13 +85,51 @@ struct ItemListView: View {
 			}
 		}
 	}
-	
-		// Builds out a context menu for an Item that can be used to quickly move the item to the
-		// other list, toggle the state of the availability, or delete the item.
-		//
-	@ViewBuilder
-	func itemContextMenu(item: Item, affirmDeletion: @escaping () -> Void) -> some View {
 		
+}
+
+	// provides a context menu for an Item that can be used to quickly move the item to the
+	// other list, toggle the state of the availability, or delete the item.
+	//
+	// note: this replaces the previous @ViewBuilder function and is, i think, a little
+	// cleaner ... but there remains a problem that i do not fully understand, one that no one
+	// had seemed to notice in ShoppingList14 ... (and that's why this has its own init() method,
+	// albeit commented out, since i was doing some testing ...)
+	//
+	// the problem:
+	// -- long-press on an item that is available
+	// -- context menu comes down, second element reads "Mark As Unavailable" with pencil.slash
+	// -- item now appears italic + strikethrough, indicating not available
+	// -- long-press on the item a second time
+	// -- context menu comes down, second element STILL READS "Mark As Unavailable" with pencil.slash
+	//
+	// and the problem is inverted for an item that comes on-screen as unavailable.  the first
+	// long-press shows "Mark as Available with pencil; further long-presses show the same menu.
+	//
+	// i think this is a bug in SwiftUI, and eventually it will get fixed, but maybe not here and not now.
+	//
+	// and, for the record, with Xcode 13.1 & iOS 15.0, you'll see three messages appear on the console
+	// when the menu is drawn that look something like this (one for each item in the context menu):
+	//
+	// [UICollectionViewRecursion] cv == 0x7fb5bb80e800 Disabling recursion trigger logging
+	//
+struct ItemContextMenu: View {
+	
+	// i have tried using this both with and without marking the item as an ObservedObject; it
+	// makes no difference which way i do this; it's still the wrong display the second time
+	// the context menu comes down.
+	// @ObservedObject
+	var item: Item
+	var affirmDeletion: () -> Void
+	
+//	init(item: Item, affirmDeletion: @escaping () -> Void) {
+//		self.item = item
+//		self.affirmDeletion = affirmDeletion
+//		print("ItemContextMenu initialized for \(item.name)")
+//		print("value of isAvailable is \(item.isAvailable)")
+//	}
+	
+	var body: some View {
 		Button(action: { item.toggleOnListStatus() }) {
 			Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
 			Image(systemName: item.onList ? "purchased" : "cart")

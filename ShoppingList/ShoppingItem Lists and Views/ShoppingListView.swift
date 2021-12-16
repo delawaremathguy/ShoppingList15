@@ -49,7 +49,7 @@ of the sectioning, so we push it off to a specialized View.
 				if items.count == 0 {
 					EmptyListView(listName: "Shopping")
 				} else {
-					ItemListView(items: items, sfSymbolName: "cart",
+					ItemListView(items: items, sfSymbolName: "purchased",
 											 identifiableAlertItem: $identifiableAlertItem, sectionData: sectionData)
 				}
 				
