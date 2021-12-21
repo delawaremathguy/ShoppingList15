@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-// the IdentifiableSheetItem class returns a View that will appear within a sheet, given
-// some data with which to create and dismiss the sheet.  this extension is a convenient
-// way to turn that view into a type-erased view, just to avoid getting into the weeds
-// about syntax issues below.
+	// the IdentifiableSheetItem class returns a View that will appear within a sheet, given
+	// some data with which to create and dismiss the sheet.  this extension is a convenient
+	// way to turn that view into a type-erased view, just to avoid getting into the weeds
+	// about syntax issues below.
 extension View {
 	func eraseToAnyView() -> AnyView {
 		AnyView(self)
@@ -30,6 +30,13 @@ extension View {
 	// close the sheet (e.g., after touching a close or a cancel button).  often,
 	// such a dismiss function will set the identifiable sheet item variable you use to
 	// open the sheet back to nil (which dismisses the sheet).
+	// by the way: declare whatever @State variable you use for this item in your View as
+	//    @State private var myIdentifiableSheetItem: IdentifiableSheetItem?
+	// even if you create a specific subclass of IdentifiableSheetItem, this is fine AND:
+	// you could assign that variable any value that represents a subclass of IdentifiableSheetItem.
+	// that means, you attach one .sheet(item:) modifier to your View, but the code can
+	// assign any one of possibly multiple instances of subclasses to the variable to
+	// trigger the sheet ... without the need to place multiple .alert items on the same view.
 
 class IdentifiableSheetItem: Identifiable {
 

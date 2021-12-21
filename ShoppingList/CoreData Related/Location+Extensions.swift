@@ -63,18 +63,19 @@ extension Location: Comparable {
 	
 	// this collects the four uiColor components into a single uiColor.
 	// if you change a location's uiColor, its associated items will want to
-	// know that their uiColor computed properties have been invalidated
+	// know that their uiColor computed properties have been invalidated.
+	// note: we're using CGFloat <--> Double implicit conversion below.
 	var uiColor: UIColor {
 		get {
-			UIColor(red: CGFloat(red_), green: CGFloat(green_), blue: CGFloat(blue_), alpha: CGFloat(opacity_))
+			UIColor(red: red_, green: green_, blue: blue_, alpha: opacity_)
 		}
 		set {
 			if let components = newValue.cgColor.components {
-				red_ = Double(components[0])
-				green_ = Double(components[1])
-				blue_ = Double(components[2])
-				opacity_ = Double(components[3])
 				items.forEach({ $0.objectWillChange.send() })
+				red_ = components[0]
+				green_ = components[1]
+				blue_ = components[2]
+				opacity_ = components[3]
 			}
 		}
 	}

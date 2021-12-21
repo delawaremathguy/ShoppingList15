@@ -24,13 +24,14 @@ import SwiftUI
 	//
 struct ItemListView: View {
 	
-		// this is the @FetchRequest that ties this view to CoreData Items
+		// this comes in from the @FetchRequest that ties this view to the CoreData Items
+		// that appear in the parent view (either the ShoppingListView or the PurchasedItemsView)
 	var items: FetchedResults<Item>
 
-		// what symbol to show for an Item that is tapped
+		// the symbol to show for an Item that is tapped
 	var sfSymbolName: String
 	
-		// this is an incoming binding to the parent view's alert trigger mechanism,which lets us
+		// this is an incoming binding to the parent view's alert trigger mechanism, which lets us
 		// post an alert on the parent view, just by setting it here
 	@Binding var identifiableAlertItem: IdentifiableAlertItem?
 	
@@ -59,7 +60,7 @@ struct ItemListView: View {
 								ItemContextMenu(item: item) {
 									identifiableAlertItem = ConfirmDeleteItemAlert(item: item) {
 										identifiableAlertItem = nil
-									}
+									} // end of ItemContextMenu
 								} // end of itemContextMenu
 							} // end of contextMenu
 						} // end of NavigationLink
@@ -71,7 +72,6 @@ struct ItemListView: View {
 		
 	} // end of body: some View
 	
-	
 	func handleItemTapped(_ item: Item) {
 		if !itemsChecked.contains(item) {
 				// put the item into our list of what's about to be removed, and because
@@ -80,21 +80,24 @@ struct ItemListView: View {
 			itemsChecked.append(item)
 				// and we queue the actual removal long enough to allow animation to finish
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
-				item.toggleOnListStatus()
-				itemsChecked.removeAll(where: { $0 == item })
+				withAnimation {
+					item.toggleOnListStatus()
+					itemsChecked.removeAll(where: { $0 == item })
+				}
 			}
 		}
 	}
 		
 }
 
+// MARK: - ItemContextMenu
+
 	// provides a context menu for an Item that can be used to quickly move the item to the
 	// other list, toggle the state of the availability, or delete the item.
 	//
 	// note: this replaces the previous @ViewBuilder function and is, i think, a little
-	// cleaner ... but there remains a problem that i do not fully understand, one that no one
-	// had seemed to notice in ShoppingList14 ... (and that's why this has its own init() method,
-	// albeit commented out, since i was doing some testing ...)
+	// cleaner ... but there remains a problem that i do not fully understand, and one that either
+	// has now appeared in iOS 15, or one that was present under iOS 14 and no one noticed?
 	//
 	// the problem:
 	// -- long-press on an item that is available
@@ -107,11 +110,15 @@ struct ItemListView: View {
 	// long-press shows "Mark as Available with pencil; further long-presses show the same menu.
 	//
 	// i think this is a bug in SwiftUI, and eventually it will get fixed, but maybe not here and not now.
+	// (i have submitted feedback on this to Apple:
+	//      FB9811060: SwiftUI: ContextMenu Item Display Not Updating Correctly)
 	//
-	// and, for the record, with Xcode 13.1 & iOS 15.0, you'll see three messages appear on the console
+	// and, for the record, with iOS 15.0, you'll see three messages appear on the console
 	// when the menu is drawn that look something like this (one for each item in the context menu):
 	//
 	// [UICollectionViewRecursion] cv == 0x7fb5bb80e800 Disabling recursion trigger logging
+	//
+	// these messages seem to now be gone in iOS 15.2, but the problem remains (!)
 	//
 struct ItemContextMenu: View {
 	

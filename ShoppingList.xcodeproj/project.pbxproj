@@ -54,7 +54,6 @@
 		D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */; };
 		D6EF557D246D7421007D636B /* PurchasedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF557C246D7421007D636B /* PurchasedItemsView.swift */; };
 		D6EF5587246D97C3007D636B /* Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF5586246D97C3007D636B /* Development.swift */; };
-		D6F29CA8257544CA00A0E3E0 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F29CA7257544C900A0E3E0 /* Date+Extensions.swift */; };
 		D6F375D62485593D005559E6 /* LocationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F375D52485593D005559E6 /* LocationRowView.swift */; };
 		D6FC7A0A24635D950096F018 /* ShoppingList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6FC7A0824635D950096F018 /* ShoppingList.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -113,7 +112,6 @@
 		D6EE985F2573EE1900439500 /* ShoppingList 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 3.xcdatamodel"; sourceTree = "<group>"; };
 		D6EF557C246D7421007D636B /* PurchasedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasedItemsView.swift; sourceTree = "<group>"; };
 		D6EF5586246D97C3007D636B /* Development.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Development.swift; sourceTree = "<group>"; };
-		D6F29CA7257544C900A0E3E0 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		D6F375D52485593D005559E6 /* LocationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRowView.swift; sourceTree = "<group>"; };
 		D6FC7A0924635D950096F018 /* ShoppingList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ShoppingList.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,7 +194,6 @@
 				D6AE3642246F035400F7A237 /* Bundle+Extensions.swift */,
 				D612E16024898EBB007E1412 /* Sequence+Extensions.swift */,
 				D65A509E2565789900D43229 /* String+Extensions.swift */,
-				D6F29CA7257544C900A0E3E0 /* Date+Extensions.swift */,
 				D6AAFF892582778E00B1CBAC /* View+Extensions.swift */,
 				D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */,
 			);
@@ -389,7 +386,6 @@
 				D61434452764E0C1009CC73B /* ModifyExistingLocationView.swift in Sources */,
 				D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */,
 				D6C91D8724A8EC09008C8DFF /* EditableItemData.swift in Sources */,
-				D6F29CA8257544CA00A0E3E0 /* Date+Extensions.swift in Sources */,
 				D61434432763BB65009CC73B /* EditableLocationDataView.swift in Sources */,
 				D6DD7861259BC0A50004478A /* MailView.swift in Sources */,
 				D65C931824C5DC9B003E6EB7 /* GlobalTimer.swift in Sources */,

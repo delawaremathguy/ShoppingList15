@@ -2,7 +2,7 @@
 
 * This repo was first made publicly available on XXX December, XXXX.
 
-ShoppingList15 is a simple iOS app to process a shopping list that you can take to the grocery store with you, and move items off the list as you pick them up.  It persists data in CoreData and uses SwiftUI.  This project was posted using XCode 13.2 and requires iOS 15.0 or later.
+ShoppingList15 is a simple iOS app to process a shopping list that you can take to the grocery store with you, and move items off the list as you pick them up.  It persists data in Core Data and uses SwiftUI.  This project was posted using XCode 13.2 and requires iOS 15.0 or later.
 
 * An [earlier version of this project](https://github.com/delawaremathguy/ShoppingList14) is available that works with XCode 12.5/iOS 14.5.  If you have not yet made the move to XCode 13/iOS 15, you should use this earlier project instead.
 
@@ -16,13 +16,13 @@ Feel free to use this as is, to develop further, to completely ignore, or even j
 
 Major changes that you will find in this release of the project are:
 
-* Cloud-syncing across devices on the same Apple ID is implemented with the proper entitlements having been added to the project. 
+* Cloud-syncing across devices on the same Apple ID is implemented.  You can build the list on your iPad, then take your iPhone to the store with the updated list.
 
-  * To use Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  
+  * The proper entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-* Alerts and sheets may prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects (and not structs with protocol requirements).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts and sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI is no longer (necessarily!) a concern with this design pattern.
+* Alerts and sheets may now prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects for the necessary identifiable items (*rather than structs having protocol requirements as in ShoppingList14*).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts and sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI is no longer (necessarily!) a concern with this design pattern.
 
 * The functionality of what was SearchBarView (by Simon Ng) has been replaced using the iOS 15 native `.searchable()` view modifier.
 
@@ -89,16 +89,13 @@ Here's what you do next:
 
 ## What's New in ShoppingList15
 
-This third iteration of my ShoppingList project will be my learning environment for what most people cal "SwiftUI 3," and I will try to use new features available in iOS 15 whenever I can.
+This third iteration of my ShoppingList project will be my learning environment for what most people call "SwiftUI 3," the version of SwiftUI released with iOS 15, and I will try to use new features available in iOS 15 whenever I can.
 
-There are no design changes to the app, so please check out the earlier README documents.
+There are no UI-level design changes to the app, so please check out the earlier README documents.
 
-Here are some of the major, code-level changes:
+Here are some of the major, code-level changes (which are not otherwise mentioned earlier in the "Most Recent Update" section)
 
-* Many code changes have been made and much has been simplified.
-
-* Comments throughout the code have been updated -- some with expanded detail on why something is being done the way it is being done.
-
+* Comments throughout the code have undergone some cleaning.
 
 ### Core Data Notes
 

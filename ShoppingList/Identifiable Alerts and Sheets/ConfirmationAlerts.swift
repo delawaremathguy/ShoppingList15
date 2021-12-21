@@ -7,12 +7,13 @@
 
 import SwiftUI
 
-// i collect all the confirmation alerts here in one file.  there are three of them, although
-// two of them are used in different places throughout the app; that's why they are all
-// here and not distributed in different Views.
-//
-// please be sure to read through the file IdentifiableAlertItem.swift that describes
-// how to set up alerts.
+	// i collect all the confirmation alerts here in one file.  there are three of them, although
+	// two of them are used in different places throughout the app; that's in part why they are all
+	// here (not distributed in different Views), and in part because it's easy to find them all
+	// here and use any one to quickly copy-paste in a new one you might wish to create.
+	//
+	// please be sure to read through the file IdentifiableAlertItem.swift that describes
+	// how to set up alerts.
 
 // MARK: - Confirm DELETE ITEM Alert
 
