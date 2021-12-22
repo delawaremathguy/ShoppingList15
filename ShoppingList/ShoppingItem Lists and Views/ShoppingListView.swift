@@ -50,7 +50,9 @@ of the sectioning, so we push it off to a specialized View.
 					EmptyListView(listName: "Shopping")
 				} else {
 					ItemListView(items: items, sfSymbolName: "purchased",
-											 identifiableAlertItem: $identifiableAlertItem, sectionData: sectionData)
+											 identifiableAlertItem: $identifiableAlertItem,
+											 multiSectionDisplay: $multiSectionDisplay,
+											 sectionData: sectionData)
 				}
 				
 /* ---------
@@ -72,7 +74,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			} // end of VStack
 			.navigationBarTitle("Shopping List")
 			.toolbar {
-				ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
+//				ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
@@ -110,7 +112,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				// then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by name
 			let sortedItems = items
 				.sorted(by: { $0.location.visitationOrder < $1.location.visitationOrder })
-			return [ItemsSectionData(title: "Items Remaining: \(items.count)", items: sortedItems)
+			return [ItemsSectionData(index: 1, title: "Items Remaining: \(items.count)", items: sortedItems)
 			]
 		}
 		
@@ -118,8 +120,10 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		let dictionaryByLocation = Dictionary(grouping: items, by: { $0.location })
 			// then reassemble the sections by sorted keys of this dictionary
 		var completedSectionData = [ItemsSectionData]()
+		var index = 1
 		for key in dictionaryByLocation.keys.sorted() {
-			completedSectionData.append(ItemsSectionData(title: key.name, items: dictionaryByLocation[key]!))
+			completedSectionData.append(ItemsSectionData(index: index, title: key.name, items: dictionaryByLocation[key]!))
+			index += 1
 		}
 		return completedSectionData
 	}
@@ -143,11 +147,11 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 	}
 	
 	// a toggle button to change section display mechanisms
-	func sectionDisplayButton() -> some View {
-		NavBarImageButton(multiSectionDisplay ? "tray.2" : "tray") {
-			multiSectionDisplay.toggle()
-		}
-	}
+//	func sectionDisplayButton() -> some View {
+//		NavBarImageButton(multiSectionDisplay ? "tray.2" : "tray") {
+//			multiSectionDisplay.toggle()
+//		}
+//	}
 	
 	//MARK: - Mail support
 	

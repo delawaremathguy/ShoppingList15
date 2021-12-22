@@ -56,8 +56,11 @@ struct PurchasedItemsView: View {
 			if items.count == 0 {
 				EmptyListView(listName: "Purchased")
 			} else {
-				ItemListView(items: items, sfSymbolName: "cart",
-										 identifiableAlertItem: $identifiableAlertItem, sectionData: sectionData)				
+				ItemListView(items: items,
+										 sfSymbolName: "cart",
+										 identifiableAlertItem: $identifiableAlertItem,
+										 multiSectionDisplay: $multiSectionDisplay,
+										 sectionData: sectionData)
 			} // end of if-else
 			
 			Divider() // keeps list from overrunning the tab bar in iOS 15
@@ -74,7 +77,7 @@ struct PurchasedItemsView: View {
 		}
 		.navigationBarTitle("Purchased List")
 		.toolbar {
-			ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
+//			ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
@@ -96,14 +99,6 @@ struct PurchasedItemsView: View {
 		}
 	}
 	
-		// a toggle button to change section display mechanisms
-	func sectionDisplayButton() -> some View {
-		NavBarImageButton(multiSectionDisplay ? "tray.2" : "tray") {
-			multiSectionDisplay.toggle()
-		}
-	}
-	
-	
 		// the idea of this function is to break out the purchased Items into
 		// 2 sections: those purchased today (within the last N days), and everything else
 	func sectionData() -> [ItemsSectionData] {
@@ -114,10 +109,10 @@ struct PurchasedItemsView: View {
 			// is pretty darn easy:
 		if !multiSectionDisplay {
 			if searchText.isEmpty {
-				return [ItemsSectionData(title: "Items Purchased: \(items.count)",
+				return [ItemsSectionData(index: 1, title: "Items Purchased: \(items.count)",
 														items: items.map({ $0 }))]
 			}
-			return [ItemsSectionData(title: "Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)",
+			return [ItemsSectionData(index: 1, title: "Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)",
 													items: searchQualifiedItems)]
 		}
 		
@@ -134,11 +129,11 @@ struct PurchasedItemsView: View {
 		
 			// return two sections only
 		return [
-			ItemsSectionData(title: section1Title(searchText: searchText,
+			ItemsSectionData(index: 1, title: section1Title(searchText: searchText,
 																			 historyMarker: historyMarker,
 																			 count: recentItems.count),
 									items: recentItems),
-			ItemsSectionData(title: section2Title, items: allOlderItems)
+			ItemsSectionData(index: 2, title: section2Title, items: allOlderItems)
 		]
 	}
 	

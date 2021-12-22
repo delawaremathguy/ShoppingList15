@@ -35,6 +35,9 @@ struct ItemListView: View {
 		// post an alert on the parent view, just by setting it here
 	@Binding var identifiableAlertItem: IdentifiableAlertItem?
 	
+	// whether we're multi-section or single section
+	@Binding var multiSectionDisplay: Bool
+	
 		// this is the sectioning function to use on the items for display
 	var sectionData: () -> [ItemsSectionData]
 	
@@ -48,7 +51,7 @@ struct ItemListView: View {
 	var body: some View {
 		List {
 			ForEach(sectionData()) { section in
-				Section(header: Text(section.title).sectionHeader()) {
+				Section(header: sectionHeader(section: section)) {
 						// display items in this location
 					ForEach(section.items) { item in
 							// display a single row here for 'item'
@@ -71,6 +74,28 @@ struct ItemListView: View {
 		.listStyle(InsetGroupedListStyle())
 		
 	} // end of body: some View
+	
+	@ViewBuilder
+	func sectionHeader(section: ItemsSectionData) -> some View {
+		HStack {
+			Text(section.title).textCase(.none)
+			
+			if section.index == 1 {
+				Spacer()
+				
+				SectionHeaderButton(selected: multiSectionDisplay == false, systemName: "tray") {
+					multiSectionDisplay = false
+				}
+				
+				Rectangle()
+					.frame(width: 1, height: 20)
+				
+				SectionHeaderButton(selected: multiSectionDisplay == true, systemName: "tray.2") {
+					multiSectionDisplay = true
+				}
+			} // end of if ...
+		} // end of HStack
+	}
 	
 	func handleItemTapped(_ item: Item) {
 		if !itemsChecked.contains(item) {

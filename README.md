@@ -32,6 +32,7 @@ Major changes that you will find in this release of the project are:
 
   * The "Add New Item/Location" button at the top of the ShoppingList, PurchasedItems, and Locations view have been removed.  Each screen already has a "+" at the top, right of the screen to add a new shopping item or location.
   * The "Mark All Items Available" and "Move All Items Off-list" buttons on the shopping list view are now in an HStack (not a VStack), with some animation aiding the transition if the "Mark All Items Available" button need not appear.
+  * The single-section versus multi-section display button, previously shown as a leading navigation button, now appears as a button in the header of the first section in both the ShoppingListView and PurchasedItemsView.
   
 
 ## General App Structure
