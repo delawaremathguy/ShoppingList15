@@ -49,10 +49,10 @@ of the sectioning, so we push it off to a specialized View.
 				if items.count == 0 {
 					EmptyListView(listName: "Shopping")
 				} else {
-					ItemListView(items: items, sfSymbolName: "purchased",
+					ItemListView(sections: sectionData(),
+											 sfSymbolName: "purchased",
 											 identifiableAlertItem: $identifiableAlertItem,
-											 multiSectionDisplay: $multiSectionDisplay,
-											 sectionData: sectionData)
+											 multiSectionDisplay: $multiSectionDisplay)
 				}
 				
 /* ---------
@@ -74,7 +74,6 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			} // end of VStack
 			.navigationBarTitle("Shopping List")
 			.toolbar {
-//				ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
@@ -138,20 +137,13 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			} label: {
 				Image(systemName: "envelope")
 			}
-//			.disabled(!MailView.canSendMail)
+			.disabled(!MailView.canSendMail)
 
 			NavBarImageButton("plus") {
 				identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
 			}
 		}
 	}
-	
-	// a toggle button to change section display mechanisms
-//	func sectionDisplayButton() -> some View {
-//		NavBarImageButton(multiSectionDisplay ? "tray.2" : "tray") {
-//			multiSectionDisplay.toggle()
-//		}
-//	}
 	
 	//MARK: - Mail support
 	
@@ -195,7 +187,6 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				NSLog("error: \(error.localizedDescription)")
 		}
 	}
-
 	
 } // end of ShoppingListView
 

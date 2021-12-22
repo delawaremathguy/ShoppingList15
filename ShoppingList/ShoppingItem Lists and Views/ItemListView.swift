@@ -24,9 +24,8 @@ import SwiftUI
 	//
 struct ItemListView: View {
 	
-		// this comes in from the @FetchRequest that ties this view to the CoreData Items
-		// that appear in the parent view (either the ShoppingListView or the PurchasedItemsView)
-	var items: FetchedResults<Item>
+		// this is the incoming section layout from the ShoppingListView or the PurchasedItemsView
+	var sections: [ItemsSectionData]
 
 		// the symbol to show for an Item that is tapped
 	var sfSymbolName: String
@@ -38,9 +37,6 @@ struct ItemListView: View {
 	// whether we're multi-section or single section
 	@Binding var multiSectionDisplay: Bool
 	
-		// this is the sectioning function to use on the items for display
-	var sectionData: () -> [ItemsSectionData]
-	
 		// this is a temporary holding array for items being moved to the other list.  it's a
 		// @State variable, so if any SelectableItemRowView or a context menu adds an Item
 		// to this array, we will get some redrawing + animation; and we'll also have queued
@@ -50,7 +46,7 @@ struct ItemListView: View {
 		
 	var body: some View {
 		List {
-			ForEach(sectionData()) { section in
+			ForEach(sections) { section in
 				Section(header: sectionHeader(section: section)) {
 						// display items in this location
 					ForEach(section.items) { item in
@@ -153,13 +149,6 @@ struct ItemContextMenu: View {
 	// @ObservedObject
 	var item: Item
 	var affirmDeletion: () -> Void
-	
-//	init(item: Item, affirmDeletion: @escaping () -> Void) {
-//		self.item = item
-//		self.affirmDeletion = affirmDeletion
-//		print("ItemContextMenu initialized for \(item.name)")
-//		print("value of isAvailable is \(item.isAvailable)")
-//	}
 	
 	var body: some View {
 		Button(action: { item.toggleOnListStatus() }) {

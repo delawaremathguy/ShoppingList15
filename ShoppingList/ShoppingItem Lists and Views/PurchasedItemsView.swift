@@ -56,11 +56,10 @@ struct PurchasedItemsView: View {
 			if items.count == 0 {
 				EmptyListView(listName: "Purchased")
 			} else {
-				ItemListView(items: items,
+				ItemListView(sections: sectionData(), //items: items,
 										 sfSymbolName: "cart",
 										 identifiableAlertItem: $identifiableAlertItem,
-										 multiSectionDisplay: $multiSectionDisplay,
-										 sectionData: sectionData)
+										 multiSectionDisplay: $multiSectionDisplay)
 			} // end of if-else
 			
 			Divider() // keeps list from overrunning the tab bar in iOS 15
@@ -77,7 +76,6 @@ struct PurchasedItemsView: View {
 		}
 		.navigationBarTitle("Purchased List")
 		.toolbar {
-//			ToolbarItem(placement: .navigationBarLeading, content: sectionDisplayButton)
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
