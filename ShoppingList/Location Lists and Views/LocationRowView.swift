@@ -9,6 +9,7 @@
 import SwiftUI
 
 // MARK: - LocationRowData Definition
+
 // this is a struct to transport all the incoming data about a Location that we
 // will display.  see the commentary over in EditableItemData.swift and
 // SelectableItemRowView.swift about why we do this.

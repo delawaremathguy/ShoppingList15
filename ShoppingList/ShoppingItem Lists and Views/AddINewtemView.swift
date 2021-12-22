@@ -19,24 +19,24 @@ import SwiftUI
 //
 struct AddNewItemView: View {
 	
-		// a dismiss action.  we're a View presented as a sheet (via setting a
-		// Bool), so the presenter needs to tell us how it will dismiss us (via clearing
-		// the Bool)
+		// a dismiss action.  we're a View presented using .sheet(item:) that was triggered by setting a
+		// variable, so we need to be given a way to dismiss ourself (which normally is setting that
+		// trigger to nil
 	private var dismiss: () -> Void
-		// this editableItemData struct contains all of the fields for a new Item that are
-		// needed from the User
+	
+		// this editableItemData struct contains all of the fields for a new Item that are needed from the User
 	@State private var editableItemData: EditableItemData
 	
 		// custom init here to set up a tentative Item to add
 	init(initialItemName: String? = nil, location: Location? = nil, dismiss: @escaping () -> Void) {
-			// create working, editable Item data for a new Item, with the given suggested
-			// initial name and location
+			// create working, editable Item data for a new Item, with the given suggested initial name and location
 		let initialValue = EditableItemData(initialItemName: initialItemName, location: location)
 		_editableItemData = State(initialValue: initialValue)
-		// stash away a dismiss function
+		// and stash away a dismiss function
 		self.dismiss = dismiss
 	}
 	
+	// the body is pretty short -- just call up a Form, adding a Cancel and Save button
 	var body: some View {
 		EditableItemDataView(editableItemData: $editableItemData, deleteActionTrigger: nil)
 			.navigationBarTitle("Add New Item", displayMode: .inline)

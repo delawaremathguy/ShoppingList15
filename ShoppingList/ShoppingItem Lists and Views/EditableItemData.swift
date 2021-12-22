@@ -58,7 +58,7 @@ struct EditableItemData {
 		}
 	}
 	
-	// to do a save/commit of an Item, it must have a non-empty name
+	// to do a save/update of an Item, it must have a non-empty name
 	var canBeSaved: Bool { name.count > 0 }
 	// we also want to know if this itemData is attached to a real Item that
 	// exists, or is data that will be used to create a new Item

@@ -197,7 +197,7 @@ struct ShoppingListBottomButtons: View {
 	var itemsToBePurchased: FetchedResults<Item>
 		// incoming function: what to do when the user wants to move all items of the shopping list
 	var moveAllItemsOffShoppingList: () -> ()
-	
+		// determines whether to show the "Mark All Available" button
 	var showMarkAllAvailable: Bool { !itemsToBePurchased.allSatisfy({ $0.isAvailable }) }
 	
 	var body: some View {

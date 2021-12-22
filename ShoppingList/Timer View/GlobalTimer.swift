@@ -17,7 +17,7 @@ import Foundation
 
 let kDisableTimerWhenAppIsNotActive = false
 
-// note: if you don't disable the timer when in the background, what we're really
+// note: if you don't disable the timer when in the background, what we'll really be
 // doing is remembering how much time we had accumulated before we went into the
 // background; we killed the timer; and when we become active again, we restart a timer,
 // setting the startDate of the timer to either the current date, or the date when

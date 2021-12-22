@@ -20,21 +20,16 @@ struct PurchasedItemsView: View {
 	@FetchRequest(fetchRequest: Item.allItemsFR(onList: false))
 	private var items: FetchedResults<Item>
 	
-		// the usual @State variables to handle the Search field and control
-		// the action of the confirmation alert that you really do want to
-		// delete an item
+		// the usual @State variables to handle the Search field
 	@State private var searchText: String = ""
 	
-		// parameters to control triggering an Alert and defining what action
-		// to take upon confirmation
-		//@State private var confirmationAlert = ConfirmationAlert(type: .none)
+		// trigger for any alert we will put up
 	@State private var identifiableAlertItem: IdentifiableAlertItem?
 
-		// sheet used to add a new item
+		// trigger for sheet used to add a new shopping item
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 
-		// local state for are we a multi-section display or not.  the default here is false,
-		// but an eager developer could easily store this default value in UserDefaults (?)
+		// whether are we a multi-section display or not.
 	@State var multiSectionDisplay: Bool = false
 	
 		// link in to what is the start of today
@@ -90,21 +85,22 @@ struct PurchasedItemsView: View {
 		today.update() // also recompute what "today" means, so the sectioning is correct
 	}
 	
-		// makes a simple "+" to add a new item
+		// makes a simple "+" to add a new item.  yapping on the button triggers a sheet to add a new item.
 	func addNewButton() -> some View {
 		NavBarImageButton("plus") {
 			identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
 		}
 	}
 	
-		// the idea of this function is to break out the purchased Items into
-		// 2 sections: those purchased today (within the last N days), and everything else
+		// the idea of this function is to break out the purchased Items into sections, and can produce either one section
+		// for everything, or else two sections if multiSectionDisplay == true with:
+		// -- those items purchased within the last N days,
+		// -- and everything else
 	func sectionData() -> [ItemsSectionData] {
 			// reduce items by search criteria
 		let searchQualifiedItems = items.filter({ searchText.appearsIn($0.name) })
 		
-			// do we show one big section, or Today and then everything else?  one big section
-			// is pretty darn easy:
+			// do we show one big section or two (recent + everything else)?  one big section is pretty darn easy:
 		if !multiSectionDisplay {
 			if searchText.isEmpty {
 				return [ItemsSectionData(index: 1, title: "Items Purchased: \(items.count)",
@@ -127,15 +123,16 @@ struct PurchasedItemsView: View {
 		
 			// return two sections only
 		return [
-			ItemsSectionData(index: 1, title: section1Title(searchText: searchText,
-																			 historyMarker: historyMarker,
-																			 count: recentItems.count),
-									items: recentItems),
-			ItemsSectionData(index: 2, title: section2Title, items: allOlderItems)
+			ItemsSectionData(index: 1,
+											 title: section1Title(searchText: searchText, count: recentItems.count),
+											 items: recentItems),
+			ItemsSectionData(index: 2,
+											 title: section2Title,
+											 items: allOlderItems)
 		]
 	}
 	
-	func section1Title(searchText: String, historyMarker: Int, count: Int) -> String {
+	func section1Title(searchText: String, count: Int) -> String {
 		var title = "Items Purchased "
 		if historyMarker == 0 {
 			title += "Today "

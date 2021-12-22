@@ -16,14 +16,10 @@ struct LocationsView: View {
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
 	
-	// local state to trigger a sheet to appear to add a new location
-	//@State private var isAddNewLocationSheetShowing = false
-	
+	// state to trigger a sheet to appear to add a new location
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
-	// parameters to control triggering an Alert and defining what action
-	// to take upon confirmation
-	//@State private var confirmationAlert = ConfirmationAlert(type: .none)
+	// state to trigger an Alert to confirm deleting a Location
 	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
 
 	var body: some View {
@@ -32,7 +28,6 @@ struct LocationsView: View {
 			Rectangle()
 				.frame(height: 1)
 			
-			// 2. then the list of locations
 			List {
 				Section(header: Text("Locations Listed: \(locations.count)").sectionHeader()) {
 					ForEach(locations) { location in
@@ -45,10 +40,12 @@ struct LocationsView: View {
 			} // end of List
 			.listStyle(InsetGroupedListStyle())
 			
-			Divider()
+			Divider() // keeps list from running through tab bar (!)
 		} // end of VStack
 		.navigationBarTitle("Locations")
-		.toolbar { ToolbarItem(placement: .navigationBarTrailing, content: addNewButton) }
+		.toolbar {
+			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
+		}
 		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
 		.sheet(item: $identifiableSheetItem) { item in
 			NavigationView {

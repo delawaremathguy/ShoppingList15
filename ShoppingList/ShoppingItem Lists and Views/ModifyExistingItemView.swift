@@ -9,9 +9,8 @@
 import SwiftUI
 
 	// the ModifyExistingItemView is opened via a navigation link from the ShoppingListView and the
-	// PurchasedItemTabView o do as it says: edit an existing shopping item.  this will be a "live edit,"
-	// in the sense that when the user touches the <Back button, we update the values of the
-	// Item with the edited values.
+	// PurchasedItemTabView to do as it says: edit an existing shopping item.  this will be an "almost live edit,"
+	// in the sense that when the user touches the <Back button, we update the values of the Item with the edited values.
 	// the strategy is simple:
 	//
 	// -- create an editable representation of values for the item (a struct)
@@ -34,25 +33,24 @@ struct ModifyExistingItemView: View {
 	
 		// alert trigger item to confirm deletion of an Item
 	@State private var confirmDeleteItemAlert: IdentifiableAlertItem?
-
+	
 	var body: some View {
 		
-		// the trailing closure provides the EditableItemDataView with what to do after the user has
-		// deleted the item, namely "dismiss" so we "bo back" up the navigation stack
+			// the trailing closure provides the EditableItemDataView with what to do after the user has
+			// deleted the item, namely "dismiss" so we "go back" up the navigation stack
 		EditableItemDataView(editableItemData: $editableItemData) {
 			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: editableItemData.associatedItem) {
 				dismiss()
 			}
 		}
-			.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
-			.onDisappear {
-				// we were doing a pseudo-live edit, so update on the way out, unless
-				// we opted to delete the associated item
-				if editableItemData.representsExistingItem {
-					Item.update(using: editableItemData)
-				}
+		.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
+		.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+		.onDisappear {
+				// we were doing a pseudo-live edit, so update on the way out, unless we opted to delete the associated item
+			if editableItemData.representsExistingItem {
+				Item.update(using: editableItemData)
 			}
-			.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+		}
 	}
 	
 }

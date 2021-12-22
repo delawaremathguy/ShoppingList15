@@ -9,17 +9,20 @@
 import Foundation
 import SwiftUI
 
-// the app will hold an object of type Today, which keeps track of the "start of
-// today."  the PurchasedItemsView needs to know what "today" means to properly
-// section out its data, and it might seem to you that the PurchasedItemsView
-// could handle that by itself.  however, if you push the app into the background
-// when the PurchasedItemsView is showing and then bring it back a few days later,
-// the PurchasedItemsView will show the same display as when it went into the background
-// and not know about the change; so its view will need to be updated.  that's why
-// this is here: the app certainly knows when it becomes active, and can update what
-// "today" means, and the PurchasedItemsView will pick up on that in its environment
+/*
+ the app will hold an object of type Today, which keeps track of the "start of today."
+ the PurchasedItemsView needs to know what "today" means to properly section out
+ its data, and it might seem to you that the PurchasedItemsView could handle that by
+ itself.  however, if you push the app into the background when the PurchasedItemsView
+ is showing and then bring it back a few days later, the PurchasedItemsView will show
+ the same display as when it went into the background and not know about the change;
+ so its view will need to be updated.  that's why this is here: the app certainly
+ knows when it becomes active, and can update what "today" means, and the
+ PurchasedItemsView will pick up on that in its environment
+ */
 class Today: ObservableObject {
 	@Published var start: Date = Calendar.current.startOfDay(for: Date())
+	
 	func update() {
 		let newStart = Calendar.current.startOfDay(for: Date())
 		if newStart != start {
@@ -41,8 +44,7 @@ class Today: ObservableObject {
 @main
 struct ShoppingListApp: App {
 	
-	// we create the PersistentStore here (although it will be created lazily anyway)
-	// and the date object that defines the meaning of "today"
+	// we create the PersistentStore here and the date object that defines the meaning of "today"
 	@StateObject var persistentStore = PersistentStore.shared
 	@StateObject var today = Today()
 	
