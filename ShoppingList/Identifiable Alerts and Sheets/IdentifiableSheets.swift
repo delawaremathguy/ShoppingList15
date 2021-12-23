@@ -48,32 +48,32 @@ class AddNewItemSheetItem: IdentifiableSheetItem {
 	}
 	
 	override func content() -> AnyView {
-		AddNewItemView(dismiss: dismiss)
-			.eraseToAnyView()
+		NavigationView {
+			AddNewItemView(dismiss: dismiss)
+		}
+		.eraseToAnyView()
 	}
 	
 }
 
+// MARK: a sheet to display a UIACTIVITYVIEWCONTROLLER
+
+class ActivityViewControllerSheetItem: IdentifiableSheetItem {
+	
+		// specialized data for this instance
+	private var dismiss: () -> Void
+	private var shareContent: String
+	
+	init(shareContent: String, dismiss: @escaping () -> Void) {
+		self.dismiss = dismiss
+		self.shareContent = shareContent
+		super.init()
+	}
+	
+	override func content() -> AnyView {
+		ActivityViewController(itemsToShare: [shareContent])
+			.eraseToAnyView()
+	}
 
 
-	//	// MARK: - a sheet to PRESENT THE MAILVIEW
-	//
-	//class MailViewSheet: IdentifiableSheetItem {
-	//
-	//	private var session: SessionCD?
-	//	private var dismiss: () -> Void
-	//
-	//	init(session: SessionCD?, dismiss: @escaping () -> Void) {
-	//		self.session = session
-	//		self.dismiss = dismiss
-	//		super.init()
-	//	}
-	//
-	//	override func content() -> AnyView {
-	//		MailPreparationSheetView(session: session, dismiss: dismiss)
-	//			.wrappedInNavigationView()
-	//			.eraseToAnyView()
-	//	}
-	//
-	//}
-
+}

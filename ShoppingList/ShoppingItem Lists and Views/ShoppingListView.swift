@@ -6,6 +6,7 @@
 //  Copyright © 2020 Jerry. All rights reserved.
 //
 
+import ActivityView
 import SwiftUI
 
 struct ShoppingListView: View {
@@ -24,10 +25,8 @@ struct ShoppingListView: View {
 	// local state for are we a multi-section display or not.  the default here is false,
 	// but an eager developer could easily store this default value in UserDefaults (?)
 	@State var multiSectionDisplay: Bool = false
-	
-	// support for Mail
-	@State private var showMailSheet: Bool = false
-	var mailViewData = MailViewData()
+		
+	@State private var activityItem: ActivityItem?
 	
 	// we use an init, just to track when this view is initialized.  it can be removed (!)
 	init() {
@@ -77,20 +76,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
-		
-		// here's a curiosity: i though you could not put two sheet modifiers on the same view,
-		// but apparently it's OK if one used .sheet(item:) and the other uses .sheet(isPresented).
-		// that's good news, because MailView was written in a way that expects to be called
-		// with .sheet(isPresented) to match up with its isShowing parameter.  to move that into
-		// an IdentifiableSheetItem mechanism is possible, but that sheet then itself has to
-		// present the MailView with isShowing, which results in two sheets being opened (!).
-		.sheet(item: $identifiableSheetItem) { item in
-			NavigationView { item.content() }
-		}
-		.sheet(isPresented: $showMailSheet) {
-			MailView(isShowing: $showMailSheet, mailViewData: mailViewData, resultHandler: mailResultHandler)
-				.safe()
-		}
+		.activitySheet($activityItem)
 
 		.onAppear {
 			logAppear(title: "ShoppingListView")
@@ -132,12 +118,10 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 	func trailingButtons() -> some View {
 		HStack(spacing: 12) {
 			Button {
-				prepareDataForMail()
-				showMailSheet = true
+				activityItem = ActivityItem(items: shareContent())
 			} label: {
-				Image(systemName: "envelope")
+				Image(systemName: "square.and.arrow.up")
 			}
-			.disabled(!MailView.canSendMail)
 
 			NavBarImageButton("plus") {
 				identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
@@ -145,49 +129,25 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		}
 	}
 	
-	//MARK: - Mail support
+	// MARK: - Sharing support
 	
-	func prepareDataForMail() {
-		// start with a clean, default set of parameters to pass to the MailView
-		mailViewData.clear()
+	func shareContent() -> String {
+		var message = "Items on your Shopping List: \n"
 		
-		// put together a simple mail message
-		var messageString = "Items on your Shopping List: \n"
-		
-		// pull out Locations appearing in the shopping list as a dictionary, keyed by location
-		// and write the mail message = one big string
+			// pull out Locations appearing in the shopping list as a dictionary, keyed by location
+			// and write the shareContent message = one big string
 		let dictionary = Dictionary(grouping: items, by: { $0.location })
 		for key in dictionary.keys.sorted() {
 			let items = dictionary[key]!
-			messageString += "\n\(key.name), \(items.count) item(s)\n\n"
+			message += "\n\(key.name), \(items.count) item(s)\n\n"
 			for item in items {
-				messageString += "  \(item.name)\n"
+				message += "  \(item.name)\n"
 			}
 		}
 		
-		mailViewData.subject = "Shopping List"
-		mailViewData.messageBody = messageString
-		self.showMailSheet = true
+		return message
 	}
-	
-	func mailResultHandler(value: Result<MailViewResult, Error>) {
-		switch value {
-			case .success(let result):
-				switch result {
-					case .cancelled:
-						print("cancelled")
-					case .failed:
-						print("failed")
-					case .saved:
-						print("saved")
-					default:
-						print("sent")
-				}
-			case .failure(let error):
-				NSLog("error: \(error.localizedDescription)")
-		}
-	}
-	
+
 } // end of ShoppingListView
 
 
