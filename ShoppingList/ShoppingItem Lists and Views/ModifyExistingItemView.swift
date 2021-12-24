@@ -25,9 +25,13 @@ struct ModifyExistingItemView: View {
 	@Environment(\.dismiss) private var dismiss: DismissAction
 	
 	@State private var editableItemData: EditableItemData
+	// i am a little mystified by having to keep a reference to the incoming item ... i am still researching this.
+	// i will add commentary later on once i have a clear explanation.
+	private var item: Item
 	
 		// custom init here to set up editableData state, a struct
 	init(editableItem: Item) {
+		self.item = editableItem
 		_editableItemData = State(initialValue: EditableItemData(item: editableItem))
 	}
 	
@@ -45,6 +49,8 @@ struct ModifyExistingItemView: View {
 		}
 		.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
 		.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+		// this onAppear seems to be critical for correct operation ... i will revisit this.
+		.onAppear { editableItemData = EditableItemData(item: item) }
 		.onDisappear {
 				// we were doing a pseudo-live edit, so update on the way out, unless we opted to delete the associated item
 			if editableItemData.representsExistingItem {

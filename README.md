@@ -36,6 +36,10 @@ Major code-level changes that you will find in this release of the project are:
   * The "Mark All Items Available" and "Move All Items Off-list" buttons on the shopping list view are now in an HStack (not a VStack), with some animation aiding the transition if the "Mark All Items Available" button need not appear.
   * The single-section versus multi-section display button, previously shown as a leading navigation button, now appears as a button in the header of the first section in both the ShoppingListView and PurchasedItemsView.
   
+Minor initial-release-fixes:
+
+* (*24 Dec*) Reinstated the required `.sheet` modifier on ShoppingListView so that you can really add a new item after tapping the `+` button in the navigation bar (duh!)
+* (*24 Dec*) Fixed a little bit of a bug caused by a misunderstanding on my part in ModifyExistingItemView that now requires me to keep a reference to an Item.
 
 ## General App Structure
 

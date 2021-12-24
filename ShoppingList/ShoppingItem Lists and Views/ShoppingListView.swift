@@ -77,7 +77,9 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
-		// this is where the share sheet is controlled (see ActivityView package)
+			// added this .sheet modifier ... not sure why it got deleted for the initial release of the project
+		.sheet(item: $identifiableSheetItem) { item in item.content() }
+			// this is where the share sheet is controlled (see ActivityView package)
 		.activitySheet($activityItem)
 
 		.onAppear {
