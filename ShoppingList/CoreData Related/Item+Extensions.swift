@@ -21,7 +21,9 @@ extension Item {
 	Notice that all except one of the Core Data attributes on an Item in the
 	CD model appear with an underscore (_) at the end of their name.
 	(the only exception is "id" because tweaking that name is a problem due to
-	conformance to Identifiable.)
+	conformance to Identifiable, although in retrospect, i should have used id_
+	 in the Core Data model, and then just fronted it with var id: UUID { id_! };
+	 however, i don't want to up the version of the database for such a small change.)
 	
 	my general theory of the case is that no one outside of this class (and its Core
 	Data based brethren, like Location+Extensions.swift and PersistentStore.swift) should really
@@ -51,7 +53,7 @@ extension Item {
 	
 		-- a Location has an `itemCount` computed property = the count of its associated Items.
 	
-	for example, if a view holds on to (is a subscriber of) an Item as an @ObservedObject, and if
+	however, if a view holds on to (is a subscriber of) an Item as an @ObservedObject, and if
 	we change the name of its associated Location, the view will not see this change because it
 	is subscribed to changes on the Item (not the Location).
 	
@@ -83,9 +85,9 @@ extension Item {
 		save out its data to disk and update its in-memory object graph for a deletion.)  depending on how
 		view code accesses that object, your program may crash.
 
-	when you front all your Core Data attributes as i do below, the problem above seems to disappear, for
-	the most part, but i think it's really still there.  it's possible that iOS 14.2 and later have done
-	something about this ...
+	when you front all your Core Data attributes as i do below, especially if you nil-coalesce optional values,
+	 the problem above seems to disappear, for the most part, but it's really still there.  it just doesn't crash
+	 (as often?)
 		
 	anyway, it's something to think about.  in this app, if you show a list of items on the shopping list,
 	navigate to an item's detail view, and press "Delete this Item," the row view for the item in the shopping
@@ -95,11 +97,11 @@ extension Item {
 	
 	*/
 	
-		//MARK: - Fronting Properties
+		// MARK: - Fronting Properties
 	
 		// the name.  this fronts a Core Data optional attribute
 	var name: String {
-		get { name_ ?? "Not Available" }
+		get { name_ ?? "No Name" }
 		set { name_ = newValue }
 	}
 	
@@ -132,13 +134,13 @@ extension Item {
 		// an item's associated location.  this fronts a Core Data optional attribute.
 		// if you change an item's location, the old and the new Location may want to
 		// know that some of their computed properties could be invalidated.
-	//
-	// just in case: if the location is not set for an item, this will self-correct
-	// and set it to the unknown location.  this should not really happen, but
-	// i have found that when you load the app onto a second device on your
-	// iCloud account, data will start arriving from the cloud as an initial download
-	// and ... it could be the case that we try to access an Item that's been downloaded
-	// before its associated Location has been brought down to the device.
+		//
+		// [new] just in case: if the location is not set for an item, this will self-correct
+		// and set it to the unknown location.  this should not really happen on device, but
+		// i have found that when you load the app onto a second device on your
+		// iCloud account, data will start arriving from the cloud as an initial download
+		// and ... it could be the case that we try to access an Item that's been downloaded
+		// before its associated Location has been brought down to the device.
 	var location: Location {
 		get {
 			if let location = location_ {
@@ -153,7 +155,6 @@ extension Item {
 			location_?.objectWillChange.send()
 		}
 	}
-	
 		
 		// MARK: - Computed Properties
 	
@@ -195,9 +196,6 @@ extension Item {
 	}
 	
 	// MARK: - Class functions for CRUD operations
-	
-	// this whole bunch of static functions lets me do simple fetch and
-	// CRUD operations.
 	
 	class func count() -> Int {
 		return count(context: PersistentStore.shared.context)
@@ -264,18 +262,12 @@ extension Item {
 	// MARK: - Object Methods
 	
 	// toggles the availability flag for an item
-	func toggleAvailableStatus() {
-		isAvailable.toggle()
-	}
+	func toggleAvailableStatus() { isAvailable.toggle() }
 
 	// changes onList flag for an item
-	func toggleOnListStatus() {
-		onList = !onList
-	}
+	func toggleOnListStatus() { onList = !onList }
 
-	func markAvailable() {
-		isAvailable_ = true
-	}
+	func markAvailable() { isAvailable_ = true }
 	
 	private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name

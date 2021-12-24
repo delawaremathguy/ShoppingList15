@@ -48,9 +48,9 @@ final class PersistentStore: ObservableObject {
 		// of your app's target.
 		
 		// USE EITHER THIS DEFINITION FOR CONTAINER for on-device only data storage:
-		// let container = NSPersistentContainer(name: "ShoppingList")
+		let container = NSPersistentContainer(name: "ShoppingList")
 		// OR THIS DEFINITION FOR CONTAINER for on-device data storage shared via the cloud
-		let container = NSPersistentCloudKitContainer(name: "ShoppingList")
+		// let container = NSPersistentCloudKitContainer(name: "ShoppingList")
 #endif
 
 		// some of what follows are suggestions by "Apple Staff" on the Apple Developer Forums

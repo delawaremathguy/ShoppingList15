@@ -26,6 +26,7 @@ struct ShoppingListView: View {
 	// but an eager developer could easily store this default value in UserDefaults (?)
 	@State var multiSectionDisplay: Bool = false
 		
+	// trigger to bring up a share sheet (see the ActivityView package)
 	@State private var activityItem: ActivityItem?
 	
 	// we use an init, just to track when this view is initialized.  it can be removed (!)
@@ -76,6 +77,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
+		// this is where the share sheet is controlled (see ActivityView package)
 		.activitySheet($activityItem)
 
 		.onAppear {
@@ -118,6 +120,8 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 	func trailingButtons() -> some View {
 		HStack(spacing: 12) {
 			Button {
+				// setting the activityItem triggers the ActivityViewController
+				// to share a text representation of the shopping list (see ActivityView package)
 				activityItem = ActivityItem(items: shareContent())
 			} label: {
 				Image(systemName: "square.and.arrow.up")
