@@ -27,10 +27,16 @@ struct ModifyExistingLocationView: View {
 	}
 	
 	var body: some View {
+
+			// the trailing closure provides the EditableLocationDataView with what to do after the user has
+			// opted to delete the location, namely "trigger an alert whose destructive action is to delete the
+			// Location, and whose destructive completion is to dismiss this view,"
+			// so we "go back" up the navigation stack
 		EditableLocationDataView(editableLocationData: $editableLocationData) {
 			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
-				location: editableLocationData.associatedLocation,
-				destructiveCompletion: { dismiss() })
+				location: editableLocationData.associatedLocation) {
+					dismiss()
+				}
 		}
 			.navigationBarTitle(Text("Modify Location"), displayMode: .inline)
 			.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }

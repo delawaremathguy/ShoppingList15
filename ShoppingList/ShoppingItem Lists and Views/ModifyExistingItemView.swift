@@ -23,11 +23,23 @@ import SwiftUI
 struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
-	
-	@State private var editableItemData: EditableItemData
-	// i am a little mystified by having to keep a reference to the incoming item ... i am still researching this.
-	// i will add commentary later on once i have a clear explanation.
+		
+	// i am a surprised that i have to keep a reference to the item (turns out, it does not need
+	// to be an @ObservedObject reference) and reload the editableItemData in each .onAppear.
+	// it turns out that @State values (and @StateObject objects) are apparently created lazily
+	// by SwiftUI, and those values are actually discarded when no longer needed by SwiftUI --
+	// even though the View struct itself has not been discarded.  so when the @State values are
+	// again needed, they are restored to their initial value based on when the view struct was created,
+	// and not the value they had when the @State value was discarded.
+	//
+	// in other words, the lifecycle of @State and @StateObject values is not the same as the
+	// lifecycle of the View struct that defines them.  could this simply be a SwiftUI bug?
+	//
+	// but then, of course, this seems not to be needed over in ModifyExistingLocationView,
+	// so it's unclear to me what's happening (!)
 	private var item: Item
+		// an editable copy of the Item's data
+	@State private var editableItemData: EditableItemData
 	
 		// custom init here to set up editableData state, a struct
 	init(editableItem: Item) {
@@ -41,7 +53,9 @@ struct ModifyExistingItemView: View {
 	var body: some View {
 		
 			// the trailing closure provides the EditableItemDataView with what to do after the user has
-			// deleted the item, namely "dismiss" so we "go back" up the navigation stack
+			// opted to delete the item, namely "trigger an alert whose destructive action is to delete the
+			// Item, and whose destructive completion is to dismiss this view,"
+			// so we "go back" up the navigation stack
 		EditableItemDataView(editableItemData: $editableItemData) {
 			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: editableItemData.associatedItem) {
 				dismiss()
@@ -50,7 +64,10 @@ struct ModifyExistingItemView: View {
 		.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
 		.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
 		// this onAppear seems to be critical for correct operation ... i will revisit this.
-		.onAppear { editableItemData = EditableItemData(item: item) }
+		.onAppear {
+			// reload @State variable
+			editableItemData = EditableItemData(item: item)
+		}
 		.onDisappear {
 				// we were doing a pseudo-live edit, so update on the way out, unless we opted to delete the associated item
 			if editableItemData.representsExistingItem {

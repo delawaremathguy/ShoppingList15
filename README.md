@@ -18,7 +18,7 @@ Major code-level changes that you will find in this release of the project are:
 
 * Cloud-syncing across devices on the same Apple ID is implemented.  You can build the list on your iPad, then take your iPhone to the store with the updated list.
 
-  * The proper entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  *A small amount of testing may still be necessary.*
+  * The proper cloud entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  *A small amount of testing may still be necessary.*
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
@@ -40,6 +40,7 @@ Minor initial-release-fixes:
 
 * (*24 Dec*) Reinstated the required `.sheet` modifier on ShoppingListView so that you can really add a new item after tapping the `+` button in the navigation bar (duh!)
 * (*24 Dec*) Fixed a little bit of a bug caused by a misunderstanding on my part in ModifyExistingItemView that now requires me to keep a reference to an Item.
+* (*26 Dec*) Cloud sharing is off by default, to avoid confusion.  See comments in PersistentStore.swift.
 
 ## General App Structure
 

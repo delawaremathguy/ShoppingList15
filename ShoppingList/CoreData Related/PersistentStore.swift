@@ -47,7 +47,7 @@ final class PersistentStore: ObservableObject {
 		// and definition of the cloudKit container in the Signing & Capabilities section
 		// of your app's target.
 		
-		// USE EITHER THIS DEFINITION FOR CONTAINER for on-device only data storage:
+		// USE  THIS DEFINITION (DEFAULT) FOR CONTAINER for on-device-only data storage:
 		let container = NSPersistentContainer(name: "ShoppingList")
 		// OR THIS DEFINITION FOR CONTAINER for on-device data storage shared via the cloud
 		// let container = NSPersistentCloudKitContainer(name: "ShoppingList")
@@ -89,7 +89,7 @@ final class PersistentStore: ObservableObject {
 				* The store could not be migrated to the current model version.
 				Check the error message to determine what the actual problem was.
 				*/
-				fatalError("Unresolved error \(error), \(error.userInfo)")
+				fatalError("Unresolved loadPersistentStores error \(error), \(error.userInfo)")
 			}
 			
 		})
