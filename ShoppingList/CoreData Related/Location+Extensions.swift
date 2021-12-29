@@ -173,7 +173,7 @@ extension Location: Comparable {
 		PersistentStore.shared.saveContext()
 	}
 	
-	class func update(using editableData: EditableLocationData) {
+	class func updateAndSave(using editableData: EditableLocationData) {
 		// if the incoming location data represents an existing Location, so this is just
 		// a straight update.  otherwise, we must create the new Location here and add it
 		// before updating it with the new values

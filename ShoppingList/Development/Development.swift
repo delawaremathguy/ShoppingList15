@@ -25,7 +25,7 @@ import UIKit
 // the view modifiers .onAppear and .onDisappear are called.  so throughout the app, you
 // will find .onAppear and .onDisappear modifiers that print out when these actually do
 // something by calling back to these two little functions.  you can turn this logging
-// off by just commenting out the print statement (or deleting their calling from code).
+// off by just commenting out the print statement (or deleting their being called from code).
 func logAppear(title: String) {
 	print(title + " Appears")
 }
@@ -36,7 +36,7 @@ func logDisappear(title: String) {
 // i used these constants and functions below during development to import and
 // export Items and Locations via JSON.  these are the filenames for JSON output
 // when dumped from the simulator and also the filenames in the bundle used to load sample data.
-let kJSONDumpDirectory = "/Users/USE_YOUR_OWN_MAC_USERNAME_HERE_HERE/Desktop/"	// dumps to the Desktop: Adjust for your Username!
+let kJSONDumpDirectory = "/Users/YOUR USERNAME HERE/Desktop/"	// dumps to the Desktop: Adjust for your Username!
 let kItemsFilename = "items.json"
 let kLocationsFilename = "locations.json"
 

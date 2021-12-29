@@ -24,7 +24,7 @@ struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
 		
-	// i am a surprised that i have to keep a reference to the item (turns out, it does not need
+	// i am a surprised that i have to keep a reference to the item (it does not need
 	// to be an @ObservedObject reference) and reload the editableItemData in each .onAppear.
 	// it turns out that @State values (and @StateObject objects) are apparently created lazily
 	// by SwiftUI, and those values are actually discarded when no longer needed by SwiftUI --
@@ -71,7 +71,7 @@ struct ModifyExistingItemView: View {
 		.onDisappear {
 				// we were doing a pseudo-live edit, so update on the way out, unless we opted to delete the associated item
 			if editableItemData.representsExistingItem {
-				Item.update(using: editableItemData)
+				Item.updateAndSave(using: editableItemData)
 			}
 		}
 	}

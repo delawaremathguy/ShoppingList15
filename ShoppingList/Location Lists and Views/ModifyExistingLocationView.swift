@@ -44,7 +44,7 @@ struct ModifyExistingLocationView: View {
 					// we were doing a pseudo-live edit, so update on the way out, unless
 					// we chose above to delete the associated location
 				if editableLocationData.representsExistingLocation {
-					Location.update(using: editableLocationData)
+					Location.updateAndSave(using: editableLocationData)
 					PersistentStore.shared.saveContext()
 				}
 			}

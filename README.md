@@ -12,13 +12,13 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update of 24 December, 2021
+### Most Recent Update of 29 December, 2021
 
 Major code-level changes that you will find in this release of the project are:
 
 * Cloud-syncing across devices on the same Apple ID is implemented.  You can build the list on your iPad, then take your iPhone to the store with the updated list.
 
-  * The proper cloud entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  *A small amount of testing may still be necessary.*
+  * The proper cloud entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  *A small amount of testing may still be necessary -- not all seems to work exactly right at this time.*
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
@@ -26,7 +26,7 @@ Major code-level changes that you will find in this release of the project are:
 
 * The functionality of what was SearchBarView (by Simon Ng) has been replaced using the iOS 15 native `.searchable()` view modifier.
 
-* Sharing of a shopping list is now implemented using a standard "share sheet," i.e., a UIActivityViewController, using a SwiftUI package from [SwiftUI+](https://github.com/SwiftUI-Plus).
+* Sharing of a shopping list is now implemented using a standard "share sheet," i.e., a UIActivityViewController, using a SwiftUI package from [SwiftUI+](https://github.com/SwiftUI-Plus). 
 
 * The coding for the display of Items in each of the shopping list and purchased list views has, thankfully, been cleanly merged, removing what was an irritating example of needless code duplication. 
 
@@ -36,11 +36,16 @@ Major code-level changes that you will find in this release of the project are:
   * The "Mark All Items Available" and "Move All Items Off-list" buttons on the shopping list view are now in an HStack (not a VStack), with some animation aiding the transition if the "Mark All Items Available" button need not appear.
   * The single-section versus multi-section display button, previously shown as a leading navigation button, now appears as a button in the header of the first section in both the ShoppingListView and PurchasedItemsView.
   
-Minor initial-release-fixes:
+Minor initial-release-fixes (within the last 5 days):
 
 * (*24 Dec*) Reinstated the required `.sheet` modifier on ShoppingListView so that you can really add a new item after tapping the `+` button in the navigation bar (duh!)
 * (*24 Dec*) Fixed a little bit of a bug caused by a misunderstanding on my part in ModifyExistingItemView that now requires me to keep a reference to an Item.
 * (*26 Dec*) Cloud sharing is off by default, to avoid confusion.  See comments in PersistentStore.swift.
+* (*29 Dec*) The share icon in the ShoppingListView is now disabled if there are no items on the shopping list.
+* (*29 Dec*) Functions Item.update(using:) and Location.update(using:) have been renamed to "updateAndSave," since they save the context as well as update.
+* (* 29 Dec*) I have added a few explicit saves of the managedObjectContext.  Example: tap an item off one list to another, so that the cloud is more likely to get the change as well.
+* (*29 Dec*) There appears to be a layout problem for the ActivityView on the iPad when in a regular environment.  I am still looking at this, but the workaround for now is to be sure that you are in a compact environment (e.g., in a split screen with ShoppingList in a compact half of the screen).
+* (*29 Dec*) Version number changed to 3.0.
 
 ## General App Structure
 

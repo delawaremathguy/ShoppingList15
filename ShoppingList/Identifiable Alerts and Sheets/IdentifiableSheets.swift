@@ -55,25 +55,3 @@ class AddNewItemSheetItem: IdentifiableSheetItem {
 	}
 	
 }
-
-// MARK: a sheet to display a UIACTIVITYVIEWCONTROLLER
-
-class ActivityViewControllerSheetItem: IdentifiableSheetItem {
-	
-		// specialized data for this instance
-	private var dismiss: () -> Void
-	private var shareContent: String
-	
-	init(shareContent: String, dismiss: @escaping () -> Void) {
-		self.dismiss = dismiss
-		self.shareContent = shareContent
-		super.init()
-	}
-	
-	override func content() -> AnyView {
-		ActivityViewController(itemsToShare: [shareContent])
-			.eraseToAnyView()
-	}
-
-
-}

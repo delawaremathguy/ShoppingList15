@@ -45,7 +45,6 @@
 		D6B753162766976C0050AF52 /* SectionHeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B753152766976C0050AF52 /* SectionHeaderButton.swift */; };
 		D6B8A95424636711005F8EF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A95324636711005F8EF2 /* MainView.swift */; };
 		D6B8A9562463693D005F8EF2 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A9552463693D005F8EF2 /* LocationsView.swift */; };
-		D6BA2DB42773874D008C01CC /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BA2DB32773874D008C01CC /* ActivityViewController.swift */; };
 		D6BA2DB72773982E008C01CC /* ActivityView in Frameworks */ = {isa = PBXBuildFile; productRef = D6BA2DB62773982E008C01CC /* ActivityView */; };
 		D6C7685C2572B3B500E0F4B0 /* SelectableItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */; };
 		D6C783D925A0BCF900B7148D /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */; };
@@ -103,7 +102,6 @@
 		D6B753152766976C0050AF52 /* SectionHeaderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderButton.swift; sourceTree = "<group>"; };
 		D6B8A95324636711005F8EF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6B8A9552463693D005F8EF2 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
-		D6BA2DB32773874D008C01CC /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableItemRowView.swift; sourceTree = "<group>"; };
 		D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableItemData.swift; sourceTree = "<group>"; };
@@ -260,7 +258,6 @@
 				D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */,
 				D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */,
 				D61EABFE27679C9B008186CF /* NavBarImageButton.swift */,
-				D6BA2DB32773874D008C01CC /* ActivityViewController.swift */,
 			);
 			path = "Custom Views and Other";
 			sourceTree = "<group>";
@@ -401,7 +398,6 @@
 				D6DBE724258A7F93007679E8 /* ConfirmationAlerts.swift in Sources */,
 				D648D349246388C100CD881B /* Location+Extensions.swift in Sources */,
 				D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */,
-				D6BA2DB42773874D008C01CC /* ActivityViewController.swift in Sources */,
 				D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */,
 				D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */,
 				D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */,
@@ -555,7 +551,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dela.ware.math.ShoppingList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -578,7 +574,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dela.ware.math.ShoppingList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

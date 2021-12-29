@@ -226,7 +226,7 @@ extension Item {
 	
 	// updates data for an Item that the user has directed from an Add or Modify View.
 	// if the incoming data is not associated with an item, we need to create it first
-	class func update(using editableData: EditableItemData) {
+	class func updateAndSave(using editableData: EditableItemData) {
 		// if we can find an Item with the right id, use it, else create one
 		if let id = editableData.id,
 			let item = Item.object(id: id, context: PersistentStore.shared.context) {
@@ -265,9 +265,15 @@ extension Item {
 	func toggleAvailableStatus() { isAvailable.toggle() }
 
 	// changes onList flag for an item
-	func toggleOnListStatus() { onList = !onList }
+	func toggleOnListStatus() {
+		onList = !onList
+		PersistentStore.shared.saveContext()
+	}
 
-	func markAvailable() { isAvailable_ = true }
+	func markAvailable() {
+		isAvailable_ = true
+		PersistentStore.shared.saveContext()
+	}
 	
 	private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name

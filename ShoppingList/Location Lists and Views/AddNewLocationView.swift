@@ -37,7 +37,7 @@ struct AddNewLocationView: View {
 	func saveButton() -> some View {
 		Button {
 			dismiss()
-			Location.update(using: editableLocationData)
+			Location.updateAndSave(using: editableLocationData)
 		} label: {
 			Text("Save")
 		}

@@ -54,7 +54,7 @@ struct AddNewItemView: View {
 		// the save button saves the new item to the persistent store and dismisses ourself
 	func saveButton() -> some View {
 		Button {
-			Item.update(using: editableItemData)
+			Item.updateAndSave(using: editableItemData)
 			dismiss()
 		} label: {
 			Text("Save")
