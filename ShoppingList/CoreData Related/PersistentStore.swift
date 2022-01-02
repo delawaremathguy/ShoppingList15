@@ -39,7 +39,7 @@ final class PersistentStore: ObservableObject {
 		// i have already made those changes in this project.
 		
 #if targetEnvironment(simulator)
-		// i avoid using the cloud from the simulator.
+		// i avoid using the cloud with the simulator.
 		let container = NSPersistentContainer(name: "ShoppingList")
 #else
 		// but use one of use NSPersistentContainer or NSPersistentCloudKitContainer on a device.

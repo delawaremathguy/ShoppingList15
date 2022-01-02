@@ -7,6 +7,7 @@
 //
 
 import ActivityView
+import MessageUI
 import SwiftUI
 
 struct ShoppingListView: View {
@@ -128,7 +129,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			} label: {
 				Image(systemName: "square.and.arrow.up")
 			}
-			.disabled(items.count == 0)
+			.disabled(items.count == 0 || !MFMessageComposeViewController.canSendText())
 
 			NavBarImageButton("plus") {
 				identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
