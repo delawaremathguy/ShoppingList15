@@ -129,7 +129,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			} label: {
 				Image(systemName: "square.and.arrow.up")
 			}
-			.disabled(items.count == 0 || !MFMessageComposeViewController.canSendText())
+			.disabled(items.count == 0)
 
 			NavBarImageButton("plus") {
 				identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
@@ -140,6 +140,8 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 	// MARK: - Sharing support
 	
 	func shareContent() -> String {
+		
+		// we share a straight-forward text description of the shopping list, broken out by location.
 		var message = "Items on your Shopping List: \n"
 		
 			// pull out Locations appearing in the shopping list as a dictionary, keyed by location

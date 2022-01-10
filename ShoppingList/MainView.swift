@@ -42,6 +42,6 @@ struct MainView: View {
 		.navigationViewStyle(.stack)
 
 	} // end of var body: some View
-	
+		
 }
 
