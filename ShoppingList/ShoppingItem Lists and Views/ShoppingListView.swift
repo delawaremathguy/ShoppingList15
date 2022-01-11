@@ -80,8 +80,8 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
 			// added this .sheet modifier ... not sure why it got deleted for the initial release of the project
 		.sheet(item: $identifiableSheetItem) { item in item.content() }
-			// this is where the share sheet is controlled (see ActivityView package)
-		.activitySheet($activityItem)
+//			// this is where the share sheet is controlled (see ActivityView package)
+//		.activitySheet($activityItem)
 
 		.onAppear {
 			logAppear(title: "ShoppingListView")
@@ -129,6 +129,8 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			} label: {
 				Image(systemName: "square.and.arrow.up")
 			}
+				// this is where the share sheet is controlled (see ActivityView package)
+			.activitySheet($activityItem)
 			.disabled(items.count == 0)
 
 			NavBarImageButton("plus") {

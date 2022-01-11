@@ -12,8 +12,9 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 10 January, 2022
+### Most Recent Update(s) of 11 January, 2022
 
+* (*11 Jan*) Moved the `.activitySheet($activityItem)` modifier in the ShoppingListView from the enclosing view to the  share button in the navigation bar, and this seems to clear up earlier issues with iPad presentation.  In short: i'm guessing the placement of the `.activitySheet` determines the view to which the UIActivityViewController will be attached.
 * (*10 Jan*) Removed the `!MFMessageComposeViewController.canSendText()` qualifier on whether the share icon is disabled on the ShoppingListView so this can work in the simulator. (`canSendText()` does not refer to whether the activity item can be text, but whether the device can text.)
 * (*2 Jan*) Sharing of shopping list (simple text) is disabled if MFMessageComposeViewController.canSendText() == false.
 
