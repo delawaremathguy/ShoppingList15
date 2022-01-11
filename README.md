@@ -14,7 +14,7 @@ Feel free to use this as is, to develop further, to completely ignore, or even j
 
 ### Most Recent Update(s) of 11 January, 2022
 
-* (*11 Jan*) Moved the `.activitySheet($activityItem)` modifier in the ShoppingListView from the enclosing view to the  share button in the navigation bar, and this seems to clear up earlier issues with iPad presentation.  In short: i'm guessing the placement of the `.activitySheet` determines the view to which the UIActivityViewController will be attached.
+* (*11 Jan*) Moved the `.activitySheet($activityItem)` modifier in the ShoppingListView from the enclosing view to the share button in the navigation bar, and this seems to clear up earlier issues with iPad presentation.  In short:The placement of the `.activitySheet` modifier determines the view on an iPad to which the UIActivityViewController will be attached.
 * (*10 Jan*) Removed the `!MFMessageComposeViewController.canSendText()` qualifier on whether the share icon is disabled on the ShoppingListView so this can work in the simulator. (`canSendText()` does not refer to whether the activity item can be text, but whether the device can text.)
 * (*2 Jan*) Sharing of shopping list (simple text) is disabled if MFMessageComposeViewController.canSendText() == false.
 
@@ -114,7 +114,7 @@ Major code-level changes that you will find in this release of the project are:
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-* Alerts and sheets may now prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects for the necessary identifiable items (*rather than structs having protocol requirements as in ShoppingList14*).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts and sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI can often be overlooked with this design pattern.
+* Alerts and sheets may now prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects for the necessary identifiable items (*rather than structs having protocol requirements as in ShoppingList14*).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts and sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI can often be circumvented with this design pattern.
 
 * The functionality of what was SearchBarView (by Simon Ng) has been replaced using the iOS 15 native `.searchable()` view modifier.
 
@@ -138,6 +138,6 @@ Subsequent initial-release-fixes:
 * (*26 Dec*) Cloud sharing is off by default, to avoid confusion.  See comments in PersistentStore.swift.
 * (*29 Dec*) The share icon in the ShoppingListView is now disabled if there are no items on the shopping list.
 * (*29 Dec*) Functions Item.update(using:) and Location.update(using:) have been renamed to "updateAndSave," since they save the context as well as update.
-* (* 29 Dec*) I have added a few explicit saves of the managedObjectContext.  Example: tap an item off one list to another, so that the cloud is more likely to get the change as well.
-* (*29 Dec*) There appears to be a layout problem for the ActivityView on the iPad when in a regular environment.  I am still looking at this, but the workaround for now is to be sure that you are in a compact environment (e.g., in a split screen with ShoppingList in a compact half of the screen).
+* (*29 Dec*) I have added a few explicit saves of the managedObjectContext.  Example: tap an item off one list to another, so that the cloud is more likely to get the change as well sooner, rather than later.
+* (*29 Dec*) ~There appears to be a layout problem for the ActivityView on the iPad when in a regular environment.  I am still looking at this, but the workaround for now is to be sure that you are in a compact environment (e.g., in a split screen with ShoppingList in a compact half of the screen).~
 * (*29 Dec*) Version number changed to 3.0.
