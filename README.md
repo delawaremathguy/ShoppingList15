@@ -22,7 +22,9 @@ Please be sure to consult the ChangeLog below for all updates since the initial 
 
 ## General App Structure
 
-The main screen is a TabView, to show 
+> *I still have to update these older screenshots (!)*
+
+The main screen is a TabView, which presents *approximately*:
 
 * a current shopping list (which can appear as a single section, or in multiple sections by Location) 
 
@@ -96,7 +98,7 @@ The code of this app **continues to follow the three rules above**, and I think 
 
 * The app icon was created by Wes Breazell from [the Noun Project](https://thenounproject.com). 
 * The extension I use on Bundle to load JSON files is due to Paul Hudson (@twostraws, [hackingwithswift.com](https://hackingwithswift.com)) 
-* The Activity View Controller/Share Sheet is implemented using the open-source ActivityView framework and SwiftUI package [available at SwiftUI+](https://github.com/SwiftUI-Plus)
+* The Activity View Controller/Share Sheet is implemented using the open-source ActivityView framework and SwiftUI package [available at SwiftUI+](https://github.com/SwiftUI-Plus), Copyright © 2020 [Shaps Benkau](https://benkau.com)
 
 
 Otherwise, just about all of the code is original, and it's yours if you want it -- please see LICENSE for the usual details and disclaimers.
@@ -110,7 +112,7 @@ Major code-level changes that you will find in this release of the project are:
 
 * Cloud-syncing across devices on the same Apple ID is implemented.  You can build the list on your iPad, then take your iPhone to the store with the updated list.
 
-  * The proper cloud entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  *A small amount of testing may still be necessary -- not all seems to work exactly right at this time.*
+  * The proper cloud entitlements have been added to this project; but to actually turn on Cloud-syncing, you will need an Apple Developer account, you will need to manage app signing, and you must specify your own bundle identifier.  See comments in PersistentStore.swift.  *A small amount of testing may still be necessary.*
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
