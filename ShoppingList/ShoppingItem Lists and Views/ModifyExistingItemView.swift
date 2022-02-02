@@ -30,24 +30,30 @@ struct ModifyExistingItemView: View {
 	@Environment(\.dismiss) private var dismiss: DismissAction
 	
 		// an editable copy of the Item's data.  it's important that this be a @StateObject, because
-		// it is treated somewhat differently in terms of lifecycle that @State.
-		// my observations:
+		// it is treated somewhat differently than @State.
+		//
+		// my observations/guesses:
 		//
 		// -- the lifecycle of a @StateObject is not the same as that of the underlying View struct
-		//     where it is defined.  it is created lazily by SwiftUI when the View will actually be coming to
-		//     the screen, and destroyed when SwiftUI is finished with the View onscreen.  SwiftUI may
+		//     where it is defined.  it is created lazily by SwiftUI and stored in the heap when the View will
+		//     actually be coming to the screen (which means that SwiftUI has retained a reference to the
+		//     Item that was passed in), and destroyed when SwiftUI is finished with the View onscreen.  SwiftUI
 		//     or may not destroy the View struct when the @StateObject is destroyed; and if it does not
-		//     destroy the View struct, the @StateObject will be restored lazily to its previous value at
-		//     the time the SwiftUI view previously left the screen.
+		//     destroy the View struct, the @StateObject will be restored lazily in the future by keeping a (secret)
+		//     reference to the Item ... whose values may have changed since the last time this View was coming
+		//     on-screen.  therefore, the @StateObject represents the current state of the Item when the View
+		//     comes on screen.
 		//
 		// -- you can say almost exactly the same about an @State struct, but with one major exception:
-		//     should a View leave the visual hierarchy (when a @StateObject might be destroyed) without
-		//     its underlying struct being similarly destroyed, and should SwiftUI want to bring that View
-		//     back into the visual hierarchy, the value of the @State struct will revert to what it was
-		//     when the View struct was initialized ... which is not necessarily the same value that the
-		//     @State struct had when it previously left the screen.
+		//     the View (i believe) stores a copy of the @State struct value when it is initialized.
+		//     when the View will be coming to the screen, space is allocated in the heap and initialized from the stored
+		//     copy of the initial struct and everything proceeds as you would sort of expect.
+		//     should a View leave the visual hierarchy, the heap space for the @State value(s) is released, and should
+		//     SwiftUI want to bring that View back into the visual hierarchy, the value of the @State struct will be
+		//     restored from the copy of the @State struct it stashed away when it is initialized ... which is not the
+		//     same value as a @State struct initialized from the Item when the View comes on screen.
 		//
-		// the mysteries of SwiftUI remain for me, even as we're now in version 3.
+		// the mysteries of SwiftUI do indeed continue for me, even as we're now in version 3.
 		//
 	@StateObject private var editableItemData: EditableItemData
 	
