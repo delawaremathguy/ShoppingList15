@@ -12,11 +12,10 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 11 January, 2022
+### Most Recent Update(s) of 2 February, 2022
 
-* (*11 Jan*) Moved the `.activitySheet($activityItem)` modifier in the ShoppingListView from the enclosing view to the share button in the navigation bar, and this seems to clear up earlier issues with iPad presentation.  In short:The placement of the `.activitySheet` modifier determines the view on an iPad to which the UIActivityViewController will be attached.
-* (*10 Jan*) Removed the `!MFMessageComposeViewController.canSendText()` qualifier on whether the share icon is disabled on the ShoppingListView so this can work in the simulator. (`canSendText()` does not refer to whether the activity item can be text, but whether the device can text.)
-* (*2 Jan*) Sharing of shopping list (simple text) is disabled if MFMessageComposeViewController.canSendText() == false.
+* (*2 Feb*) Fixed a major bug with the new strategy of adding and modifying shopping `Item`s that was having inconsistent editing results (*the most obvious of which was the inability to change an item's location*).  The `EditableItemData`is now an `@ObserveableObject` and the Add/Modify views treat these data as `@StateObject`s.  A similar change has been made in the Add/Modify views for Locations, to handle `EditableLocationData` also as `@StateObject`s.  It turns out that there is a major difference between using a `@State` struct or a `@StateObject` class in a View in terms of their lifetime.  You can read more in EditableItemData.swift and ModifyExistingItem.swift.
+
 
 Please be sure to consult the ChangeLog below for all updates since the initial release of the project on 23 December, 2021.
 
@@ -143,3 +142,6 @@ Subsequent initial-release-fixes:
 * (*29 Dec*) I have added a few explicit saves of the managedObjectContext.  Example: tap an item off one list to another, so that the cloud is more likely to get the change as well sooner, rather than later.
 * (*29 Dec*) ~There appears to be a layout problem for the ActivityView on the iPad when in a regular environment.  I am still looking at this, but the workaround for now is to be sure that you are in a compact environment (e.g., in a split screen with ShoppingList in a compact half of the screen).~
 * (*29 Dec*) Version number changed to 3.0.
+* (*2 Jan*) Sharing of shopping list (simple text) is disabled if MFMessageComposeViewController.canSendText() == false.
+* (*10 Jan*) Removed the `!MFMessageComposeViewController.canSendText()` qualifier on whether the share icon is disabled on the ShoppingListView so this can work in the simulator. (`canSendText()` does not refer to whether the activity item can be text, but whether the device can text.)
+* (*11 Jan*) Moved the `.activitySheet($activityItem)` modifier in the ShoppingListView from the enclosing view to the share button in the navigation bar, and this seems to clear up earlier issues with iPad presentation.  In short:The placement of the `.activitySheet` modifier determines the view on an iPad to which the UIActivityViewController will be attached.

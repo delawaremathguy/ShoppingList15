@@ -15,7 +15,7 @@ struct EditableLocationDataView: View {
 	
 	// incoming data = values for a Location + what action to take if the user
 	// decides to delete the Location
-	@Binding var editableLocationData: EditableLocationData
+	@ObservedObject var editableLocationData: EditableLocationData
 	var deleteActionTrigger: (() -> ())?
 	private var locationCanBeDeleted: Bool {
 		editableLocationData.representsExistingLocation

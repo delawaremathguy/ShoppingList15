@@ -13,24 +13,28 @@ import SwiftUI
 struct EditableItemDataView: View {
 	
 		// incoming data:
-	@Binding private var editableItemData: EditableItemData
+	@ObservedObject var editableItemData: EditableItemData
 	var deleteActionTrigger: (() -> ())?
-	private var itemExists: Bool
+	
+	private var itemExists: Bool {
+		deleteActionTrigger != nil
+	}
 	
 		// we need all locations so we can populate the Picker.
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
 	
-		// incoming parameters
-		// -- the item we're editing (this is a pseudo-live edit)
-		// -- whether the item can be deleted and what to do after the user deletes the Item
-		// note that deleteActionTrigger = nil if and only if this is initial data for an Item
-		// that does not yet exist (i.e., we're adding a new Item).
-	init(editableItemData: Binding<EditableItemData>, deleteActionTrigger: (() -> ())?) {
-		_editableItemData = editableItemData
-		self.deleteActionTrigger = deleteActionTrigger
-		itemExists = (deleteActionTrigger != nil)
-	}
+//		// incoming parameters
+//		// -- the item we're editing (this is essentially a live edit)
+//		// -- whether the item can be deleted and what to do after the user deletes the Item
+//		// note that deleteActionTrigger = nil if and only if this is initial data for an Item
+//		// that does not yet exist (i.e., we're adding a new Item).
+//	init(editableItemData: Binding<EditableItemData>, deleteActionTrigger: (() -> ())?) {
+//		self.editableItemData = editableItemData
+//		self.deleteActionTrigger = deleteActionTrigger
+//		itemExists = (deleteActionTrigger != nil)
+//	}
+	
 	
 	var body: some View {
 		Form {

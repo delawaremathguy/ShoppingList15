@@ -15,10 +15,10 @@ struct AddNewLocationView: View {
 	// identifiableSheetItem, so the presenter needs to tell us how it will dismiss us
 	var dismiss: () -> Void
 		// default editableLocationData is initialized here
-	@State private var editableLocationData = EditableLocationData()
+	@StateObject private var editableLocationData = EditableLocationData()
 	
 	var body: some View {
-		EditableLocationDataView(editableLocationData: $editableLocationData)
+		EditableLocationDataView(editableLocationData: editableLocationData)
 			.navigationBarTitle(Text("Add New Location"), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.toolbar {
@@ -30,7 +30,11 @@ struct AddNewLocationView: View {
 	
 		// the cancel button
 	func cancelButton() -> some View {
-		Button { dismiss() } label: { Text("Cancel") }
+		Button {
+			dismiss()
+		} label: {
+			Text("Cancel")
+		}
 	}
 	
 		// the save button

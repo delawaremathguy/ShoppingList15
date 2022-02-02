@@ -15,16 +15,25 @@ import Foundation
 // want to update an Item with this data, so see the class function
 // Item.update(using editableData: EditableItemData)
 
-struct EditableItemData {
+// ADDED 2 FEB 2022: this is now a class object that conforms to ObservableObject, with
+// five of its properties marked @Published (these are exactly the properties that can be edited
+// in the EditableItemDataView).  both the AddNewItemView and the ModifyExistingDataView
+// will create these as a @StateObject.  it turns out that @State (for a struct) and @StateObject
+// (for a class) do not exactly have the same behaviour, despite my naive belief that they did.
+// making this change solves an updating problem discovered while editing Items, where
+// some changes would "not seem to stick" across multiple edits.
+
+class EditableItemData: ObservableObject {
+		
 	// the id of the Item, if any, associated with this data collection
 	// (nil if data for a new item that does not yet exist)
 	var id: UUID? = nil
 	// all of the values here provide suitable defaults for a new item
-	var name: String = ""
-	var quantity: Int = 1
-	var location = Location.unknownLocation()
-	var onList: Bool = true
-	var isAvailable = true
+	@Published var name: String = ""
+	@Published var quantity: Int = 1
+	@Published var location = Location.unknownLocation()
+	@Published var onList: Bool = true
+	@Published var isAvailable = true
 	var dateText = "" // for display only, not actually editable
 	
 	// this copies all the editable data from an incoming Item.  this looks fairly
