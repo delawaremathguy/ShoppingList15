@@ -14,6 +14,7 @@ Feel free to use this as is, to develop further, to completely ignore, or even j
 
 ### Most Recent Update(s) of 2 February, 2022
 
+* (*5 Feb*) Removed an extraneous addition of a navigation view when adding a new item to the Purchased List.
 * (*2 Feb*) Fixed a major bug with the new strategy of adding and modifying shopping `Item`s that was having inconsistent editing results (*the most obvious of which was the inability to change an item's location*).  The `EditableItemData`is now an `@ObserveableObject` and the Add/Modify views treat these data as `@StateObject`s.  A similar change has been made in the Add/Modify views for Locations, to handle `EditableLocationData` also as `@StateObject`s.  It turns out that there is a major difference between using a `@State` struct or a `@StateObject` class in a View in terms of their lifetime.  You can read more in EditableItemData.swift and ModifyExistingItem.swift.
 
 

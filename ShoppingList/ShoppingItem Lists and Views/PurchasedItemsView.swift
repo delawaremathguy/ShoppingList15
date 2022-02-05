@@ -74,9 +74,7 @@ struct PurchasedItemsView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
 		.alert(item: $identifiableAlertItem) { item in item.alert() }
-		.sheet(item: $identifiableSheetItem) { item in
-			NavigationView { item.content() }
-		}
+		.sheet(item: $identifiableSheetItem) { item in item.content() }
 		
 	}
 	
