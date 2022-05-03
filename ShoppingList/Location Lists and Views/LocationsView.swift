@@ -31,7 +31,9 @@ struct LocationsView: View {
 			List {
 				Section(header: Text("Locations Listed: \(locations.count)").sectionHeader()) {
 					ForEach(locations) { location in
-						NavigationLink(destination: ModifyExistingLocationView(location: location)) {
+						NavigationLink {
+							ModifyExistingLocationView(location: location)
+						} label: {
 							LocationRowView(rowData: LocationRowData(location: location))
 								.contextMenu { contextMenuButton(for: location) }
 						} // end of NavigationLink

@@ -48,26 +48,27 @@ struct ItemListView: View {
 		List {
 			ForEach(sections) { section in
 				Section(header: sectionHeader(section: section)) {
-						// display items in this location
 					ForEach(section.items) { item in
-							// display a single row here for 'item'
-						NavigationLink(destination: ModifyExistingItemView(editableItem: item)) {
-							SelectableItemRowView(item: item, selected: itemsChecked.contains(item), sfSymbolName: sfSymbolName) {
-								handleItemTapped(item)
-							}
-							.contextMenu {
-								ItemContextMenu(item: item) {
-									identifiableAlertItem = ConfirmDeleteItemAlert(item: item) {
-										identifiableAlertItem = nil
-									} // end of ItemContextMenu
-								} // end of itemContextMenu
-							} // end of contextMenu
-						} // end of NavigationLink
+						NavigationLink {
+							ModifyExistingItemView(item: item)
+						} label: {
+							SelectableItemRowView(item: item,
+																		selected: itemsChecked.contains(item),
+																		sfSymbolName: sfSymbolName) { handleItemTapped(item) }
+						}
+						.contextMenu {
+							ItemContextMenu(item: item) {
+								identifiableAlertItem = ConfirmDeleteItemAlert(item: item) {
+									identifiableAlertItem = nil
+								} // end of deletion closure
+							} // end of itemContextMenu
+						} // end of contextMenu
 					} // end of ForEach
 				} // end of Section
 			} // end of ForEach
-		}  // end of List
+		}  // end of List ... phew!
 		.listStyle(InsetGroupedListStyle())
+		.animation(.default, value: sections)
 		
 	} // end of body: some View
 	
@@ -145,7 +146,7 @@ struct ItemContextMenu: View {
 	
 	// i have tried using this both with and without marking the item as an ObservedObject; it
 	// makes no difference which way i do this; it's still the wrong display the second time
-	// the context menu comes down.
+	// the context menu comes down.  (i have filed Feedback ... i will not hold my breath.)
 	// @ObservedObject
 	var item: Item
 	var affirmDeletion: () -> Void

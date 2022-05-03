@@ -14,16 +14,16 @@ struct AddNewLocationView: View {
 	// incoming dismiss action.  we're a View presented as a sheet via an
 	// identifiableSheetItem, so the presenter needs to tell us how it will dismiss us
 	var dismiss: () -> Void
-		// default editableLocationData is initialized here
-	@StateObject private var editableLocationData = EditableLocationData()
+		// default draftLocation is initialized here
+	@StateObject private var draftLocation = DraftLocation()
 	
 	var body: some View {
-		EditableLocationDataView(editableLocationData: editableLocationData)
+		DraftLocationView(draftLocation: draftLocation)
 			.navigationBarTitle(Text("Add New Location"), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction, content: cancelButton)
-				ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableLocationData.canBeSaved) }
+				ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
 			}
 			.onDisappear { PersistentStore.shared.saveContext() }
 	}
@@ -41,7 +41,7 @@ struct AddNewLocationView: View {
 	func saveButton() -> some View {
 		Button {
 			dismiss()
-			Location.updateAndSave(using: editableLocationData)
+			Location.updateAndSave(using: draftLocation)
 		} label: {
 			Text("Save")
 		}

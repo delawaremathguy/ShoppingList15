@@ -55,11 +55,11 @@ struct ModifyExistingItemView: View {
 		//
 		// the mysteries of SwiftUI do indeed continue for me, even as we're now in version 3.
 		//
-	@StateObject private var editableItemData: EditableItemData
+	@StateObject private var draftItem: DraftItem
 	
 		// custom init here to set up editableData object
-	init(editableItem: Item) {
-		_editableItemData = StateObject(wrappedValue: EditableItemData(item: editableItem))
+	init(item: Item) {
+		_draftItem = StateObject(wrappedValue: DraftItem(item: item))
 	}
 	
 		// alert trigger item to confirm deletion of an Item
@@ -67,12 +67,12 @@ struct ModifyExistingItemView: View {
 	
 	var body: some View {
 		
-			// the trailing closure provides the EditableItemDataView with what to do after the user has
+			// the trailing closure provides the DraftItemView with what to do after the user has
 			// opted to delete the item, namely "trigger an alert whose destructive action is to delete the
 			// Item, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
-		EditableItemDataView(editableItemData: editableItemData) {
-			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: editableItemData.associatedItem) {
+		DraftItemView(draftItem: draftItem) {
+			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: draftItem.associatedItem) {
 				dismiss()
 			}
 		}
@@ -87,8 +87,8 @@ struct ModifyExistingItemView: View {
 	
 	func customBackButton() -> some View {
 		Button {
-			if editableItemData.representsExistingItem {
-				Item.updateAndSave(using: editableItemData)
+			if draftItem.representsExistingItem {
+				Item.updateAndSave(using: draftItem)
 			}
 			dismiss()
 		} label: {

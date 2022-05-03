@@ -1,5 +1,5 @@
 	//
-	//  EditableLocationDataView.swift
+	//  DraftLocationView.swift
 	//  ShoppingList
 	//
 	//  Created by Jerry on 12/10/21.
@@ -8,18 +8,21 @@
 
 import SwiftUI
 
-	// the EditableLocationDataView is a simple Form that allows the user to edit
+	// the DraftLocationView is a simple Form that allows the user to edit
 	// the default fields for a new Location, of the fields associated with a Location
 	// that already exists.
-struct EditableLocationDataView: View {
+struct DraftLocationView: View {
 	
-	// incoming data = values for a Location + what action to take if the user
-	// decides to delete the Location
-	@ObservedObject var editableLocationData: EditableLocationData
+		// incoming data = values for a Location + what action to take if the user
+		// decides to delete the Location
+	@ObservedObject var draftLocation: DraftLocation
 	var deleteActionTrigger: (() -> ())?
+	
+		// definition of whether we can offer a deletion option in this view
+		// (it's a real location that's not the unknown location)
 	private var locationCanBeDeleted: Bool {
-		editableLocationData.representsExistingLocation
-			&& !editableLocationData.associatedLocation.isUnknownLocation
+		draftLocation.representsExistingLocation
+			&& !draftLocation.associatedLocation.isUnknownLocation
 	}
 	
 		// trigger for adding a new item at this Location
@@ -32,19 +35,19 @@ struct EditableLocationDataView: View {
 			Section(header: Text("Basic Information").sectionHeader()) {
 				HStack {
 					SLFormLabelText(labelText: "Name: ")
-					TextField("Location name", text: $editableLocationData.locationName)
+					TextField("Location name", text: $draftLocation.locationName)
 				}
 				
-				if editableLocationData.visitationOrder != kUnknownLocationVisitationOrder {
-					Stepper(value: $editableLocationData.visitationOrder, in: 1...100) {
+				if draftLocation.visitationOrder != kUnknownLocationVisitationOrder {
+					Stepper(value: $draftLocation.visitationOrder, in: 1...100) {
 						HStack {
 							SLFormLabelText(labelText: "Visitation Order: ")
-							Text("\(editableLocationData.visitationOrder)")
+							Text("\(draftLocation.visitationOrder)")
 						}
 					}
 				}
 				
-				ColorPicker("Location Color", selection: $editableLocationData.color)
+				ColorPicker("Location Color", selection: $draftLocation.color)
 			} // end of Section 1
 			
 				// Section 2: Delete button, if the data is associated with an existing Location
@@ -58,15 +61,15 @@ struct EditableLocationDataView: View {
 			} // end of Section 2
 			
 //				 Section 3: Items assigned to this Location, if we are editing a Location
-			if editableLocationData.representsExistingLocation {
-				SimpleItemsList(location: editableLocationData.associatedLocation,
+			if draftLocation.representsExistingLocation {
+				SimpleItemsList(location: draftLocation.associatedLocation,
 												isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
 			}
 			
 		} // end of Form
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
 			NavigationView {
-				AddNewItemView(location: editableLocationData.associatedLocation) {
+				AddNewItemView(location: draftLocation.associatedLocation) {
 					isAddNewItemSheetShowing = false
 				}
 			}
@@ -90,7 +93,9 @@ struct SimpleItemsList: View {
 	var body: some View {
 		Section(header: ItemsListHeader()) {
 			ForEach(items) { item in
-				NavigationLink(destination: ModifyExistingItemView(editableItem: item)) {
+				NavigationLink {
+					ModifyExistingItemView(item: item)
+				} label: {
 					Text(item.name)
 				}
 			}

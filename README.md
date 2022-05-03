@@ -12,10 +12,10 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 2 February, 2022
+### Most Recent Update(s) of 3 May, 2022
 
-* (*5 Feb*) Removed an extraneous addition of a navigation view when adding a new item to the Purchased List.
-* (*2 Feb*) Fixed a major bug with the new strategy of adding and modifying shopping `Item`s that was having inconsistent editing results (*the most obvious of which was the inability to change an item's location*).  The `EditableItemData`is now an `@ObserveableObject` and the Add/Modify views treat these data as `@StateObject`s.  A similar change has been made in the Add/Modify views for Locations, to handle `EditableLocationData` also as `@StateObject`s.  It turns out that there is a major difference between using a `@State` struct or a `@StateObject` class in a View in terms of their lifetime.  You can read more in EditableItemData.swift and ModifyExistingItem.swift.
+* (*3 May*) Identifiers previously named `EditableItemData` and `EditableLocationData` have been renamed to `DraftItem` and `DraftLocation`, respectively.  All variables of these types and associated language throughout the codebase have been (*mostly*) updated to accommodate this change.
+* (*3 May*) Other variable names have changed and some syntax has been updated (e.g., `NavigationLink(destination: ...)` has been replaced by `NavigationLink { ... } { ... }`).
 
 
 Please be sure to consult the ChangeLog below for all updates since the initial release of the project on 23 December, 2021.
@@ -71,7 +71,7 @@ Here's what you do next:
 
 * **If you would like to test out this app and decide if it might be of interest to you**, run it on the simulator, go straight to the Preferences tab on startup and tap the "Load Sample Data" button.  Now you can play with the app.
 
-* **If you plan to install and use this app on your own device**, the app will start with an empty shopping list and a location list having only the special "Unknown Location"; from there you can create your own shopping items and locations associated with those items.  (*Hint: add Locations before adding Items!*)  I would suggest that you remove the development-only portion of the Preferences tab before installing the app (see comments in Development.swift).
+* **If you plan to install and use this app on your own device**, the app will start with an empty shopping list and a location list having only the special "Unknown Location"; from there you can create your own shopping items and locations associated with those items.  (*Suggestion: add Locations before adding Items!*)  I would suggest that you remove the development-only portion of the Preferences tab before installing the app (see comments in Development.swift).
 
 
 ### Core Data Notes
@@ -80,7 +80,7 @@ There have been no changes to the Core Data model since [ShoppingList14](https:/
 
 ### App Architecture
 
-Unfortunately, what has always bothered me about the current state of SwiftUI view code that I see that uses @FetchRequest is that such a view often needs to understand that the data it processes come from Core Data.  The view must also may need to know some of the gritty details of Core Data (e.g. @FetchRequests needed to know about sortDescriptors and keyPaths) and possibly know when to either nil-coalesce or at least test for nil values.
+Unfortunately, what has always bothered me about the current state of SwiftUI view code that I see that uses @FetchRequest is that such a view often needs to understand that the data it processes come from Core Data.  The view must also may need to know some of the gritty details of Core Data (e.g. @FetchRequests need to know about sortDescriptors and keyPaths) and possibly know when to either nil-coalesce or at least test for nil values.
 
 The design in this app now lives somewhere between MVVM and a basic, @FetchRequest-driven SwiftUI app structure.  My goal in reaching the current code structure was that all SwiftUI views should follow **these three rules**: 
 
@@ -116,7 +116,7 @@ Major code-level changes that you will find in this release of the project are:
 
 * I have separated what were dual-purpose "AddOrModify" views for both Items and Locations so that we now have a "ModifyExisting" view that is presented via a NavigationLink, and an "AddNew" view that is brought up by a sheet. 
 
-* Alerts and sheets may now prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects for the necessary identifiable items (*rather than structs having protocol requirements as in ShoppingList14*).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts and sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI can often be circumvented with this design pattern.
+* Alerts and sheets may now prefer to use a presentation syntax of `.alert(item:)` or `.sheet(item:)`, using a slightly newer design pattern based on class objects for the necessary identifiable items (*rather than structs having protocol requirements as in ShoppingList14*).  There is an obvious advantage here -- once you "get" the implementation idea, that every such item is a little bit of a "view model" to drive an alert or sheet, any one view can use a single `.alert` or `.sheet` modifier based on a single `@State` variable to handle any number of possible alerts or sheets, depending on how you set up the (Identifiable) variable.  So the "one alert/one sheet per view" restriction of SwiftUI can often be circumvented with this design pattern.
 
 * The functionality of what was SearchBarView (by Simon Ng) has been replaced using the iOS 15 native `.searchable()` view modifier.
 
@@ -144,5 +144,7 @@ Subsequent initial-release-fixes:
 * (*29 Dec*) ~There appears to be a layout problem for the ActivityView on the iPad when in a regular environment.  I am still looking at this, but the workaround for now is to be sure that you are in a compact environment (e.g., in a split screen with ShoppingList in a compact half of the screen).~
 * (*29 Dec*) Version number changed to 3.0.
 * (*2 Jan*) Sharing of shopping list (simple text) is disabled if MFMessageComposeViewController.canSendText() == false.
-* (*10 Jan*) Removed the `!MFMessageComposeViewController.canSendText()` qualifier on whether the share icon is disabled on the ShoppingListView so this can work in the simulator. (`canSendText()` does not refer to whether the activity item can be text, but whether the device can text.)
+* (*10 Jan*) Removed the `!MFMessageComposeViewController.canSendText()` qualifier on whether the share icon is disabled on the ShoppingListView so this can work in the simulator. (`canSendText()` does not refer to whether the activity item can be text, but whether the device can send text, *like the name says*.)
 * (*11 Jan*) Moved the `.activitySheet($activityItem)` modifier in the ShoppingListView from the enclosing view to the share button in the navigation bar, and this seems to clear up earlier issues with iPad presentation.  In short:The placement of the `.activitySheet` modifier determines the view on an iPad to which the UIActivityViewController will be attached.
+* (*2 Feb*) Fixed a major bug with the new strategy of adding and modifying shopping `Item`s that was having inconsistent editing results (*the most obvious of which was the inability to change an item's location*).  The `DraftItem`is now an `@ObservableObject` and the Add/Modify views treat these data as `@StateObject`s.  A similar change has been made in the Add/Modify views for Locations, to handle `EditableLocationData` also as `@StateObject`s.  It turns out that there is a major difference between using a `@State` struct or a `@StateObject` class in a View in terms of their lifetime.  You can read more in DraftItem.swift and ModifyExistingItem.swift.
+* (*5 Feb*) Removed an extraneous addition of a navigation view when adding a new item to the Purchased List.

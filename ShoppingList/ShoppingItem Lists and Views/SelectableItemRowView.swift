@@ -14,13 +14,13 @@ import SwiftUI
 struct SelectableItemRowView: View {
 	
 	// incoming are an item, whether that item is selected or not, what symbol
-	// to use for animation, and what to do when the selector is tapped.  we treat
+	// to use for animation, and what to do if the selector is tapped.  we treat
 	// the item as an @ObservedObject: we want to get redrawn if any property changes.
 	
 	@ObservedObject var item: Item
 	var selected: Bool
 	var sfSymbolName: String
-	var respondToTapOnSelector: () -> ()
+	var handleTap: () -> ()
 	
 	var body: some View {
 		HStack {
@@ -48,7 +48,7 @@ struct SelectableItemRowView: View {
 			} // end of ZStack
 			.animation(.easeInOut, value: selected)
 			.frame(width: 24, height: 24)
-			.onTapGesture { respondToTapOnSelector() }
+			.onTapGesture(perform: handleTap)
 			
 			// color bar is next
 			Color(item.uiColor)
@@ -72,7 +72,7 @@ struct SelectableItemRowView: View {
 			
 			Spacer()
 			
-			// quantity at the right
+				// quantity at the right
 			Text("\(item.quantity)")
 				.font(.headline)
 				.foregroundColor(Color.blue)

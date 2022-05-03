@@ -25,21 +25,21 @@ struct AddNewItemView: View {
 		// by the caller).
 	private var dismiss: () -> Void
 	
-		// this editableItemData object contains all of the fields for a new Item that are needed from the User
-	@StateObject private var editableItemData: EditableItemData
+		// this draftItem object contains all of the fields for a new Item that are needed from the User
+	@StateObject private var draftItem: DraftItem
 	
 		// custom init here to set up a data for an Item to be added having default values
 	init(initialItemName: String? = nil, location: Location? = nil, dismiss: @escaping () -> Void) {
-			// create working, editable Item data for a new Item, with the given suggested initial name and location
-		let initialValue = EditableItemData(initialItemName: initialItemName, location: location)
-		_editableItemData = StateObject(wrappedValue: initialValue)
+			// create working, editable data for a new Item, with the given suggested initial name and location
+		let initialValue = DraftItem(initialItemName: initialItemName, location: location)
+		_draftItem = StateObject(wrappedValue: initialValue)
 			// and stash away the dismiss function
 		self.dismiss = dismiss
 	}
 	
 		// the body is pretty short -- just call up a Form, adding a Cancel and Save button
 	var body: some View {
-		EditableItemDataView(editableItemData: editableItemData)
+		DraftItemView(draftItem: draftItem)
 			.navigationBarTitle("Add New Item", displayMode: .inline)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction, content: cancelButton)
@@ -59,12 +59,12 @@ struct AddNewItemView: View {
 		// the save button saves the new item to the persistent store and dismisses ourself
 	func saveButton() -> some View {
 		Button {
-			Item.updateAndSave(using: editableItemData)
+			Item.updateAndSave(using: draftItem)
 			dismiss()
 		} label: {
 			Text("Save")
 		}
-		.disabled(!editableItemData.canBeSaved)
+		.disabled(!draftItem.canBeSaved)
 	}
 	
 }

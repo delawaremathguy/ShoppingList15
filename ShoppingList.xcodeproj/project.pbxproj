@@ -16,7 +16,7 @@
 		D614343E2763B95B009CC73B /* IdentifiableSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D614343C2763B95A009CC73B /* IdentifiableSheetItem.swift */; };
 		D614343F2763B95B009CC73B /* IdentifiableSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D614343D2763B95B009CC73B /* IdentifiableSheets.swift */; };
 		D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434402763BAA1009CC73B /* AddNewLocationView.swift */; };
-		D61434432763BB65009CC73B /* EditableLocationDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434422763BB65009CC73B /* EditableLocationDataView.swift */; };
+		D61434432763BB65009CC73B /* DraftLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434422763BB65009CC73B /* DraftLocationView.swift */; };
 		D61434452764E0C1009CC73B /* ModifyExistingLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */; };
 		D61EABFF27679C9B008186CF /* NavBarImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61EABFE27679C9B008186CF /* NavBarImageButton.swift */; };
 		D62B88322451162D0051A7CE /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B88312451162D0051A7CE /* ShoppingListView.swift */; };
@@ -27,7 +27,7 @@
 		D63FE41F25D09E760090F6C1 /* ItemsSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */; };
 		D640329D24BB2F4A00CC0B94 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */; };
 		D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC2276182D50001371D /* AddINewtemView.swift */; };
-		D641BAC52761855C0001371D /* EditableItemDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC42761855C0001371D /* EditableItemDataView.swift */; };
+		D641BAC52761855C0001371D /* DraftItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC42761855C0001371D /* DraftItemView.swift */; };
 		D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64898E824B0E95E008FE512 /* PersistentStore.swift */; };
 		D648D349246388C100CD881B /* Location+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D648D348246388C100CD881B /* Location+Extensions.swift */; };
 		D65A509F2565789900D43229 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A509E2565789900D43229 /* String+Extensions.swift */; };
@@ -35,7 +35,7 @@
 		D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */; };
 		D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */; };
 		D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */; };
-		D677946224D58F34006EB9CF /* EditableLocationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D677946124D58F34006EB9CF /* EditableLocationData.swift */; };
+		D677946224D58F34006EB9CF /* DraftLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D677946124D58F34006EB9CF /* DraftLocation.swift */; };
 		D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6931D6B24C4C60900A61BB6 /* TimerTabView.swift */; };
 		D6997DDE27619673007B4C1C /* ModifyExistingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */; };
 		D6AAFF8A2582778E00B1CBAC /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AAFF892582778E00B1CBAC /* View+Extensions.swift */; };
@@ -48,7 +48,7 @@
 		D6BA2DB72773982E008C01CC /* ActivityView in Frameworks */ = {isa = PBXBuildFile; productRef = D6BA2DB62773982E008C01CC /* ActivityView */; };
 		D6C7685C2572B3B500E0F4B0 /* SelectableItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */; };
 		D6C783D925A0BCF900B7148D /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */; };
-		D6C91D8724A8EC09008C8DFF /* EditableItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */; };
+		D6C91D8724A8EC09008C8DFF /* DraftItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C91D8624A8EC09008C8DFF /* DraftItem.swift */; };
 		D6CD65E025D09AA5006F8FAF /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */; };
 		D6DBE724258A7F93007679E8 /* ConfirmationAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */; };
 		D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */; };
@@ -69,7 +69,7 @@
 		D614343C2763B95A009CC73B /* IdentifiableSheetItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableSheetItem.swift; sourceTree = "<group>"; };
 		D614343D2763B95B009CC73B /* IdentifiableSheets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableSheets.swift; sourceTree = "<group>"; };
 		D61434402763BAA1009CC73B /* AddNewLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewLocationView.swift; sourceTree = "<group>"; };
-		D61434422763BB65009CC73B /* EditableLocationDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLocationDataView.swift; sourceTree = "<group>"; };
+		D61434422763BB65009CC73B /* DraftLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftLocationView.swift; sourceTree = "<group>"; };
 		D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyExistingLocationView.swift; sourceTree = "<group>"; };
 		D61EABFE27679C9B008186CF /* NavBarImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarImageButton.swift; sourceTree = "<group>"; };
 		D62B88272451162D0051A7CE /* ShoppingList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoppingList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,7 +82,7 @@
 		D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsSectionData.swift; sourceTree = "<group>"; };
 		D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		D641BAC2276182D50001371D /* AddINewtemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddINewtemView.swift; sourceTree = "<group>"; };
-		D641BAC42761855C0001371D /* EditableItemDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableItemDataView.swift; sourceTree = "<group>"; };
+		D641BAC42761855C0001371D /* DraftItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftItemView.swift; sourceTree = "<group>"; };
 		D64898E824B0E95E008FE512 /* PersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
 		D648D348246388C100CD881B /* Location+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extensions.swift"; sourceTree = "<group>"; };
 		D65A15D22465A137004ACCBB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 		D6661E0A25645D2200BA47E9 /* ShoppingList 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 2.xcdatamodel"; sourceTree = "<group>"; };
 		D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTabView.swift; sourceTree = "<group>"; };
 		D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCenteredButton.swift; sourceTree = "<group>"; };
-		D677946124D58F34006EB9CF /* EditableLocationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLocationData.swift; sourceTree = "<group>"; };
+		D677946124D58F34006EB9CF /* DraftLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftLocation.swift; sourceTree = "<group>"; };
 		D6931D6B24C4C60900A61BB6 /* TimerTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTabView.swift; sourceTree = "<group>"; };
 		D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyExistingItemView.swift; sourceTree = "<group>"; };
 		D6AAFF892582778E00B1CBAC /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 		D6B8A9552463693D005F8EF2 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableItemRowView.swift; sourceTree = "<group>"; };
 		D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
-		D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableItemData.swift; sourceTree = "<group>"; };
+		D6C91D8624A8EC09008C8DFF /* DraftItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftItem.swift; sourceTree = "<group>"; };
 		D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
 		D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAlerts.swift; sourceTree = "<group>"; };
 		D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLFormLabelText.swift; sourceTree = "<group>"; };
@@ -219,8 +219,8 @@
 				D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */,
 				D641BAC2276182D50001371D /* AddINewtemView.swift */,
 				D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */,
-				D641BAC42761855C0001371D /* EditableItemDataView.swift */,
-				D6C91D8624A8EC09008C8DFF /* EditableItemData.swift */,
+				D641BAC42761855C0001371D /* DraftItemView.swift */,
+				D6C91D8624A8EC09008C8DFF /* DraftItem.swift */,
 				D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */,
 			);
 			path = "ShoppingItem Lists and Views";
@@ -233,8 +233,8 @@
 				D6F375D52485593D005559E6 /* LocationRowView.swift */,
 				D61434402763BAA1009CC73B /* AddNewLocationView.swift */,
 				D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */,
-				D61434422763BB65009CC73B /* EditableLocationDataView.swift */,
-				D677946124D58F34006EB9CF /* EditableLocationData.swift */,
+				D61434422763BB65009CC73B /* DraftLocationView.swift */,
+				D677946124D58F34006EB9CF /* DraftLocation.swift */,
 			);
 			path = "Location Lists and Views";
 			sourceTree = "<group>";
@@ -368,7 +368,7 @@
 				D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */,
 				D65A509F2565789900D43229 /* String+Extensions.swift in Sources */,
 				D6F375D62485593D005559E6 /* LocationRowView.swift in Sources */,
-				D641BAC52761855C0001371D /* EditableItemDataView.swift in Sources */,
+				D641BAC52761855C0001371D /* DraftItemView.swift in Sources */,
 				D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */,
 				D6CD65E025D09AA5006F8FAF /* ItemListView.swift in Sources */,
 				D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */,
@@ -380,14 +380,14 @@
 				D61EABFF27679C9B008186CF /* NavBarImageButton.swift in Sources */,
 				D63FE41F25D09E760090F6C1 /* ItemsSectionData.swift in Sources */,
 				D63C05562566B9DE000A63FC /* ShoppingListApp.swift in Sources */,
-				D677946224D58F34006EB9CF /* EditableLocationData.swift in Sources */,
+				D677946224D58F34006EB9CF /* DraftLocation.swift in Sources */,
 				D6997DDE27619673007B4C1C /* ModifyExistingItemView.swift in Sources */,
 				D612E16124898EBB007E1412 /* Sequence+Extensions.swift in Sources */,
 				D6EF5587246D97C3007D636B /* Development.swift in Sources */,
 				D61434452764E0C1009CC73B /* ModifyExistingLocationView.swift in Sources */,
 				D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */,
-				D6C91D8724A8EC09008C8DFF /* EditableItemData.swift in Sources */,
-				D61434432763BB65009CC73B /* EditableLocationDataView.swift in Sources */,
+				D6C91D8724A8EC09008C8DFF /* DraftItem.swift in Sources */,
+				D61434432763BB65009CC73B /* DraftLocationView.swift in Sources */,
 				D65C931824C5DC9B003E6EB7 /* GlobalTimer.swift in Sources */,
 				D640329D24BB2F4A00CC0B94 /* EmptyListView.swift in Sources */,
 				D6EF557D246D7421007D636B /* PurchasedItemsView.swift in Sources */,

@@ -173,16 +173,16 @@ extension Location: Comparable {
 		PersistentStore.shared.saveContext()
 	}
 	
-	class func updateAndSave(using editableData: EditableLocationData) {
-		// if the incoming location data represents an existing Location, so this is just
-		// a straight update.  otherwise, we must create the new Location here and add it
-		// before updating it with the new values
-		if let id = editableData.id,
+	class func updateAndSave(using draftLocation: DraftLocation) {
+			// if the incoming location data represents an existing Location, this is just
+			// a straight update.  otherwise, we must create the new Location here and add it
+			// before updating it with the new values
+		if let id = draftLocation.id,
 			 let location = Location.object(id: id, context: PersistentStore.shared.context) {
-			location.updateValues(from: editableData)
+			location.updateValues(from: draftLocation)
 		} else {
 			let newLocation = Location.addNewLocation()
-			newLocation.updateValues(from: editableData)
+			newLocation.updateValues(from: draftLocation)
 		}
 		PersistentStore.shared.saveContext()
 	}
@@ -194,12 +194,12 @@ extension Location: Comparable {
 	
 	// MARK: - Object Methods
 	
-	func updateValues(from editableData: EditableLocationData) {
+	func updateValues(from draftLocation: DraftLocation) {
 		
 		// we first make these changes directly in Core Data
-		name_ = editableData.locationName
-		visitationOrder_ = Int32(editableData.visitationOrder)
-		if let components = editableData.color.cgColor?.components {
+		name_ = draftLocation.locationName
+		visitationOrder_ = Int32(draftLocation.visitationOrder)
+		if let components = draftLocation.color.cgColor?.components {
 			red_ = Double(components[0])
 			green_ = Double(components[1])
 			blue_ = Double(components[2])

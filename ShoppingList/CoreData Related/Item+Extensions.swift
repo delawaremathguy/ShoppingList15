@@ -226,14 +226,14 @@ extension Item {
 	
 	// updates data for an Item that the user has directed from an Add or Modify View.
 	// if the incoming data is not associated with an item, we need to create it first
-	class func updateAndSave(using editableData: EditableItemData) {
+	class func updateAndSave(using draftItem: DraftItem) {
 		// if we can find an Item with the right id, use it, else create one
-		if let id = editableData.id,
+		if let id = draftItem.id,
 			let item = Item.object(id: id, context: PersistentStore.shared.context) {
-			item.updateValues(from: editableData)
+			item.updateValues(from: draftItem)
 		} else {
 			let newItem = Item.addNewItem()
-			newItem.updateValues(from: editableData)
+			newItem.updateValues(from: draftItem)
 		}
 		PersistentStore.shared.saveContext()
 	}
@@ -262,7 +262,10 @@ extension Item {
 	// MARK: - Object Methods
 	
 	// toggles the availability flag for an item
-	func toggleAvailableStatus() { isAvailable.toggle() }
+	func toggleAvailableStatus() {
+		isAvailable.toggle()
+		PersistentStore.shared.saveContext()
+	}
 
 	// changes onList flag for an item
 	func toggleOnListStatus() {
@@ -275,12 +278,12 @@ extension Item {
 		PersistentStore.shared.saveContext()
 	}
 	
-	private func updateValues(from editableData: EditableItemData) {
-		name_ = editableData.name
-		quantity_ = Int32(editableData.quantity)
-		onList_ = editableData.onList
-		isAvailable_ = editableData.isAvailable
-		location = editableData.location
+	private func updateValues(from draftItem: DraftItem) {
+		name_ = draftItem.name
+		quantity_ = Int32(draftItem.quantity)
+		onList_ = draftItem.onList
+		isAvailable_ = draftItem.isAvailable
+		location = draftItem.location
 	}
 	
 }

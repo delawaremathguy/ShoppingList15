@@ -1,5 +1,5 @@
 	//
-	//  EditableLocationData.swift
+	//  DraftLocation.swift
 	//  ShoppingList
 	//
 	//  Created by Jerry on 8/1/20.
@@ -9,10 +9,10 @@
 import Foundation
 import SwiftUI
 
-	// **** see the more lengthy discussion over in EditableItemData.swift as to why we are
+	// **** see the more lengthy discussion over in DraftItem.swift as to why we are
 	// using a class that's an ObservableObject.
 
-class EditableLocationData: ObservableObject {
+class DraftLocation: ObservableObject {
 		// the id of the Location, if any, associated with this data collection
 		// (nil if data for a new item that does not yet exist)
 	var id: UUID? = nil
