@@ -12,16 +12,17 @@ struct LocationsView: View {
 	
 	@Environment(\.dismiss) var dismiss: DismissAction
 	
-	// this is the @FetchRequest that ties this view to CoreData Locations
+		// this is the @FetchRequest that ties this view to CoreData Locations
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
 	
-	// state to trigger a sheet to appear to add a new location
+		// state to trigger a sheet to appear that adds a new location
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
 	// state to trigger an Alert to confirm deleting a Location
 	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
-
+//	@StateObject private var alertModel = AlertModel()
+	
 	var body: some View {
 		VStack(spacing: 0) {
 			
@@ -35,9 +36,9 @@ struct LocationsView: View {
 							ModifyExistingLocationView(location: location)
 						} label: {
 							LocationRowView(rowData: LocationRowData(location: location))
-								.contextMenu { contextMenuButton(for: location) }
 						} // end of NavigationLink
 					} // end of ForEach
+					.onDelete(perform: deleteLocations)
 				} // end of Section
 			} // end of List
 			.listStyle(InsetGroupedListStyle())
@@ -49,11 +50,15 @@ struct LocationsView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
 		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
+			//		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
+			//					 actions: { model in model.actions() },
+			//					 message: { model in model.message })
 		.sheet(item: $identifiableSheetItem) { item in
 			NavigationView {
 				item.content()
 			}
 		}
+		
 		.onAppear {
 			logAppear(title: "LocationsTabView")
 			handleOnAppear()
@@ -64,6 +69,15 @@ struct LocationsView: View {
 		}
 		
 	} // end of var body: some View
+	
+	func deleteLocations(at offsets: IndexSet) {
+		guard let firstIndex = offsets.first else { return }
+		let location = locations[firstIndex]
+		if !location.isUnknownLocation {
+			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
+			//alertModel.updateAndTrigger(for: .confirmDeleteLocation(location, nil))
+		}
+	}
 	
 	func handleOnAppear() {
 		// because the unknown location is created lazily, this will make sure that
@@ -79,22 +93,6 @@ struct LocationsView: View {
 			identifiableSheetItem = AddNewLocationSheetItem(dismiss: { identifiableSheetItem = nil })
 		} label: {
 			Image(systemName: "plus")
-		}
-	}
-	
-	// a convenient way to build this context menu without having it in-line
-	// in the view code above
-	@ViewBuilder
-	func contextMenuButton(for location: Location) -> some View {
-		Button {
-			if !location.isUnknownLocation {
-				confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location) {
-					dismiss()
-				}
-			}
-		} label: {
-			Text(location.isUnknownLocation ? "(Cannot be deleted)" : "Delete This Location")
-			Image(systemName: location.isUnknownLocation ? "trash.slash" : "trash")
 		}
 	}
 	

@@ -12,10 +12,12 @@ import SwiftUI
 	// the default fields for a new Location, of the fields associated with a Location
 	// that already exists.
 struct DraftLocationView: View {
+	@Environment(\.dismiss) var dismiss
 	
 		// incoming data = values for a Location + what action to take if the user
 		// decides to delete the Location
 	@ObservedObject var draftLocation: DraftLocation
+	//@ObservedObject var alertModel: AlertModel
 	var deleteActionTrigger: (() -> ())?
 	
 		// definition of whether we can offer a deletion option in this view
@@ -54,6 +56,7 @@ struct DraftLocationView: View {
 			if locationCanBeDeleted {
 				Section(header: Text("Location Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Location")  {
+						//alertModel.type = .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() })
 						deleteActionTrigger?()
 					}
 					.foregroundColor(Color.red)

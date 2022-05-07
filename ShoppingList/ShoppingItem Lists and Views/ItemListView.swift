@@ -58,9 +58,7 @@ struct ItemListView: View {
 						}
 						.contextMenu {
 							ItemContextMenu(item: item) {
-								identifiableAlertItem = ConfirmDeleteItemAlert(item: item) {
-									identifiableAlertItem = nil
-								} // end of deletion closure
+								identifiableAlertItem = ConfirmDeleteItemAlert(item: item)
 							} // end of itemContextMenu
 						} // end of contextMenu
 					} // end of ForEach

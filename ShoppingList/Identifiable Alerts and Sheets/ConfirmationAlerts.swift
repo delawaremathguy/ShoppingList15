@@ -24,7 +24,7 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 	
 	// to function, we just need to know what item we're talking about, and how to do
 	// the deletion as the destructive action.
-	init(item: Item, destructiveCompletion: (() -> Void)?) {
+	init(item: Item, destructiveCompletion: (() -> Void)? = nil) {
 		// init this object's custom data, then call its superclass's initializer
 		self.item = item
 		super.init()
@@ -34,13 +34,14 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 		self.destructiveAction = { Item.delete(item) }
 		self.destructiveCompletion = destructiveCompletion
 	}
+	
 }
 
 // MARK: - Confirm MOVE ALL ITEMS OF LIST Alert
 
 class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 	
-	init(destructiveCompletion: (() -> Void)?) {
+	init(destructiveCompletion: (() -> Void)? = nil) {
 		super.init()
 		title = "Move All Items Off-List"
 		destructiveAction = Item.moveAllItemsOffShoppingList
@@ -53,11 +54,7 @@ class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 
 class ConfirmDeleteLocationAlert: IdentifiableAlertItem {
 	
-	// the location to delete
-	var location: Location
-	
-	init(location: Location, destructiveCompletion: (() -> Void)?) {
-		self.location = location
+	init(location: Location, destructiveCompletion: (() -> Void)? = nil) {
 		super.init()
 		title = "Delete \'\(location.name)\'?"
 		message = "Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."

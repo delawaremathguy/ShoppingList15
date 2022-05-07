@@ -64,6 +64,7 @@ struct ModifyExistingItemView: View {
 	
 		// alert trigger item to confirm deletion of an Item
 	@State private var confirmDeleteItemAlert: IdentifiableAlertItem?
+	@State private var confirmDeleteAlertShowing = false
 	
 	var body: some View {
 		

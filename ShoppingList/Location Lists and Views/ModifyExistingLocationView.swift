@@ -17,6 +17,7 @@ struct ModifyExistingLocationView: View {
 	
 		// alert trigger item to confirm deletion of a Location
 	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
+//	@State private var alertModel = AlertModel()
 
 	init(location: Location) {
 		_draftLocation = StateObject(wrappedValue: DraftLocation(location: location))
@@ -29,6 +30,7 @@ struct ModifyExistingLocationView: View {
 			// Location, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
 		DraftLocationView(draftLocation: draftLocation) {
+//			alertModel.updateAndTrigger(for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }))
 			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
 				location: draftLocation.associatedLocation) {
 					dismiss()
@@ -36,6 +38,10 @@ struct ModifyExistingLocationView: View {
 		}
 			.navigationBarTitle(Text("Modify Location"), displayMode: .inline)
 			.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
+//			.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
+//						 actions: { model in model.actions() },
+//						 message: { model in model.message })
+
 			.onDisappear {
 					// we have been doing a pseudo-live edit, so update the associated location of
 					// the draftLocation when finished with this view (i.e., when dismissed).
