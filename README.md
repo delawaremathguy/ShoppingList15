@@ -14,6 +14,7 @@ Feel free to use this as is, to develop further, to completely ignore, or even j
 
 ### Most Recent Update(s) of 7 May, 2022
 
+* (*7 May*) I have introduced a new syntax idea as a possible replacement of uses of the now-deprecated `.alert(item: ...)` and `Alert` syntax, but only implemented it to confirm the deletion of Locations.  See the code in AlertModel.swift.
 * (*7 May*) Removed the context menu in LocationsView to delete a location in the LocationsView with simples *swipe to delete* code.
 * (*3 May*) Identifiers previously named `EditableItemData` and `EditableLocationData` have been renamed to `DraftItem` and `DraftLocation`, respectively.  All variables of these types and associated language throughout the codebase have been (*mostly*) updated to accommodate this change.
 * (*3 May*) Other variable names have changed and some syntax has been updated (e.g., `NavigationLink(destination: ...)` has been replaced by `NavigationLink { ... } { ... }`).
