@@ -20,8 +20,8 @@ struct LocationsView: View {
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
 	// state to trigger an Alert to confirm deleting a Location
-	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
-//	@StateObject private var alertModel = AlertModel()
+//	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
+	@StateObject private var alertModel = AlertModel()
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -49,10 +49,10 @@ struct LocationsView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
-		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
-			//		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
-			//					 actions: { model in model.actions() },
-			//					 message: { model in model.message })
+//		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
+		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
+					 actions: { model in model.actions() },
+					 message: { model in model.message })
 		.sheet(item: $identifiableSheetItem) { item in
 			NavigationView {
 				item.content()
@@ -74,8 +74,8 @@ struct LocationsView: View {
 		guard let firstIndex = offsets.first else { return }
 		let location = locations[firstIndex]
 		if !location.isUnknownLocation {
-			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
-			//alertModel.updateAndTrigger(for: .confirmDeleteLocation(location, nil))
+//			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
+			alertModel.updateAndTrigger(for: .confirmDeleteLocation(location, nil))
 		}
 	}
 	

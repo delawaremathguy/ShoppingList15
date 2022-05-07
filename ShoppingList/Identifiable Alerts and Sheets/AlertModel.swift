@@ -8,18 +8,38 @@
 
 import SwiftUI
 
-// This file contains an idea that I am working on, to replace all the deprecated
+// This file contains an idea that I am pre-flighting, to replace all the deprecated
 // .alert(item: ...) modifiers scattered throughout the code by the newer
-// .alert( : isPresented: presenting: actions: message:) syntax.  It turns out the idea
-// does not quite work ... this newer form still is not a simple, direct replacement
-// and still has some quirks.
+// .alert( : isPresented: presenting: actions: message:) syntax.
 //
-// Nevertheless, I'll leave this file here for now, noting that in the LocationsView and the
-// ModifyExistingLocationView you will see some commented out code that should be
-// ignored for now until I figure out what's going on.
+// I'll only be testing this idea in the LocationsView and the ModifyExistingLocationView
+// (where you will see commented out code for the previous ConfirmationAlert
+// structure).
+//
+// If i stick with this, every time you want a new .alert, add a new enum case
+// with appropriate associated data, and handle that case in updateAndTrigger().
+// to invoke from a View, you'd then need three things:
+//
+// (1) a default AlertModel defined in the View by
+//        @StateObject private var alertModel = AlertModel()
+//
+// (2) an .alert() modifier on the View with the newer syntax, which is generically
+//  		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
+//  			actions: { model in model.actions() },
+//  			message: { model in model.message })
+//
+// (3) something that causes the alert to present itself, e.g.,
+// 			alertModel.updateAndTrigger(for: .confirmDeleteLocation(location, nil))
+//
+// time will tell if i like it ... i think i prefer the .alert(item: ...) syntax, if only because
+// it's three lines in a View and the ability to subclass from the identifiableAlertItem
+// seemed more useful.
+
 
 enum AlertModelType {
+		// default type (which will never be shown)
 	case none
+		// specific type: delete a Location, for which we want the location and a completion closure
 	case confirmDeleteLocation(Location, (() -> Void)?)
 }
 
@@ -44,7 +64,9 @@ class AlertModel: ObservableObject {
 //	var nonDestructiveTitle: String = "Cancel"
 //	var nonDestructiveAction: (() -> Void)?
 		
-	// a default @ViewBuilder function on how to produce actions for the alert's View
+		// a @ViewBuilder function on how to produce actions for the alert's View.  this may not
+		// be general enough, though: the previous confirmationAlert structure allowed an
+		// override possibility, despite never actually overriding it.
 	@ViewBuilder
 	func actions() -> some View {
 		Button(destructiveTitle, role: .destructive) { [self] in
@@ -52,6 +74,9 @@ class AlertModel: ObservableObject {
 		}
 	}
 	
+		// call this function with an appropriate type as defined above, which causes the
+		// model's variables to be updated for the type using associated data for the type
+		// and then the alert will be triggered.
 	func updateAndTrigger(for type: AlertModelType) {
 		switch type {
 				
@@ -65,7 +90,7 @@ class AlertModel: ObservableObject {
 					Location.delete(location)
 					completion?()
 				}
-				isPresented = true	// don;t forget to set this ... this triggers the alert
+				isPresented = true	// don't forget to set this ... this triggers the alert
 
 		}
 	}

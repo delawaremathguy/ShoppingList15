@@ -52,14 +52,18 @@ class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 
 // MARK: - Confirm DELETE LOCATION Alert
 
-class ConfirmDeleteLocationAlert: IdentifiableAlertItem {
-	
-	init(location: Location, destructiveCompletion: (() -> Void)? = nil) {
-		super.init()
-		title = "Delete \'\(location.name)\'?"
-		message = "Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
-		destructiveAction = { Location.delete(location) }
-		self.destructiveCompletion = destructiveCompletion
-	}
-	
-}
+// *** see the comments over in AlertModel.swift about a possible replacement
+// for this alert in particular, and possibly replacing the two alerts above using
+// the same strategy ***
+
+//class ConfirmDeleteLocationAlert: IdentifiableAlertItem {
+//
+//	init(location: Location, destructiveCompletion: (() -> Void)? = nil) {
+//		super.init()
+//		title = "Delete \'\(location.name)\'?"
+//		message = "Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+//		destructiveAction = { Location.delete(location) }
+//		self.destructiveCompletion = destructiveCompletion
+//	}
+//
+//}
