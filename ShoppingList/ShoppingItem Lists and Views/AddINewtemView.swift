@@ -8,14 +8,16 @@
 
 import SwiftUI
 
-	// the AddNewItemView is opened via a sheet from both the ShoppingListView and the
+	// the AddNewItemView is opened via a sheet from either the ShoppingListView and the
 	// PurchasedItemTabView, within a NavigationView, to do as it says: add a new shopping item.
 	// the strategy is simple:
 	//
 	// -- create a default set of values for a new shopping item (an ObservableObject)
 	// -- the body shows a Form in which the user can edit the default data
 	// -- we supply buttons in the navigation bar to create a new item from the edited data
-	//      and to dismiss (which can also be accomplished just by pulling down on the sheet)
+	//      and to dismiss (which can also be accomplished just by pulling down on the sheet,
+	//      although we might want to add .interactiveDismissDisabled() to the sheet so
+	//      no data will be discarded unless the user touches the Cancel button.
 	//
 struct AddNewItemView: View {
 	
@@ -39,12 +41,14 @@ struct AddNewItemView: View {
 	
 		// the body is pretty short -- just call up a Form, adding a Cancel and Save button
 	var body: some View {
-		DraftItemView(draftItem: draftItem)
-			.navigationBarTitle("Add New Item", displayMode: .inline)
-			.toolbar {
-				ToolbarItem(placement: .cancellationAction, content: cancelButton)
-				ToolbarItem(placement: .confirmationAction, content: saveButton)
-			}
+		NavigationView {
+			DraftItemView(draftItem: draftItem)
+				.navigationBarTitle("Add New Item", displayMode: .inline)
+				.toolbar {
+					ToolbarItem(placement: .cancellationAction, content: cancelButton)
+					ToolbarItem(placement: .confirmationAction, content: saveButton)
+				}
+		}
 	}
 	
 		// the cancel button just dismisses ourself

@@ -8,32 +8,36 @@
 
 import SwiftUI
 
-// This file contains an idea that I am pre-flighting, to replace all the deprecated
-// .alert(item: ...) modifiers scattered throughout the code by the newer
-// .alert( : isPresented: presenting: actions: message:) syntax.
-//
-// I'll only be testing this idea in the LocationsView and the ModifyExistingLocationView
-// (where you will see commented out code for the previous ConfirmationAlert
-// structure).
-//
-// If i stick with this, every time you want a new .alert, add a new enum case
-// with appropriate associated data, and handle that case in updateAndTrigger().
-// to invoke from a View, you'd then need three things:
-//
-// (1) a default AlertModel defined in the View by
-//        @StateObject private var alertModel = AlertModel()
-//
-// (2) an .alert() modifier on the View with the newer syntax, which is generically
-//  		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
-//  			actions: { model in model.actions() },
-//  			message: { model in model.message })
-//
-// (3) something that causes the alert to present itself, e.g.,
-// 			alertModel.updateAndTrigger(for: .confirmDeleteLocation(location, nil))
-//
-// time will tell if i like it ... i think i prefer the .alert(item: ...) syntax, if only because
-// it's three lines in a View and the ability to subclass from the identifiableAlertItem
-// seemed more useful.
+/*
+ this file contains an idea that I am pre-flighting, to replace all the deprecated
+ .alert(item: ...) modifiers scattered throughout the code by the newer
+ .alert( : isPresented: presenting: actions: message:) syntax.
+ 
+ i'll only be testing this idea in the LocationsView and the ModifyExistingLocationView
+ for now (where you will see commented out code for the previous ConfirmationAlert
+ structure).
+ 
+ if i stick with this, every time you want a new .alert, add a new enum case
+ with appropriate associated data, and handle that case in updateAndPresent().
+ to invoke from a View, you then need three things:
+ 
+ (1) a default AlertModel defined in the View by
+        @StateObject private var alertModel = AlertModel()
+
+ (2) an .alert() modifier on the View with the newer syntax, which is generically
+  		.alert(alertModel.title,
+ 				isPresented: $alertModel.isPresented,
+ 				presenting: alertModel,
+ 				actions: { model in model.actions() },
+ 				message: { model in model.message })
+ 
+ (3) something that causes the alert to present itself:
+		alertModel.updateAndPresent(for: .confirmDeleteLocation(location, nil))
+
+ time will tell if i like it ... i think i prefer the .alert(item: ...) syntax, if only because
+ it's three lines in a View and the ability to subclass from the identifiableAlertItem
+ seemed more useful.
+ */
 
 
 enum AlertModelType {
@@ -45,14 +49,14 @@ enum AlertModelType {
 
 class AlertModel: ObservableObject {
 	
-		// we keep the isPresented variable used to trigger the associated alert
+		// we keep the isPresented variable used to present the associated alert
 		// right here in the AlertModel and make it @Published.  so potentially
 		// a view that uses such an alert has a @StateObject viewModel of type
 		// AlertModel and references viewModel.isPresented in the .alert() syntax
 	@Published var isPresented = false
 	
 		// defaults for the String title and a Text for the message.  you will want
-		// to set these when you call alertModel.updateAndTrigger()
+		// to set these when you call alertModel.updateAndPresent()
 	var title = ""
 	var message = Text("")
 	
@@ -74,13 +78,14 @@ class AlertModel: ObservableObject {
 		}
 	}
 	
-		// call this function with an appropriate type as defined above, which causes the
-		// model's variables to be updated for the type using associated data for the type
-		// and then the alert will be triggered.
-	func updateAndTrigger(for type: AlertModelType) {
+		// call this function with an appropriate type as defined above, which updates the
+		// model's variables for the type using associated data for the type.  you will need
+		// to add cases, of course, for each type you define.
+		// the alert will be presented when isPresented = true is executed.
+	func updateAndPresent(for type: AlertModelType) {
 		switch type {
 				
-			case .none:
+			case .none:	// nothing to do!
 				return
 				
 			case .confirmDeleteLocation(let location, let completion):
@@ -90,9 +95,10 @@ class AlertModel: ObservableObject {
 					Location.delete(location)
 					completion?()
 				}
-				isPresented = true	// don't forget to set this ... this triggers the alert
 
+				// add future cases here ...
 		}
+		isPresented = true	// this is what presents the alert
 	}
 	
 }

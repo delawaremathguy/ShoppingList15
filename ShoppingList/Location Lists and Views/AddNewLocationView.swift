@@ -18,14 +18,16 @@ struct AddNewLocationView: View {
 	@StateObject private var draftLocation = DraftLocation()
 	
 	var body: some View {
-		DraftLocationView(draftLocation: draftLocation)
-			.navigationBarTitle(Text("Add New Location"), displayMode: .inline)
-			.navigationBarBackButtonHidden(true)
-			.toolbar {
-				ToolbarItem(placement: .cancellationAction, content: cancelButton)
-				ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
-			}
-			.onDisappear { PersistentStore.shared.saveContext() }
+		NavigationView {
+			DraftLocationView(draftLocation: draftLocation)
+				.navigationBarTitle(Text("Add New Location"), displayMode: .inline)
+				.navigationBarBackButtonHidden(true)
+				.toolbar {
+					ToolbarItem(placement: .cancellationAction, content: cancelButton)
+					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
+				}
+				.onDisappear { PersistentStore.shared.saveContext() }
+		}
 	}
 	
 		// the cancel button

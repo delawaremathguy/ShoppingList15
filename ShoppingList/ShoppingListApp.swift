@@ -33,7 +33,7 @@ class Today: ObservableObject {
 
 // this is the new App structure for iOS 14.  it pushes the managedObjectContext of the
 // singleton (global) PersistentStore into the environment of the MainView -- this makes
-// sure that all the @FetchRequets will work.  it pushes a Today object into the environment,
+// sure that all the @FetchRequests will work.  it pushes a Today object into the environment,
 // primarily for the PurchasedItemsView.  and it applies the .onReceive modifiers
 // to the MainView to watch being moved into and out of the background
 
@@ -44,7 +44,7 @@ class Today: ObservableObject {
 @main
 struct ShoppingListApp: App {
 	
-	// we create the PersistentStore here and the date object that defines the meaning of "today"
+		// we create the PersistentStore here and the date object that defines the meaning of "today"
 	@StateObject var persistentStore = PersistentStore.shared
 	@StateObject var today = Today()
 	
@@ -61,7 +61,7 @@ struct ShoppingListApp: App {
 	}
 	
 	func handleResignActive(_ note: Notification) {
-		// when going into background, save Core Data and shutdown timer
+			// when going into background, save Core Data and shutdown timer
 		persistentStore.saveContext()
 		if kDisableTimerWhenAppIsNotActive {
 			gInStoreTimer.suspend()
@@ -69,9 +69,9 @@ struct ShoppingListApp: App {
 	}
 	
 	func handleBecomeActive(_ note: Notification) {
-		// when app becomes active, restart timer if it was running previously
-		// also update the meaning of Today because we may be transitioning to
-		// active on a different day than when we were pushed into the background
+			// when app becomes active, restart timer if it was running previously.
+			// also update the meaning of Today because we may be transitioning to
+			// active on a different day than when we were pushed into the background
 		if gInStoreTimer.isSuspended {
 			gInStoreTimer.start()
 		}

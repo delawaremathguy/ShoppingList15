@@ -16,14 +16,14 @@ import SwiftUI
 	// -- an id, needed to work with .sheet(item: ...)
 	// -- title and message for the Alert
 	// -- destructive & non-destructive titles and actions
-	//        (yes, there could be an action to perform with a "No.")
+	//        (yes, there could be an action to perform even with a "No.")
 	// -- destructive & non-destructive completion handlers
 	//        (depending on the call-site instantiation, there might be something to do when finished ...)
 	//
 	// in this app, we never actually use the nonDestructiveAction or nonDestructiveCompletion, but
 	// i will say that in another project, there were things to do in special cases when the user declined
 	// to take the destructive action.  an example: the user toggles a switch and it becomes necessary to
-	// ask the user of they're sure that they want to "turn something off."  by the time the code sees this,
+	// ask the user if they're sure that they want to "turn something off."  by the time the code sees this,
 	// the toggle has already been changed, so declining to accept the consequences of turning something
 	// off means that you have to restore the toggle's state.
 
@@ -49,7 +49,7 @@ class IdentifiableAlertItem: Identifiable {
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
 	
-		// these are implementation hooks to do actions and then allow a separate
+		// these are implementation hooks to do actions and then call a separate
 		// completion handler
 	fileprivate func doDestructiveActionWithCompletion() {
 		destructiveAction?()

@@ -17,7 +17,7 @@ struct DraftLocationView: View {
 		// incoming data = values for a Location + what action to take if the user
 		// decides to delete the Location
 	@ObservedObject var draftLocation: DraftLocation
-	//@ObservedObject var alertModel: AlertModel
+		//@ObservedObject var alertModel: AlertModel
 	var deleteActionTrigger: (() -> ())?
 	
 		// definition of whether we can offer a deletion option in this view
@@ -71,10 +71,8 @@ struct DraftLocationView: View {
 			
 		} // end of Form
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
-			NavigationView {
-				AddNewItemView(location: draftLocation.associatedLocation) {
-					isAddNewItemSheetShowing = false
-				}
+			AddNewItemView(location: draftLocation.associatedLocation) {
+				isAddNewItemSheetShowing = false
 			}
 		}
 

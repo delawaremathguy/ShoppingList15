@@ -55,7 +55,7 @@ protocol CodableStructRepresentable {
 // be able to produce a simple, Codable struct proxy holding only what we want to write out
 // (ItemCodable and LocationCodable structs, respectively)
 func writeAsJSON<T>(items: [T], to filename: String) where T: CodableStructRepresentable {
-	let codableItems = items.map() { $0.codableProxy }
+	let codableItems = items.map { $0.codableProxy }
 	let encoder = JSONEncoder()
 	encoder.outputFormatting = .prettyPrinted
 	var data = Data()

@@ -19,14 +19,9 @@ import SwiftUI
 
 class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 	
-	// the item to delete
-	var item: Item
-	
 	// to function, we just need to know what item we're talking about, and how to do
 	// the deletion as the destructive action.
 	init(item: Item, destructiveCompletion: (() -> Void)? = nil) {
-		// init this object's custom data, then call its superclass's initializer
-		self.item = item
 		super.init()
 		// now update appropriate messages and actions
 		self.title = "Delete \'\(item.name)\'?"
@@ -41,11 +36,10 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 
 class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 	
-	init(destructiveCompletion: (() -> Void)? = nil) {
+	override init() {
 		super.init()
 		title = "Move All Items Off-List"
 		destructiveAction = Item.moveAllItemsOffShoppingList
-		self.destructiveCompletion = destructiveCompletion
 	}
 	
 }

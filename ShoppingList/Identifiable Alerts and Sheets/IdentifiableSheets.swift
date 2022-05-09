@@ -48,10 +48,8 @@ class AddNewItemSheetItem: IdentifiableSheetItem {
 	}
 	
 	override func content() -> AnyView {
-		NavigationView {
-			AddNewItemView(dismiss: dismiss)
-		}
-		.eraseToAnyView()
+		AddNewItemView(dismiss: dismiss)
+			.eraseToAnyView()
 	}
 	
 }

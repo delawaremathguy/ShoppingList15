@@ -13,13 +13,17 @@ import SwiftUI
 	//
 	// this will be an "almost live edit," in the sense that when the user touches the <Back button,
 	// we update the values of the Item with the edited values.  however, because we have to intercept
-	// when the user taps the Back button, we'll use our own Back button.  (maybe there's an
-	// easier way to intercept tapping the Back button, but i don't have it here right now.)
+	// when the user taps the Back button, we'll use our own Back button.  (we don't really need
+	// this ... we could just handle the update in an .onDisappear modifier as we do over in
+	// ModifyExistingLocationView.  you decide!  the downside of handling this in .onAppear is
+	// that we'll return to the previous screen on the navigation stack, see the old presentation, and
+	// then see it update for the edit.  doing it with a custom back button gets the change made before
+	// we see the parent in the navigation stack.)
 	//
 	// the strategy is simple:
 	//
-	// -- create an editable representation of values for the item (an ObservableObject)
-	// -- the body shows a Form in which the user can edit the default data
+	// -- create an editable representation of values for the item (a StateObject)
+	// -- the body shows a Form in which the user can edit the data
 	// -- we update the Item's values from the editable representation when going back.
 	//
 	// one quick thing: this View will also display a confirmation alert if the user wants to delete the Item,
@@ -29,8 +33,8 @@ struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
 	
-		// an editable copy of the Item's data.  it's important that this be a @StateObject, because
-		// it is treated somewhat differently than @State.
+		// an editable copy of the Item's data -- a "draft."  it's important that this be a
+		// @StateObject, because it is treated somewhat differently than @State.
 		//
 		// my observations/guesses:
 		//
@@ -38,7 +42,7 @@ struct ModifyExistingItemView: View {
 		//     where it is defined.  it is created lazily by SwiftUI and stored in the heap when the View will
 		//     actually be coming to the screen (which means that SwiftUI has retained a reference to the
 		//     Item that was passed in), and destroyed when SwiftUI is finished with the View onscreen.  SwiftUI
-		//     or may not destroy the View struct when the @StateObject is destroyed; and if it does not
+		//     may or may not destroy the View struct when the @StateObject is destroyed; and if it does not
 		//     destroy the View struct, the @StateObject will be restored lazily in the future by keeping a (secret)
 		//     reference to the Item ... whose values may have changed since the last time this View was coming
 		//     on-screen.  therefore, the @StateObject represents the current state of the Item when the View

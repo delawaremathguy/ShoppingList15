@@ -10,8 +10,6 @@ import SwiftUI
 
 struct LocationsView: View {
 	
-	@Environment(\.dismiss) var dismiss: DismissAction
-	
 		// this is the @FetchRequest that ties this view to CoreData Locations
 	@FetchRequest(fetchRequest: Location.allLocationsFR())
 	private var locations: FetchedResults<Location>
@@ -53,12 +51,7 @@ struct LocationsView: View {
 		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
 					 actions: { model in model.actions() },
 					 message: { model in model.message })
-		.sheet(item: $identifiableSheetItem) { item in
-			NavigationView {
-				item.content()
-			}
-		}
-		
+		.sheet(item: $identifiableSheetItem) { item in item.content() }
 		.onAppear {
 			logAppear(title: "LocationsTabView")
 			handleOnAppear()
@@ -75,7 +68,7 @@ struct LocationsView: View {
 		let location = locations[firstIndex]
 		if !location.isUnknownLocation {
 //			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
-			alertModel.updateAndTrigger(for: .confirmDeleteLocation(location, nil))
+			alertModel.updateAndPresent(for: .confirmDeleteLocation(location, nil))
 		}
 	}
 	

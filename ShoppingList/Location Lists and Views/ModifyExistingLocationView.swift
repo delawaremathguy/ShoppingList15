@@ -30,7 +30,7 @@ struct ModifyExistingLocationView: View {
 			// Location, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
 		DraftLocationView(draftLocation: draftLocation) {
-			alertModel.updateAndTrigger(for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }))
+			alertModel.updateAndPresent(for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }))
 //			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
 //				location: draftLocation.associatedLocation) {
 //					dismiss()
