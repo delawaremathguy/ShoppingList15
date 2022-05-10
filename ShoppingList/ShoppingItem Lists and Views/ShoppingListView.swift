@@ -96,7 +96,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				// if you want to change the sorting when this is a single section to "by name"
 				// then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by name
 			let sortedItems = items
-				.sorted(by: { $0.location.visitationOrder < $1.location.visitationOrder })
+				.sorted(by: \.location.visitationOrder)
 			return [ItemsSectionData(index: 1, title: "Items Remaining: \(items.count)", items: sortedItems)
 			]
 		}

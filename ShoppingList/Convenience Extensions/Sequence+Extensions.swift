@@ -18,4 +18,20 @@ extension Sequence {
 			return selector(Element) ? sum + 1 : sum
 		}
 	}
+	
+	// these two useful things come from John Sundell that let's us do some things
+	// based on keypaths.
+	//    https://www.swiftbysundell.com/articles/the-power-of-key-paths-in-swift/
+	// i use the .sorted(by:) keypath approach in Location+Extensions.swift and ShoppingListView.swift.
+	// i use the map syntax in Development.swift.
+	
+	func map<T>(_ keyPath: KeyPath<Element, T>) -> [T] {
+		return map { $0[keyPath: keyPath] }
+	}
+	
+	func sorted<T: Comparable>(by keyPath: KeyPath<Element, T>) -> [Element] {
+		return sorted { a, b in
+			return a[keyPath: keyPath] < b[keyPath: keyPath]
+		}
+	}
 }

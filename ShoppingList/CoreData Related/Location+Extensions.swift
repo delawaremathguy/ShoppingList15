@@ -50,7 +50,7 @@ extension Location: Comparable {
 	// a Swift array
 	var items: [Item] {
 		if let items = items_ as? Set<Item> {
-			return items.sorted(by: { $0.name < $1.name })
+			return items.sorted(by: \.name)
 		}
 		return []
 	}
