@@ -32,6 +32,7 @@ import SwiftUI
 struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
+	@EnvironmentObject private var dataManager: DataManager
 	
 		// an editable copy of the Item's data -- a "draft."  it's important that this be a
 		// @StateObject, because it is treated somewhat differently than @State.
@@ -77,7 +78,7 @@ struct ModifyExistingItemView: View {
 			// Item, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
 		DraftItemView(draftItem: draftItem) {
-			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: draftItem.associatedItem) {
+			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: draftItem.associatedItem, dataManager: dataManager) {
 				dismiss()
 			}
 		}
@@ -93,7 +94,7 @@ struct ModifyExistingItemView: View {
 	func customBackButton() -> some View {
 		Button {
 			if draftItem.representsExistingItem {
-				Item.updateAndSave(using: draftItem)
+				dataManager.updateAndSave(using: draftItem)
 			}
 			dismiss()
 		} label: {

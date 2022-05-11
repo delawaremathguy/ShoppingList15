@@ -11,6 +11,8 @@ import SwiftUI
 // see AddNewItemView.swift for similar comments and explanation of how this works
 struct AddNewLocationView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	
 	// incoming dismiss action.  we're a View presented as a sheet via an
 	// identifiableSheetItem, so the presenter needs to tell us how it will dismiss us
 	var dismiss: () -> Void
@@ -26,7 +28,7 @@ struct AddNewLocationView: View {
 					ToolbarItem(placement: .cancellationAction, content: cancelButton)
 					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
 				}
-				.onDisappear { PersistentStore.shared.saveContext() }
+				.onDisappear { dataManager.saveData() }
 		}
 	}
 	
@@ -43,7 +45,7 @@ struct AddNewLocationView: View {
 	func saveButton() -> some View {
 		Button {
 			dismiss()
-			Location.updateAndSave(using: draftLocation)
+			dataManager.updateAndSave(using: draftLocation)
 		} label: {
 			Text("Save")
 		}

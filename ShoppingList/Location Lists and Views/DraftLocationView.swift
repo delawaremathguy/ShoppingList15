@@ -82,12 +82,15 @@ struct DraftLocationView: View {
 
 struct SimpleItemsList: View {
 	
-	@FetchRequest	private var items: FetchedResults<Item>
+	@EnvironmentObject private var dataManager: DataManager
+	var items: [Item] { dataManager.items.filter({ $0.location == location }) }
+
+	var location: Location
+	
 	@Binding var isAddNewItemSheetShowing: Bool
 	
 	init(location: Location, isAddNewItemSheetShowing: Binding<Bool>) {
-		let request = Item.allItemsFR(at: location)
-		_items = FetchRequest(fetchRequest: request)
+		self.location = location
 		_isAddNewItemSheetShowing = isAddNewItemSheetShowing
 	}
 	

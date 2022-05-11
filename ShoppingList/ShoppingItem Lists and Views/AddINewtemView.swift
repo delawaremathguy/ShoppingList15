@@ -21,6 +21,8 @@ import SwiftUI
 	//
 struct AddNewItemView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	
 		// a dismiss action.  we're a View presented using .sheet(item:) that was triggered by setting a
 		// @State variable to something non-nil, so we need to be given a way to dismiss ourself (which
 		// normally is setting that value to nil, but one that must be supplied as a dismiss function
@@ -63,7 +65,7 @@ struct AddNewItemView: View {
 		// the save button saves the new item to the persistent store and dismisses ourself
 	func saveButton() -> some View {
 		Button {
-			Item.updateAndSave(using: draftItem)
+			dataManager.updateAndSave(using: draftItem)
 			dismiss()
 		} label: {
 			Text("Save")

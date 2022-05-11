@@ -10,11 +10,9 @@ import Foundation
 import CoreData
 
 final class PersistentStore: ObservableObject {
-	
-	private(set) static var shared = PersistentStore()
-	
+		
 	// this makes sure we're the only one who can create one of these
-	private init() { }
+	init() { }
 		
 	lazy var persistentContainer: NSPersistentContainer = {
 		/*

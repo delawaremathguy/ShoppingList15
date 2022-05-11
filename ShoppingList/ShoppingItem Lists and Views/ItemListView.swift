@@ -24,6 +24,8 @@ import SwiftUI
 	//
 struct ItemListView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	
 		// this is the incoming section layout from the ShoppingListView or the PurchasedItemsView
 	var sections: [ItemsSectionData]
 
@@ -58,7 +60,7 @@ struct ItemListView: View {
 						}
 						.contextMenu {
 							ItemContextMenu(item: item) {
-								identifiableAlertItem = ConfirmDeleteItemAlert(item: item)
+								identifiableAlertItem = ConfirmDeleteItemAlert(item: item, dataManager: dataManager)
 							} // end of itemContextMenu
 						} // end of contextMenu
 					} // end of ForEach

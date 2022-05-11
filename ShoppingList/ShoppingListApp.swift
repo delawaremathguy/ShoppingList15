@@ -44,14 +44,15 @@ class Today: ObservableObject {
 @main
 struct ShoppingListApp: App {
 	
-		// we create the PersistentStore here and the date object that defines the meaning of "today"
-	@StateObject var persistentStore = PersistentStore.shared
+	@StateObject var dataManager = DataManager()
+		// we create the date object that defines the meaning of "today"
 	@StateObject var today = Today()
 	
 	var body: some Scene {
 		WindowGroup {
 			MainView()
-				.environment(\.managedObjectContext, persistentStore.context)
+				//.environment(\.managedObjectContext, persistentStore.context)
+				.environmentObject(dataManager)
 				.environmentObject(today)
 				.onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
 									 perform: handleResignActive)
@@ -62,7 +63,7 @@ struct ShoppingListApp: App {
 	
 	func handleResignActive(_ note: Notification) {
 			// when going into background, save Core Data and shutdown timer
-		persistentStore.saveContext()
+		dataManager.saveData()
 		if kDisableTimerWhenAppIsNotActive {
 			gInStoreTimer.suspend()
 		}

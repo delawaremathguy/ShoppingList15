@@ -32,6 +32,8 @@
 		D648D349246388C100CD881B /* Location+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D648D348246388C100CD881B /* Location+Extensions.swift */; };
 		D65A509F2565789900D43229 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A509E2565789900D43229 /* String+Extensions.swift */; };
 		D65C931824C5DC9B003E6EB7 /* GlobalTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C931724C5DC9B003E6EB7 /* GlobalTimer.swift */; };
+		D65F938B282C34D60014CCC5 /* DataManager-Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65F9389282C34D60014CCC5 /* DataManager-Development.swift */; };
+		D65F938C282C34D60014CCC5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65F938A282C34D60014CCC5 /* DataManager.swift */; };
 		D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */; };
 		D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */; };
 		D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */; };
@@ -89,6 +91,8 @@
 		D65A15D22465A137004ACCBB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D65A509E2565789900D43229 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		D65C931724C5DC9B003E6EB7 /* GlobalTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTimer.swift; sourceTree = "<group>"; };
+		D65F9389282C34D60014CCC5 /* DataManager-Development.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager-Development.swift"; sourceTree = "<group>"; };
+		D65F938A282C34D60014CCC5 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableAlertItem.swift; sourceTree = "<group>"; };
 		D6661E0A25645D2200BA47E9 /* ShoppingList 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 2.xcdatamodel"; sourceTree = "<group>"; };
 		D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTabView.swift; sourceTree = "<group>"; };
@@ -277,6 +281,8 @@
 		D6EF5583246D9489007D636B /* CoreData Related */ = {
 			isa = PBXGroup;
 			children = (
+				D65F9389282C34D60014CCC5 /* DataManager-Development.swift */,
+				D65F938A282C34D60014CCC5 /* DataManager.swift */,
 				D64898E824B0E95E008FE512 /* PersistentStore.swift */,
 				D6FC7A0824635D950096F018 /* ShoppingList.xcdatamodeld */,
 				D610C3BD2451D8DC009F7F36 /* Item+Extensions.swift */,
@@ -367,6 +373,7 @@
 			files = (
 				D6C7685C2572B3B500E0F4B0 /* SelectableItemRowView.swift in Sources */,
 				D60F14A724686BA80077AD3F /* ItemCodableProxy.swift in Sources */,
+				D65F938B282C34D60014CCC5 /* DataManager-Development.swift in Sources */,
 				D6B8A95424636711005F8EF2 /* MainView.swift in Sources */,
 				D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */,
 				D6A3897F28234FEA007645AD /* AlertModel.swift in Sources */,
@@ -405,6 +412,7 @@
 				D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */,
 				D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */,
 				D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */,
+				D65F938C282C34D60014CCC5 /* DataManager.swift in Sources */,
 				D6B753162766976C0050AF52 /* SectionHeaderButton.swift in Sources */,
 				D614343F2763B95B009CC73B /* IdentifiableSheets.swift in Sources */,
 			);

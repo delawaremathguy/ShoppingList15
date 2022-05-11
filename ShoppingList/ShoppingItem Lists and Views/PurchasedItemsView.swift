@@ -16,9 +16,13 @@ import SwiftUI
 
 struct PurchasedItemsView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	var items: [Item] { dataManager.itemsOffList }
+
+	
 		// this is the @FetchRequest that ties this view to CoreData
-	@FetchRequest(fetchRequest: Item.allItemsFR(onList: false))
-	private var items: FetchedResults<Item>
+//	@FetchRequest(fetchRequest: Item.allItemsFR(onList: false))
+//	private var items: FetchedResults<Item>
 	
 		// the usual @State variables to handle the Search field
 	@State private var searchText: String = ""
@@ -67,7 +71,7 @@ struct PurchasedItemsView: View {
 		}
 		.onDisappear() {
 			logDisappear(title: "PurchasedTabView")
-			PersistentStore.shared.saveContext()
+			dataManager.saveData()
 		}
 		.navigationBarTitle("Purchased List")
 		.toolbar {

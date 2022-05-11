@@ -80,116 +80,116 @@ extension Location: Comparable {
 		}
 	}
 
-	// MARK: - Useful Fetch Request
+//	// MARK: - Useful Fetch Request
+//
+//	// a fetch request we can use in views to get all locations, sorted in visitation order.
+//	// by default, you get all locations; setting onList = true returns only locations that
+//	// have at least one of its shopping items currently on the shopping list
+//	class func allLocationsFR(onList: Bool = false) -> NSFetchRequest<Location> {
+//		let request: NSFetchRequest<Location> = Location.fetchRequest()
+//		request.sortDescriptors = [NSSortDescriptor(key: "visitationOrder_", ascending: true)]
+//		if onList {
+//			request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
+//		}
+//		return request
+//	}
+//
+//	// MARK: - Class Functions
+//
+//	class func count() -> Int {
+//		return count(context: PersistentStore.shared.context)
+//	}
+//
+//	// return a list of all locations, optionally returning only user-defined location
+//	// (i.e., excluding the unknown location)
+//	class func allLocations(userLocationsOnly: Bool) -> [Location] {
+//		var allLocations = allObjects(context: PersistentStore.shared.context) as! [Location]
+//		if userLocationsOnly {
+//			if let index = allLocations.firstIndex(where: { $0.isUnknownLocation }) {
+//				allLocations.remove(at: index)
+//			}
+//		}
+//		return allLocations
+//	}
+//
+//	// creates a new Location having an id, but then it's the user's responsibility
+//	// to fill in the field values (and eventually save)
+//	class func addNewLocation() -> Location {
+//		let newLocation = Location(context: PersistentStore.shared.context)
+//		newLocation.id = UUID()
+//		return newLocation
+//	}
+//
+//	// parameters for the Unknown Location.  this is called only if we try to fetch the
+//	// unknown location and it is not present.
+//	private class func createUnknownLocation() -> Location {
+//		let unknownLocation = addNewLocation()
+//		unknownLocation.name_ = kUnknownLocationName
+//		unknownLocation.red_ = 0.5
+//		unknownLocation.green_ = 0.5
+//		unknownLocation.blue_ = 0.5
+//		unknownLocation.opacity_ = 0.5
+//		unknownLocation.visitationOrder_ = kUnknownLocationVisitationOrder
+//		return unknownLocation
+//	}
+//
+//	class func unknownLocation() -> Location {
+//		// we only keep one "UnknownLocation" in the data store.  you can find it because its
+//		// visitationOrder is the largest 32-bit integer. to make the app work, however, we need this
+//		// default location to exist!
+//		//
+//		// so if we ever need to get the unknown location from the database, we will fetch it;
+//		// and if it's not there, we will create it then.
+//		let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+//		fetchRequest.predicate = NSPredicate(format: "visitationOrder_ == %d", kUnknownLocationVisitationOrder)
+//		do {
+//			let locations = try PersistentStore.shared.context.fetch(fetchRequest)
+//			if locations.count >= 1 { // there should be no more than one
+//				return locations[0]
+//			} else {
+//				return createUnknownLocation()
+//			}
+//		} catch let error as NSError {
+//			fatalError("Error fetching unknown location: \(error.localizedDescription), \(error.userInfo)")
+//		}
+//	}
+//
+//	class func delete(_ location: Location) {
+//		// you cannot delete the unknownLocation
+//		guard location != Location.unknownLocation() else { return }
+//
+//		// get a list of all items for this location so we can work with them
+//		let itemsAtThisLocation = location.items
+//
+//		// reset location associated with each of these to the unknownLocation
+//		// (which in turn, removes the current association with location). additionally,
+//		// this could affect each item's computed properties
+//		let theUnknownLocation = Location.unknownLocation()
+//		itemsAtThisLocation.forEach({ $0.location = theUnknownLocation })
+//
+//		// now finish the deletion and save
+//		let context = PersistentStore.shared.context
+//		context.delete(location)
+//		PersistentStore.shared.saveContext()
+//	}
 	
-	// a fetch request we can use in views to get all locations, sorted in visitation order.
-	// by default, you get all locations; setting onList = true returns only locations that
-	// have at least one of its shopping items currently on the shopping list
-	class func allLocationsFR(onList: Bool = false) -> NSFetchRequest<Location> {
-		let request: NSFetchRequest<Location> = Location.fetchRequest()
-		request.sortDescriptors = [NSSortDescriptor(key: "visitationOrder_", ascending: true)]
-		if onList {
-			request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
-		}
-		return request
-	}
-
-	// MARK: - Class Functions
+//	class func updateAndSave(using draftLocation: DraftLocation) {
+//			// if the incoming location data represents an existing Location, this is just
+//			// a straight update.  otherwise, we must create the new Location here and add it
+//			// before updating it with the new values
+//		if let id = draftLocation.id,
+//			 let location = Location.object(id: id, context: PersistentStore.shared.context) {
+//			location.updateValues(from: draftLocation)
+//		} else {
+//			let newLocation = Location.addNewLocation()
+//			newLocation.updateValues(from: draftLocation)
+//		}
+//		PersistentStore.shared.saveContext()
+//	}
 	
-	class func count() -> Int {
-		return count(context: PersistentStore.shared.context)
-	}
-
-	// return a list of all locations, optionally returning only user-defined location
-	// (i.e., excluding the unknown location)
-	class func allLocations(userLocationsOnly: Bool) -> [Location] {
-		var allLocations = allObjects(context: PersistentStore.shared.context) as! [Location]
-		if userLocationsOnly {
-			if let index = allLocations.firstIndex(where: { $0.isUnknownLocation }) {
-				allLocations.remove(at: index)
-			}
-		}
-		return allLocations
-	}
-
-	// creates a new Location having an id, but then it's the user's responsibility
-	// to fill in the field values (and eventually save)
-	class func addNewLocation() -> Location {
-		let newLocation = Location(context: PersistentStore.shared.context)
-		newLocation.id = UUID()
-		return newLocation
-	}
-	
-	// parameters for the Unknown Location.  this is called only if we try to fetch the
-	// unknown location and it is not present.
-	private class func createUnknownLocation() -> Location {
-		let unknownLocation = addNewLocation()
-		unknownLocation.name_ = kUnknownLocationName
-		unknownLocation.red_ = 0.5
-		unknownLocation.green_ = 0.5
-		unknownLocation.blue_ = 0.5
-		unknownLocation.opacity_ = 0.5
-		unknownLocation.visitationOrder_ = kUnknownLocationVisitationOrder
-		return unknownLocation
-	}
-
-	class func unknownLocation() -> Location {
-		// we only keep one "UnknownLocation" in the data store.  you can find it because its
-		// visitationOrder is the largest 32-bit integer. to make the app work, however, we need this
-		// default location to exist!
-		//
-		// so if we ever need to get the unknown location from the database, we will fetch it;
-		// and if it's not there, we will create it then.
-		let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
-		fetchRequest.predicate = NSPredicate(format: "visitationOrder_ == %d", kUnknownLocationVisitationOrder)
-		do {
-			let locations = try PersistentStore.shared.context.fetch(fetchRequest)
-			if locations.count >= 1 { // there should be no more than one
-				return locations[0]
-			} else {
-				return createUnknownLocation()
-			}
-		} catch let error as NSError {
-			fatalError("Error fetching unknown location: \(error.localizedDescription), \(error.userInfo)")
-		}
-	}
-	
-	class func delete(_ location: Location) {
-		// you cannot delete the unknownLocation
-		guard location != Location.unknownLocation() else { return }
-
-		// get a list of all items for this location so we can work with them
-		let itemsAtThisLocation = location.items
-		
-		// reset location associated with each of these to the unknownLocation
-		// (which in turn, removes the current association with location). additionally,
-		// this could affect each item's computed properties
-		let theUnknownLocation = Location.unknownLocation()
-		itemsAtThisLocation.forEach({ $0.location = theUnknownLocation })
-		
-		// now finish the deletion and save
-		let context = PersistentStore.shared.context
-		context.delete(location)
-		PersistentStore.shared.saveContext()
-	}
-	
-	class func updateAndSave(using draftLocation: DraftLocation) {
-			// if the incoming location data represents an existing Location, this is just
-			// a straight update.  otherwise, we must create the new Location here and add it
-			// before updating it with the new values
-		if let id = draftLocation.id,
-			 let location = Location.object(id: id, context: PersistentStore.shared.context) {
-			location.updateValues(from: draftLocation)
-		} else {
-			let newLocation = Location.addNewLocation()
-			newLocation.updateValues(from: draftLocation)
-		}
-		PersistentStore.shared.saveContext()
-	}
-	
-	class func object(withID id: UUID) -> Location? {
-		return object(id: id, context: PersistentStore.shared.context) as Location?
-	}
+//	class func object(withID id: UUID) -> Location? {
+//		return object(id: id, context: PersistentStore.shared.context) as Location?
+//	}
 
 	
 	// MARK: - Object Methods

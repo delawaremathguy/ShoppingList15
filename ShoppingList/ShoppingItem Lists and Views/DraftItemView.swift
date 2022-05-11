@@ -12,6 +12,8 @@ import SwiftUI
 	// for a new Item, or the fields associated with an Item that already exists.
 struct DraftItemView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+
 		// incoming data representing an about-to-be created Item, or an
 		// existing Item.
 	@ObservedObject var draftItem: DraftItem
@@ -29,8 +31,10 @@ struct DraftItemView: View {
 	}
 	
 		// we need all locations so we can populate the Picker.
-	@FetchRequest(fetchRequest: Location.allLocationsFR())
-	private var locations: FetchedResults<Location>
+	var locations: [Location] { dataManager.locations }
+
+//	@FetchRequest(fetchRequest: Location.allLocationsFR())
+//	private var locations: FetchedResults<Location>
 		
 	var body: some View {
 		Form {

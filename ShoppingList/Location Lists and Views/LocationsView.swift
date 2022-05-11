@@ -10,9 +10,12 @@ import SwiftUI
 
 struct LocationsView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	var locations: [Location] { dataManager.locations }
+	
 		// this is the @FetchRequest that ties this view to CoreData Locations
-	@FetchRequest(fetchRequest: Location.allLocationsFR())
-	private var locations: FetchedResults<Location>
+//	@FetchRequest(fetchRequest: Location.allLocationsFR())
+//	private var locations: FetchedResults<Location>
 	
 		// state to trigger a sheet to appear that adds a new location
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
@@ -58,7 +61,7 @@ struct LocationsView: View {
 		}
 		.onDisappear() {
 			logDisappear(title: "LocationsTabView")
-			PersistentStore.shared.saveContext()
+			dataManager.saveData()
 		}
 		
 	} // end of var body: some View
@@ -76,7 +79,7 @@ struct LocationsView: View {
 		// because the unknown location is created lazily, this will make sure that
 		// we'll not be left with an empty screen
 		if locations.count == 0 {
-			let _ = Location.unknownLocation()
+			let _ = dataManager.unknownLocation
 		}
 	}
 	

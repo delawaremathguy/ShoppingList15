@@ -29,11 +29,11 @@ class DraftItem: ObservableObject {
 	// (nil if data for a new item that does not yet exist)
 	var id: UUID? = nil
 	// all of the values here provide suitable defaults for a new item
-	@Published var name: String = ""
-	@Published var quantity: Int = 1
-	@Published var location = Location.unknownLocation()
-	@Published var onList: Bool = true
-	@Published var isAvailable = true
+	@Published var name: String
+	@Published var quantity: Int
+	@Published var location: Location
+	@Published var onList: Bool
+	@Published var isAvailable: Bool
 	var dateText = "" // for display only, not actually editable
 	
 	// this copies all the editable data from an incoming Item.  this looks fairly
@@ -69,7 +69,7 @@ class DraftItem: ObservableObject {
 	
 	// to do a save/update of an Item, it must have a non-empty name
 	var canBeSaved: Bool { name.count > 0 }
-	// we also want to know if this itemData is attached to a real Item that
+	// we also want to know if this DraftItem is attached to a real Item that
 	// exists, or is data that will be used to create a new Item
 	var representsExistingItem: Bool { id != nil && Item.object(withID: id!) != nil }
 	// useful to know the associated Item (which we'll force unwrap, so

@@ -11,10 +11,13 @@ import MessageUI
 import SwiftUI
 
 struct ShoppingListView: View {
+	
+	@EnvironmentObject private var dataManager: DataManager
+	var items: [Item] { dataManager.itemsOnList }
 		
 	// this is the @FetchRequest that ties this view to CoreData Items
-	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
-	private var items: FetchedResults<Item>
+//	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
+//	private var items: FetchedResults<Item>
 
 	// alert to move all items off the shopping list, and it is also used to trigger an
 	// alert to delete an item in the shopping list
@@ -64,7 +67,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 					Divider()
 					
 					ShoppingListBottomButtons(itemsToBePurchased: items) {
-						identifiableAlertItem = ConfirmMoveAllItemsOffShoppingListAlert()
+						identifiableAlertItem = ConfirmMoveAllItemsOffShoppingListAlert(destructiveAction: dataManager.moveAllItemsOffShoppingList)
 					}
 				} //end of if items.count > 0
 
@@ -83,7 +86,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		}
 		.onDisappear {
 			logDisappear(title: "ShoppingListView")
-			PersistentStore.shared.saveContext()
+			dataManager.saveData()
 		}
 		
 	} // end of body: some View
@@ -161,7 +164,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 struct ShoppingListBottomButtons: View {
 	
 		// incoming list of items to be purchased
-	var itemsToBePurchased: FetchedResults<Item>
+	var itemsToBePurchased: [Item]
 		// incoming function: what to do when the user wants to move all items of the shopping list
 	var moveAllItemsOffShoppingList: () -> ()
 		// determines whether to show the "Mark All Available" button

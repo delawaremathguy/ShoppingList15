@@ -11,6 +11,8 @@ import SwiftUI
 struct ModifyExistingLocationView: View {
 	
 	@Environment(\.dismiss) var dismiss: DismissAction
+	@EnvironmentObject private var dataManager: DataManager
+
 	
 		// draftLocation will be initialized from the incoming DraftLocation
 	@StateObject private var draftLocation: DraftLocation
@@ -47,8 +49,8 @@ struct ModifyExistingLocationView: View {
 					// the draftLocation when finished with this view (i.e., when dismissed).
 					// note that if
 				if draftLocation.representsExistingLocation {
-					Location.updateAndSave(using: draftLocation)
-					PersistentStore.shared.saveContext()
+					dataManager.updateAndSave(using: draftLocation)
+					dataManager.saveData()
 				}
 			}
 	}

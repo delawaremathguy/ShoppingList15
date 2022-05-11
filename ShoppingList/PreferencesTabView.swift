@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PreferencesTabView: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	
 	// this view is a restructured version of the older DevToolTab to now handle
 	// user preferences.  for the moment, the only preference we have is for
 	// setting the number of days back in time to section out the item in the
@@ -61,30 +63,30 @@ struct PreferencesTabView: View {
 					.padding([.leading, .trailing], 10)
 					.padding(.bottom, 20)
 				
-				Button("Load sample data") {
-					let currentLocationCount = Location.count() // what it is now
-					let currentItemCount = Item.count() // what it is now
-					populateDatabaseFromJSON()
-					self.locationsAdded = Location.count() - currentLocationCount // now the differential
-					self.itemsAdded = Item.count() - currentItemCount // now the differential
-					self.confirmDataHasBeenAdded = true
-				}
-				.padding(.bottom, 20)
-				.alert(isPresented: $confirmDataHasBeenAdded) {
-					Alert(title: Text("Data Added"),
-								message: Text("Sample data for the app (\(locationsAdded) locations and \(itemsAdded) shopping items) have been added."),
-								dismissButton: .default(Text("OK")))
-				}
+//				Button("Load sample data") {
+//					let currentLocationCount = Location.count() // what it is now
+//					let currentItemCount = Item.count() // what it is now
+//					dataManager.populateDatabaseFromJSON()
+//					self.locationsAdded = Location.count() - currentLocationCount // now the differential
+//					self.itemsAdded = Item.count() - currentItemCount // now the differential
+//					self.confirmDataHasBeenAdded = true
+//				}
+//				.padding(.bottom, 20)
+//				.alert(isPresented: $confirmDataHasBeenAdded) {
+//					Alert(title: Text("Data Added"),
+//								message: Text("Sample data for the app (\(locationsAdded) locations and \(itemsAdded) shopping items) have been added."),
+//								dismissButton: .default(Text("OK")))
+//				}
 				
 				Text("This button lets you offload existing data to JSON. On the simulator, it will dump to files on the Desktop (see Development.swift to get the path right); on a device, it will simply print to the console.  You can use that JSON output later to re-seed the app data.")
 					.padding([.leading, .trailing], 10)
 					.padding(.bottom, 20)
 				
-				Button("Write database as JSON") {
-					writeAsJSON(items: Item.allItems(), to: kItemsFilename)
-					writeAsJSON(items: Location.allLocations(userLocationsOnly: true), to: kLocationsFilename)
-				}
-				.padding(.bottom, 20)
+//				Button("Write database as JSON") {
+//					writeAsJSON(items: Item.allItems(), to: kItemsFilename)
+//					writeAsJSON(items: Location.allLocations(userLocationsOnly: true), to: kLocationsFilename)
+//				}
+//				.padding(.bottom, 20)
 				
 				Text("This developer's view can and should be hidden for production (see Development.swift)")
 					.italic()

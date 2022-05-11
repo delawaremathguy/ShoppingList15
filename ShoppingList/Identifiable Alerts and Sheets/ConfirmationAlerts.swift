@@ -21,12 +21,15 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 	
 	// to function, we just need to know what item we're talking about, and how to do
 	// the deletion as the destructive action.
-	init(item: Item, destructiveCompletion: (() -> Void)? = nil) {
+	init(item: Item, dataManager: DataManager, destructiveCompletion: (() -> Void)? = nil) {
 		super.init()
 		// now update appropriate messages and actions
 		self.title = "Delete \'\(item.name)\'?"
 		self.message = "Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone."
-		self.destructiveAction = { Item.delete(item) }
+		self.destructiveAction = {
+			dataManager.delete(item: item)
+			dataManager.saveData()
+		}
 		self.destructiveCompletion = destructiveCompletion
 	}
 	
@@ -36,10 +39,10 @@ class ConfirmDeleteItemAlert: IdentifiableAlertItem {
 
 class ConfirmMoveAllItemsOffShoppingListAlert: IdentifiableAlertItem {
 	
-	override init() {
+	init(destructiveAction: @escaping () -> ()) {
 		super.init()
 		title = "Move All Items Off-List"
-		destructiveAction = Item.moveAllItemsOffShoppingList
+		self.destructiveAction = destructiveAction
 	}
 	
 }
