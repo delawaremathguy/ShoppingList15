@@ -51,7 +51,6 @@ struct ShoppingListApp: App {
 	var body: some Scene {
 		WindowGroup {
 			MainView()
-				//.environment(\.managedObjectContext, persistentStore.context)
 				.environmentObject(dataManager)
 				.environmentObject(today)
 				.onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),

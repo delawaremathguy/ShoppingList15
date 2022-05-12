@@ -82,7 +82,7 @@ class AlertModel: ObservableObject {
 		// model's variables for the type using associated data for the type.  you will need
 		// to add cases, of course, for each type you define.
 		// the alert will be presented when isPresented = true is executed.
-	func updateAndPresent(for type: AlertModelType) {
+	func updateAndPresent(for type: AlertModelType, dataManager: DataManager) {
 		switch type {
 				
 			case .none:	// nothing to do!
@@ -92,7 +92,7 @@ class AlertModel: ObservableObject {
 				title = "Delete \'\(location.name)\'?"
 				message = Text("Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
 				destructiveAction = {
-					Location.delete(location)
+					dataManager.delete(location: location)
 					completion?()
 				}
 

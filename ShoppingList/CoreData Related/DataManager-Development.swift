@@ -29,9 +29,9 @@ extension DataManager {
 		for codableItem in codableItems {
 				//		let newItem = Item.addNewItem() // new UUID is created here
 			let newItem = addNewItem() // new UUID is created here
-			newItem.name = codableItem.name
-			newItem.quantity = codableItem.quantity
-			newItem.onList = codableItem.onList
+			newItem.name_ = codableItem.name
+			newItem.quantity_ = Int32(codableItem.quantity)
+			newItem.onList_ = codableItem.onList
 			newItem.isAvailable_ = codableItem.isAvailable
 			newItem.dateLastPurchased_ = nil // never purchased
 			

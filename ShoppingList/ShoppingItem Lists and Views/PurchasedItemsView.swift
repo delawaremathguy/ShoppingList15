@@ -90,7 +90,7 @@ struct PurchasedItemsView: View {
 		// makes a simple "+" to add a new item.  yapping on the button triggers a sheet to add a new item.
 	func addNewButton() -> some View {
 		NavBarImageButton("plus") {
-			identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
+			identifiableSheetItem = AddNewItemSheetItem(dataManager: dataManager) { identifiableSheetItem = nil }
 		}
 	}
 	

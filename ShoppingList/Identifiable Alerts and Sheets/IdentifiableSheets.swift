@@ -17,15 +17,17 @@ import SwiftUI
 class AddNewLocationSheetItem: IdentifiableSheetItem {
 	
 		// specialized data for this instance
+	private var dataManager: DataManager
 	private var dismiss: () -> Void
 	
-	init(dismiss: @escaping () -> Void) {
+	init(dataManager: DataManager, dismiss: @escaping () -> Void) {
+		self.dataManager = dataManager
 		self.dismiss = dismiss
 		super.init()
 	}
 	
 	override func content() -> AnyView {
-		AddNewLocationView(dismiss: dismiss)
+		AddNewLocationView(dataManager: dataManager, dismiss: dismiss)
 			.eraseToAnyView()
 	}
 	
@@ -40,15 +42,17 @@ class AddNewLocationSheetItem: IdentifiableSheetItem {
 class AddNewItemSheetItem: IdentifiableSheetItem {
 	
 		// specialized data for this instance
+	private var dataManager: DataManager
 	private var dismiss: () -> Void
 	
-	init(dismiss: @escaping () -> Void) {
+	init(dataManager: DataManager, dismiss: @escaping () -> Void) {
+		self.dataManager = dataManager
 		self.dismiss = dismiss
 		super.init()
 	}
 	
 	override func content() -> AnyView {
-		AddNewItemView(dismiss: dismiss)
+		AddNewItemView(dataManager: dataManager, dismiss: dismiss)
 			.eraseToAnyView()
 	}
 	

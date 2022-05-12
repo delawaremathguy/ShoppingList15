@@ -21,7 +21,7 @@ import SwiftUI
 	//
 struct AddNewItemView: View {
 	
-	@EnvironmentObject private var dataManager: DataManager
+private var dataManager: DataManager
 	
 		// a dismiss action.  we're a View presented using .sheet(item:) that was triggered by setting a
 		// @State variable to something non-nil, so we need to be given a way to dismiss ourself (which
@@ -33,9 +33,10 @@ struct AddNewItemView: View {
 	@StateObject private var draftItem: DraftItem
 	
 		// custom init here to set up a data for an Item to be added having default values
-	init(initialItemName: String? = nil, location: Location? = nil, dismiss: @escaping () -> Void) {
+	init(initialItemName: String? = nil, location: Location? = nil, dataManager: DataManager, dismiss: @escaping () -> Void) {
 			// create working, editable data for a new Item, with the given suggested initial name and location
-		let initialValue = DraftItem(initialItemName: initialItemName, location: location)
+		self.dataManager = dataManager
+		let initialValue = dataManager.draftItem(initialItemName: initialItemName)
 		_draftItem = StateObject(wrappedValue: initialValue)
 			// and stash away the dismiss function
 		self.dismiss = dismiss

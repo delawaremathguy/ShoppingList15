@@ -34,7 +34,7 @@ struct LocationsView: View {
 				Section(header: Text("Locations Listed: \(locations.count)").sectionHeader()) {
 					ForEach(locations) { location in
 						NavigationLink {
-							ModifyExistingLocationView(location: location)
+							ModifyExistingLocationView(location: location, dataManager: dataManager)
 						} label: {
 							LocationRowView(rowData: LocationRowData(location: location))
 						} // end of NavigationLink
@@ -54,7 +54,9 @@ struct LocationsView: View {
 		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
 					 actions: { model in model.actions() },
 					 message: { model in model.message })
-		.sheet(item: $identifiableSheetItem) { item in item.content() }
+		.sheet(item: $identifiableSheetItem) { item in
+			item.content().environmentObject(dataManager)
+		}
 		.onAppear {
 			logAppear(title: "LocationsTabView")
 			handleOnAppear()
@@ -71,7 +73,7 @@ struct LocationsView: View {
 		let location = locations[firstIndex]
 		if !location.isUnknownLocation {
 //			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
-			alertModel.updateAndPresent(for: .confirmDeleteLocation(location, nil))
+			alertModel.updateAndPresent(for: .confirmDeleteLocation(location, nil), dataManager: dataManager)
 		}
 	}
 	
@@ -86,7 +88,7 @@ struct LocationsView: View {
 	// defines the usual "+" button to add a Location
 	func addNewButton() -> some View {
 		Button {
-			identifiableSheetItem = AddNewLocationSheetItem(dismiss: { identifiableSheetItem = nil })
+			identifiableSheetItem = AddNewLocationSheetItem(dataManager: dataManager, dismiss: { identifiableSheetItem = nil })
 		} label: {
 			Image(systemName: "plus")
 		}

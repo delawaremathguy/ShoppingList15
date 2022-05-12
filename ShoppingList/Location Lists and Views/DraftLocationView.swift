@@ -13,6 +13,7 @@ import SwiftUI
 	// that already exists.
 struct DraftLocationView: View {
 	@Environment(\.dismiss) var dismiss
+	@EnvironmentObject private var dataManager: DataManager
 	
 		// incoming data = values for a Location + what action to take if the user
 		// decides to delete the Location
@@ -71,7 +72,7 @@ struct DraftLocationView: View {
 			
 		} // end of Form
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
-			AddNewItemView(location: draftLocation.associatedLocation) {
+			AddNewItemView(location: draftLocation.associatedLocation, dataManager: dataManager) {
 				isAddNewItemSheetShowing = false
 			}
 		}
@@ -98,7 +99,7 @@ struct SimpleItemsList: View {
 		Section(header: ItemsListHeader()) {
 			ForEach(items) { item in
 				NavigationLink {
-					ModifyExistingItemView(item: item)
+					ModifyExistingItemView(item: item, dataManager: dataManager)
 				} label: {
 					Text(item.name)
 				}

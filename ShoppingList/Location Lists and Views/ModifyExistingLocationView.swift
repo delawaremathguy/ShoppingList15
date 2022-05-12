@@ -11,7 +11,7 @@ import SwiftUI
 struct ModifyExistingLocationView: View {
 	
 	@Environment(\.dismiss) var dismiss: DismissAction
-	@EnvironmentObject private var dataManager: DataManager
+	private var dataManager: DataManager
 
 	
 		// draftLocation will be initialized from the incoming DraftLocation
@@ -21,8 +21,9 @@ struct ModifyExistingLocationView: View {
 //	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
 	@StateObject private var alertModel = AlertModel()
 
-	init(location: Location) {
-		_draftLocation = StateObject(wrappedValue: DraftLocation(location: location))
+	init(location: Location, dataManager: DataManager) {
+		self.dataManager = dataManager
+		_draftLocation = StateObject(wrappedValue: dataManager.draftLocation(location: location))
 	}
 	
 	var body: some View {
@@ -32,7 +33,8 @@ struct ModifyExistingLocationView: View {
 			// Location, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
 		DraftLocationView(draftLocation: draftLocation) {
-			alertModel.updateAndPresent(for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }))
+			alertModel.updateAndPresent(
+				for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }), dataManager: dataManager)
 //			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
 //				location: draftLocation.associatedLocation) {
 //					dismiss()

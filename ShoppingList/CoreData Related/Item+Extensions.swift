@@ -102,7 +102,7 @@ extension Item {
 		// the name.  this fronts a Core Data optional attribute
 	var name: String {
 		get { name_ ?? "No Name" }
-		set { name_ = newValue }
+//		set { name_ = newValue }
 	}
 	
 		// whether the item is available.  this fronts a Core Data boolean
@@ -142,13 +142,7 @@ extension Item {
 		// and ... it could be the case that we try to access an Item that's been downloaded
 		// before its associated Location has been brought down to the device.
 	var location: Location {
-		get {
-			if let location = location_ {
-				return location
-			}
-			location_ = Location.unknownLocation()
-			return location_!
-		}
+		get { location_! }
 		set {
 			location_?.objectWillChange.send()
 			location_ = newValue

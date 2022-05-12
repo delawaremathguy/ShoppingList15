@@ -132,7 +132,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			.disabled(items.count == 0)
 
 			NavBarImageButton("plus") {
-				identifiableSheetItem = AddNewItemSheetItem() { identifiableSheetItem = nil }
+				identifiableSheetItem = AddNewItemSheetItem(dataManager: dataManager) { identifiableSheetItem = nil }
 			}
 		}
 	}

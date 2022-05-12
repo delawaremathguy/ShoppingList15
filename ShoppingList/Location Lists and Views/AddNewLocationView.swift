@@ -11,13 +11,19 @@ import SwiftUI
 // see AddNewItemView.swift for similar comments and explanation of how this works
 struct AddNewLocationView: View {
 	
-	@EnvironmentObject private var dataManager: DataManager
+	private var dataManager: DataManager
 	
 	// incoming dismiss action.  we're a View presented as a sheet via an
 	// identifiableSheetItem, so the presenter needs to tell us how it will dismiss us
 	var dismiss: () -> Void
 		// default draftLocation is initialized here
-	@StateObject private var draftLocation = DraftLocation()
+	@StateObject private var draftLocation: DraftLocation
+	
+	init(dataManager: DataManager, dismiss: @escaping () -> Void) {
+		self.dataManager = dataManager
+		self.dismiss = dismiss
+		_draftLocation = StateObject(wrappedValue: dataManager.draftLocation())
+	}
 	
 	var body: some View {
 		NavigationView {

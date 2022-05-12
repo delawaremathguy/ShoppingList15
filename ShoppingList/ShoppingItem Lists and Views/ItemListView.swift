@@ -52,7 +52,7 @@ struct ItemListView: View {
 				Section(header: sectionHeader(section: section)) {
 					ForEach(section.items) { item in
 						NavigationLink {
-							ModifyExistingItemView(item: item)
+							ModifyExistingItemView(item: item, dataManager: dataManager)
 						} label: {
 							SelectableItemRowView(item: item,
 																		selected: itemsChecked.contains(item),

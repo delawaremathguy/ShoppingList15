@@ -67,9 +67,8 @@ class DataManager: NSObject, ObservableObject {
 	var itemsOffList: [Item] { items.filter({ !$0.onList }) }
 	
 	override init() {
-			// replace this next line using a local, not a non-global singleton
+			// set up Core Data
 		let persistentStore = PersistentStore()
-		// let persistentStore = PersistentStore()
 		managedObjectContext = persistentStore.context
 		
 			// create NSFetchedResultsControllers here for Items and Locations
@@ -85,10 +84,11 @@ class DataManager: NSObject, ObservableObject {
 															 managedObjectContext: managedObjectContext,
 															 sectionNameKeyPath: nil, cacheName: nil)
 	
+			// finish our initialization as an NSObject
 		super.init()
 		
-		// hook ourself in as the delegate of each of these FRCs and do a first fetch to populate
-		// the two @Published arrays we vend
+			// hook ourself in as the delegate of each of these FRCs and do a first fetch to populate
+			// the two @Published arrays we vend
 		itemsFRC.delegate = self
 		try? itemsFRC.performFetch()
 		self.items = itemsFRC.fetchedObjects ?? []
@@ -104,28 +104,28 @@ class DataManager: NSObject, ObservableObject {
 	
 	func addNewItem() -> Item {
 		let newItem = Item(context: managedObjectContext)
-		newItem.name = ""
-		newItem.quantity = 1
-		newItem.isAvailable = true
-		newItem.onList = true
+		newItem.name_ = ""
+		newItem.quantity_ = 1
+		newItem.isAvailable_ = true
+		newItem.onList_ = true
 		newItem.id = UUID()
-		newItem.location = unknownLocation
+		newItem.location_ = unknownLocation
 		return newItem
 	}
 	
-		// updates data for an Item that the user has directed from an Add or Modify View.
-		// if the incoming data is not associated with an item, we need to create it first
-	func updateAndSave(using draftItem: DraftItem) {
-			// if we can find an Item with the right id, use it, else create one
-		if let id = draftItem.id,
-			 let item = items.first(where: { $0.id == id }) {
-			item.updateValues(from: draftItem)
-		} else {
-			let newItem = addNewItem()
-			newItem.updateValues(from: draftItem)
-		}
-		saveData()
-	}
+//		// updates data for an Item that the user has directed from an Add or Modify View.
+//		// if the incoming data is not associated with an item, we need to create it first
+//	func updateAndSave(using draftItem: DraftItem) {
+//			// if we can find an Item with the right id, use it, else create one
+//		if let id = draftItem.id,
+//			 let item = items.first(where: { $0.id == id }) {
+//			item.updateValues(from: draftItem)
+//		} else {
+//			let newItem = addNewItem()
+//			newItem.updateValues(from: draftItem)
+//		}
+//		saveData()
+//	}
 	
 	func delete(item: Item) {
 		item.location.objectWillChange.send()
@@ -217,8 +217,9 @@ class DataManager: NSObject, ObservableObject {
 		saveData()
 	}
 	
-	func object(withID id: UUID) -> NSManagedObject? {
-		NSManagedObject.object(id: id, context: managedObjectContext)
+	func object(withID id: UUID?) -> NSManagedObject? {
+		guard let id = id else { return nil }
+		return NSManagedObject.object(id: id, context: managedObjectContext)
 	}
 	
 	func saveData() {

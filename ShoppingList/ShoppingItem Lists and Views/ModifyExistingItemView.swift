@@ -32,7 +32,7 @@ import SwiftUI
 struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
-	@EnvironmentObject private var dataManager: DataManager
+	private var dataManager: DataManager
 	
 		// an editable copy of the Item's data -- a "draft."  it's important that this be a
 		// @StateObject, because it is treated somewhat differently than @State.
@@ -63,8 +63,9 @@ struct ModifyExistingItemView: View {
 	@StateObject private var draftItem: DraftItem
 	
 		// custom init here to set up editableData object
-	init(item: Item) {
-		_draftItem = StateObject(wrappedValue: DraftItem(item: item))
+	init(item: Item, dataManager: DataManager) {
+		self.dataManager = dataManager
+		_draftItem = StateObject(wrappedValue: dataManager.draftItem(item: item))
 	}
 	
 		// alert trigger item to confirm deletion of an Item
@@ -93,9 +94,7 @@ struct ModifyExistingItemView: View {
 	
 	func customBackButton() -> some View {
 		Button {
-			if draftItem.representsExistingItem {
-				dataManager.updateAndSave(using: draftItem)
-			}
+			dataManager.updateAndSave(using: draftItem)
 			dismiss()
 		} label: {
 			HStack(spacing: 5) {
