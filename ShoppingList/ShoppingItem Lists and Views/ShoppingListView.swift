@@ -65,11 +65,8 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 
 				if items.count > 0 {
 					Divider()
-					
-					ShoppingListBottomButtons(itemsToBePurchased: items) {
-						identifiableAlertItem = ConfirmMoveAllItemsOffShoppingListAlert(destructiveAction: dataManager.moveAllItemsOffShoppingList)
-					}
-				} //end of if items.count > 0
+					ShoppingListBottomButtons(itemsToBePurchased: items)
+				}
 
 				Divider()
 
@@ -163,12 +160,14 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 
 struct ShoppingListBottomButtons: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	
 		// incoming list of items to be purchased
 	var itemsToBePurchased: [Item]
-		// incoming function: what to do when the user wants to move all items of the shopping list
-	var moveAllItemsOffShoppingList: () -> ()
 		// determines whether to show the "Mark All Available" button
 	var showMarkAllAvailable: Bool { !itemsToBePurchased.allSatisfy({ $0.isAvailable }) }
+		// trigger for alert to confirm you want to move all items off the shopping list
+	@State private var isConfirmMoveAllPresented = false
 	
 	var body: some View {
 		
@@ -176,7 +175,8 @@ struct ShoppingListBottomButtons: View {
 			Spacer()
 			
 			Button {
-				moveAllItemsOffShoppingList()
+				isConfirmMoveAllPresented = true
+				//moveAllItemsOffShoppingList()
 			} label: {
 				Text("Move All Off List")
 			}
@@ -195,6 +195,11 @@ struct ShoppingListBottomButtons: View {
 		}
 		.padding(.vertical, 6)
 		.animation(.easeInOut(duration: 0.4), value: showMarkAllAvailable)
+		.alert("Move All Items Off-List", isPresented: $isConfirmMoveAllPresented) {
+			Button("Yes", role: .destructive) {
+				dataManager.moveAllItemsOffShoppingList()
+			}
+		}
 
 	}
 	

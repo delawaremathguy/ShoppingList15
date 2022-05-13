@@ -11,56 +11,33 @@ import SwiftUI
 struct ModifyExistingLocationView: View {
 	
 	@Environment(\.dismiss) var dismiss: DismissAction
-	private var dataManager: DataManager
-
 	
-		// draftLocation will be initialized from the incoming DraftLocation
+		// draftLocation will be initialized from the incoming Location
 	@StateObject private var draftLocation: DraftLocation
+		// a way to locate the Location associated with the draftLocation in real time.
 	var associatedLocation: Location? { dataManager.location(withID: draftLocation.id) }
 	
-		// alert trigger item to confirm deletion of a Location
-//	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
-//	@StateObject private var alertModel = AlertModel()
 	@State private var isDeleteConfirmationPresented = false
 
+		// custom init here to set up the DraftLocation object.  in this case, must pass the
+		// dataManager in directly (and not rely on it being in the environment) because
+		// we're inside the init() that runs first before everything else is available.
+	private var dataManager: DataManager
 	init(location: Location, dataManager: DataManager) {
 		self.dataManager = dataManager
 		_draftLocation = StateObject(wrappedValue: dataManager.draftLocation(location: location))
 	}
 	
 	var body: some View {
-
-			// the trailing closure provides the DraftLocationView with what to do after the user has
-			// opted to delete the location, namely "trigger an alert whose destructive action is to delete the
-			// Location, and whose destructive completion is to dismiss this view,"
-			// so we "go back" up the navigation stack
 		DraftLocationView(draftLocation: draftLocation)
-		//{
-//			alertModel.updateAndPresent(for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }),
-//					 dataManager: dataManager)
-//			isDeleteConfirmationPresented = true
-//			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
-//				location: draftLocation.associatedLocation) {
-//					dismiss()
-//				}
-//		}
 			.navigationBarTitle(Text("Modify Location"), displayMode: .inline)
-//			.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
-//			.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
-//						 actions: { model in model.actions() },
-//						 message: { model in model.message })
-		
 			.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
 				Button("OK", role: .destructive) {
 					dataManager.delete(location: associatedLocation)
 				}
 			} message: { Text(alertMessage()) }
-
 			.onDisappear {
-					// we have been doing a pseudo-live edit for the associated  and we're leaving
-					// the screen ... but one of the actions we may have performed is to delete the
-					// Location ... and we would not want to do any updating with this draftLocation
-					// if we deleted the underlying Location.
+					// a way to locate the Location associated with the draftLocation in real time.
 				if associatedLocation != nil {
 					dataManager.updateAndSave(using: draftLocation)
 				}
