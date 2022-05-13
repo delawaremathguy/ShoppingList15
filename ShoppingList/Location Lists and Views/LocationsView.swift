@@ -13,16 +13,14 @@ struct LocationsView: View {
 	@EnvironmentObject private var dataManager: DataManager
 	var locations: [Location] { dataManager.locations }
 	
-		// this is the @FetchRequest that ties this view to CoreData Locations
-//	@FetchRequest(fetchRequest: Location.allLocationsFR())
-//	private var locations: FetchedResults<Location>
-	
 		// state to trigger a sheet to appear that adds a new location
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
 		// states to trigger an alert to appear to delete a location and set up title and message
 	@State private var isDeleteConfirmationPresented = false
 	@State private var locationToDelete: Location?
+	
+	@State private var isSheetPresented = false
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -55,8 +53,13 @@ struct LocationsView: View {
 				withAnimation { dataManager.delete(location: locationToDelete!) }
 			}
 		} message: { Text(alertMessage()) }
-		.sheet(item: $identifiableSheetItem) { item in
-			item.content().environmentObject(dataManager)
+//		.sheet(item: $identifiableSheetItem) { item in
+//			item.content().environmentObject(dataManager)
+//		}
+		.sheet(isPresented: $isSheetPresented) {
+			AddNewLocationView(dataManager: dataManager) {
+				isSheetPresented = false
+			}
 		}
 		.onAppear {
 			logAppear(title: "LocationsTabView")
@@ -78,7 +81,8 @@ struct LocationsView: View {
 	
 	func alertMessage() -> String {
 		if let location = locationToDelete {
-			return "Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+			return "Are you sure you want to delete the Location named \'\(location.name)\'?" +
+							"  All items at this location will be moved to the Unknown Location.  This action cannot be undone."
 		}
 		return ""
 	}
@@ -93,8 +97,11 @@ struct LocationsView: View {
 	}
 	
 	func handleOnAppear() {
-		// because the unknown location is created lazily, this will make sure that
-		// we'll not be left with an empty screen
+		// because the unknown location is created lazily, and may not have been
+		// created yet, this will make sure we have one unknown location.  this is a little
+		// bit of a stretch: we may be creating one here, and then find out that we already
+		// have one of these created in the cloud.  there are ways around that, but that's
+		// for another day, since fixing it is not very pretty.
 		if locations.count == 0 {
 			let _ = dataManager.unknownLocation
 		}
@@ -103,7 +110,8 @@ struct LocationsView: View {
 	// defines the usual "+" button to add a Location
 	func addNewButton() -> some View {
 		Button {
-			identifiableSheetItem = AddNewLocationSheetItem(dataManager: dataManager, dismiss: { identifiableSheetItem = nil })
+			isSheetPresented = true
+			//identifiableSheetItem = AddNewLocationSheetItem(dataManager: dataManager, dismiss: { identifiableSheetItem = nil })
 		} label: {
 			Image(systemName: "plus")
 		}
