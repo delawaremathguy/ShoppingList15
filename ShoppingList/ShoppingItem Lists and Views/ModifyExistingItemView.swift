@@ -61,6 +61,7 @@ struct ModifyExistingItemView: View {
 		// the mysteries of SwiftUI do indeed continue for me, even as we're now in version 3.
 		//
 	@StateObject private var draftItem: DraftItem
+	var associatedItem: Item? { dataManager.item(withID: draftItem.id) }
 	
 		// custom init here to set up editableData object
 	init(item: Item, dataManager: DataManager) {
@@ -69,7 +70,7 @@ struct ModifyExistingItemView: View {
 	}
 	
 		// alert trigger item to confirm deletion of an Item
-	@State private var confirmDeleteItemAlert: IdentifiableAlertItem?
+	//@State private var confirmDeleteItemAlert: IdentifiableAlertItem?
 	@State private var confirmDeleteAlertShowing = false
 	
 	var body: some View {
@@ -78,23 +79,28 @@ struct ModifyExistingItemView: View {
 			// opted to delete the item, namely "trigger an alert whose destructive action is to delete the
 			// Item, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
-		DraftItemView(draftItem: draftItem) {
-			confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: draftItem.associatedItem, dataManager: dataManager) {
-				dismiss()
-			}
-		}
+		DraftItemView(draftItem: draftItem)
+//		{
+//			if let associatedItem = associatedItem {
+//				confirmDeleteItemAlert = ConfirmDeleteItemAlert(item: associatedItem, dataManager: dataManager) {
+//					dismiss()
+//				}
+//			}
+//		}
 		.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.toolbar {
 			ToolbarItem(placement: .navigationBarLeading, content: customBackButton)
 		}
-		.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+		//.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
 		
 	} // end of var body: some View
 	
 	func customBackButton() -> some View {
 		Button {
-			dataManager.updateAndSave(using: draftItem)
+			if associatedItem != nil {
+				dataManager.updateAndSave(using: draftItem)
+			}
 			dismiss()
 		} label: {
 			HStack(spacing: 5) {

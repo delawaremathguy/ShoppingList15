@@ -19,13 +19,17 @@ struct DraftLocationView: View {
 		// decides to delete the Location
 	@ObservedObject var draftLocation: DraftLocation
 		//@ObservedObject var alertModel: AlertModel
-	var deleteActionTrigger: (() -> ())?
+	@State private var isDeleteConfirmationPresented = false
+
+	//var deleteActionTrigger: (() -> ())?
 	
 		// definition of whether we can offer a deletion option in this view
 		// (it's a real location that's not the unknown location)
-	private var locationCanBeDeleted: Bool {
-		draftLocation.representsExistingLocation
-			&& !draftLocation.associatedLocation.isUnknownLocation
+	private var deletionAllowed: Bool {
+		guard let location = dataManager.location(withID: draftLocation.id) else {
+			return false
+		}
+		return !location.isUnknownLocation
 	}
 	
 		// trigger for adding a new item at this Location
@@ -38,7 +42,7 @@ struct DraftLocationView: View {
 			Section(header: Text("Basic Information").sectionHeader()) {
 				HStack {
 					SLFormLabelText(labelText: "Name: ")
-					TextField("Location name", text: $draftLocation.locationName)
+					TextField("Location name", text: $draftLocation.name)
 				}
 				
 				if draftLocation.visitationOrder != kUnknownLocationVisitationOrder {
@@ -54,18 +58,19 @@ struct DraftLocationView: View {
 			} // end of Section 1
 			
 				// Section 2: Delete button, if the data is associated with an existing Location
-			if locationCanBeDeleted {
+			if deletionAllowed {
 				Section(header: Text("Location Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Location")  {
 						//alertModel.type = .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() })
-						deleteActionTrigger?()
+						//deleteActionTrigger?()
+						isDeleteConfirmationPresented = true
 					}
 					.foregroundColor(Color.red)
 				}
 			} // end of Section 2
 			
 //				 Section 3: Items assigned to this Location, if we are editing a Location
-			if draftLocation.representsExistingLocation {
+			if deletionAllowed {
 				SimpleItemsList(location: draftLocation.associatedLocation,
 												isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
 			}
@@ -75,6 +80,13 @@ struct DraftLocationView: View {
 			AddNewItemView(location: draftLocation.associatedLocation, dataManager: dataManager) {
 				isAddNewItemSheetShowing = false
 			}
+		}
+		.alert("Delete \(draftLocation.name)?", isPresented: $isDeleteConfirmationPresented) {
+			Button("OK", role: .destructive) {
+				dataManager.delete(location: draftLocation.associatedLocation)
+			}
+		} message: {
+			Text("Are you sure you want to delete the Location named \'\(draftLocation.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
 		}
 
 	}

@@ -13,6 +13,7 @@ import SwiftUI
 struct DraftItemView: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
+	@Environment(\.dismiss) var dismiss: DismissAction
 
 		// incoming data representing an about-to-be created Item, or an
 		// existing Item.
@@ -21,21 +22,14 @@ struct DraftItemView: View {
 		// Item (should be supplied only the draftItem represents a
 		// real Item that already exists).  in usage, calling this action only initiates
 		// a deletion sequence in which the user will be asked to confirm the deletion.
-	var deleteActionInitiator: (() -> ())?
-		// a simple way to tell whether we can delete this Item ... it's the same
-		// as whether the caller gave us something to do to initiate a deletion.
-		// we could also ask draftItem.representsExistingItem, but let's
-		// keep it simple for the code below.
-	private var itemExists: Bool {
-		deleteActionInitiator != nil
-	}
+	//var deleteActionInitiator: (() -> ())?
+	private var associatedItem: Item? { dataManager.item(withID: draftItem.id) }
+	
+	@State private var isDeleteConfirmationPresented = false
 	
 		// we need all locations so we can populate the Picker.
 	var locations: [Location] { dataManager.locations }
 
-//	@FetchRequest(fetchRequest: Location.allLocationsFR())
-//	private var locations: FetchedResults<Location>
-		
 	var body: some View {
 		Form {
 				// Section 1. Basic Information Fields
@@ -71,7 +65,7 @@ struct DraftItemView: View {
 					}
 				}
 				
-				if itemExists {
+				if associatedItem != nil {
 					HStack(alignment: .firstTextBaseline) {
 						SLFormLabelText(labelText: "Last Purchased: ")
 						Text("\(draftItem.dateText)")
@@ -81,16 +75,35 @@ struct DraftItemView: View {
 			} // end of Section 1
 			
 				// Section 2. Item Management (Delete), if present
-			if itemExists {
+			if associatedItem != nil {
 				Section(header: Text("Shopping Item Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Shopping Item") {
-						deleteActionInitiator?()
+						isDeleteConfirmationPresented = true
+//						deleteActionInitiator?()
 					}
 					.foregroundColor(Color.red)
 				} // end of Section 2
 			} // end of if ...
 			
 		} // end of Form
+		.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
+			Button("OK", role: .destructive) {
+				dataManager.delete(item: associatedItem)
+				dismiss()
+			}
+		} message: {
+			Text(alertMessage())
+		}
+
 	}
+	
+	func alertTitle() -> String {
+		"Delete \(draftItem.name)?"
+	}
+	
+	func alertMessage() -> String {
+		"Are you sure you want to delete the Location named \'\(draftItem.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+	}
+
 }
 

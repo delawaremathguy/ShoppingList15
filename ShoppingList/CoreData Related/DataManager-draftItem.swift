@@ -36,8 +36,6 @@ class DraftItem: ObservableObject {
 	@Published var isAvailable: Bool = true
 	var dateText = "" // for display only, not actually editable
 	
-	private weak var dataManager: DataManager?
-	
 		// this copies all the editable data from an incoming Item.  this looks fairly
 		// benign, but its in the lines below that crashes did/could occur in earlier versions
 		// because of the main, underlying problem: if an item is deleted somewhere outside
@@ -72,10 +70,10 @@ class DraftItem: ObservableObject {
 	var canBeSaved: Bool { name.count > 0 }
 		// we also want to know if this DraftItem is attached to a real Item that
 		// exists, or is data that will be used to create a new Item
-	var representsExistingItem: Bool { dataManager?.object(withID: id) != nil }
-		// useful to know the associated Item (which we'll force unwrap, so
-		// be sure you check representsExistingItem first (!))
-	var associatedItem: Item { dataManager?.object(withID: id) as! Item }
+//	var representsExistingItem: Bool { dataManager?.item(withID: id) != nil }
+//		// useful to know the associated Item (which we'll force unwrap, so
+//		// be sure you check representsExistingItem first (!))
+//	var associatedItem: Item { dataManager!.item(withID: id)! }
 }
 
 extension DataManager {
@@ -98,7 +96,7 @@ extension DataManager {
 	func draftItem(location: Location) -> DraftItem {
 		DraftItem(location: location)
 	}
-
+	
 	
 		// updates data for an Item that the user has directed from an Add or Modify View.
 		// if the incoming data is not associated with an item, we need to create it first

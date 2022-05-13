@@ -16,36 +16,21 @@ class DraftLocation: ObservableObject {
 	var id: UUID? = nil
 	var associatedLocation: Location
 		// all of the values here provide suitable defaults for a new Location
-	@Published var locationName: String = ""
+	@Published var name: String = ""
 	@Published var visitationOrder: Int = 50
 	@Published var color: Color = .green	// we keep a Color; a location has RGB-A components
 	
-	// this will have a hook back to the dataManager that created it.  yeah, it's a syntactical
-	// nightmare, but we want this to go back to the data source to be able to determine
-	// whether the Location we started with still exists ...
-	private weak var dataManager: DataManager?
-	
-		// this copies all the editable data from an incoming Location
-		// updated 17-Apr to copy the id (obvious regression issue)
-		// and also updated to allow nil argument ...
+		// this init copies all the editable data from an incoming Location
 	fileprivate init(location: Location, dataManager: DataManager) {
 		id = location.id!
-		locationName = location.name
+		name = location.name
 		visitationOrder = Int(location.visitationOrder)
 		color = Color(location.uiColor)
 		associatedLocation = location
-		self.dataManager = dataManager
 	}
 	
-		// to do a save/commit of an Item, it must have a non-empty name
-	var canBeSaved: Bool { locationName.count > 0 }
-	
-		 // useful to know if this is associated with an existing Location
-			 var representsExistingLocation: Bool { dataManager?.object(withID: id) != nil }
-	
-		// useful to know the associated location (which we'll force unwrap, so
-		// be sure you check representsExistingLocation first (!)
-	
+		// to do a save/commit of an DraftLocation, it must have a non-empty name
+	var canBeSaved: Bool { name.count > 0 }
 }
 
 extension DataManager {

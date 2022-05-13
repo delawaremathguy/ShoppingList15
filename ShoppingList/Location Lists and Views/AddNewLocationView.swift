@@ -25,6 +25,9 @@ struct AddNewLocationView: View {
 		_draftLocation = StateObject(wrappedValue: dataManager.draftLocation())
 	}
 	
+//	@State private var isDeleteConfirmationPresented = false
+
+	
 	var body: some View {
 		NavigationView {
 			DraftLocationView(draftLocation: draftLocation)

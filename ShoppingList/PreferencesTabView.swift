@@ -63,20 +63,20 @@ struct PreferencesTabView: View {
 					.padding([.leading, .trailing], 10)
 					.padding(.bottom, 20)
 				
-//				Button("Load sample data") {
-//					let currentLocationCount = Location.count() // what it is now
-//					let currentItemCount = Item.count() // what it is now
-//					dataManager.populateDatabaseFromJSON()
-//					self.locationsAdded = Location.count() - currentLocationCount // now the differential
-//					self.itemsAdded = Item.count() - currentItemCount // now the differential
-//					self.confirmDataHasBeenAdded = true
-//				}
-//				.padding(.bottom, 20)
-//				.alert(isPresented: $confirmDataHasBeenAdded) {
-//					Alert(title: Text("Data Added"),
-//								message: Text("Sample data for the app (\(locationsAdded) locations and \(itemsAdded) shopping items) have been added."),
-//								dismissButton: .default(Text("OK")))
-//				}
+				Button("Load sample data") {
+					let currentLocationCount = dataManager.locationCount() // what it is now
+					let currentItemCount = dataManager.itemCount() // what it is now
+					dataManager.populateDatabaseFromJSON()
+					self.locationsAdded = dataManager.locationCount() - currentLocationCount // now the differential
+					self.itemsAdded = dataManager.itemCount() - currentItemCount // now the differential
+					self.confirmDataHasBeenAdded = true
+				}
+				.padding(.bottom, 20)
+				.alert("Data Added", isPresented: $confirmDataHasBeenAdded) {
+					Button("OK", role: .cancel) {}
+				} message: {
+					Text("Sample data for the app (\(locationsAdded) locations and \(itemsAdded) shopping items) have been added.")
+				}
 				
 				Text("This button lets you offload existing data to JSON. On the simulator, it will dump to files on the Desktop (see Development.swift to get the path right); on a device, it will simply print to the console.  You can use that JSON output later to re-seed the app data.")
 					.padding([.leading, .trailing], 10)

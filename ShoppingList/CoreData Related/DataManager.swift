@@ -127,7 +127,8 @@ class DataManager: NSObject, ObservableObject {
 //		saveData()
 //	}
 	
-	func delete(item: Item) {
+	func delete(item: Item?) {
+		guard let item = item else { return }
 		item.location.objectWillChange.send()
 		managedObjectContext.delete(item)
 		saveData()
@@ -186,9 +187,9 @@ class DataManager: NSObject, ObservableObject {
 //		}
 //	}
 	
-	func delete(location: Location) {
+	func delete(location: Location?) {
 			// you cannot delete the unknownLocation
-		guard !location.isUnknownLocation else { return }
+		guard let location = location, !location.isUnknownLocation else { return }
 		
 			// get a list of all items for this location so we can work with them
 		let itemsAtThisLocation = location.items
@@ -217,9 +218,22 @@ class DataManager: NSObject, ObservableObject {
 		saveData()
 	}
 	
-	func object(withID id: UUID?) -> NSManagedObject? {
+	func location(withID id: UUID?) -> Location? {
 		guard let id = id else { return nil }
-		return NSManagedObject.object(id: id, context: managedObjectContext)
+		return Location.object(id: id, context: managedObjectContext)
+	}
+	
+	func locationCount() -> Int {
+		Location.count(context: managedObjectContext)
+	}
+	
+	func item(withID id: UUID?) -> Item? {
+		guard let id = id else { return nil }
+		return Item.object(id: id, context: managedObjectContext)
+	}
+	
+	func itemCount() -> Int {
+		Item.count(context: managedObjectContext)
 	}
 	
 	func saveData() {

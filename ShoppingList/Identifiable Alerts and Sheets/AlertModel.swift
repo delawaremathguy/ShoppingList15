@@ -39,67 +39,67 @@ import SwiftUI
  seemed more useful.
  */
 
-
-enum AlertModelType {
-		// default type (which will never be shown)
-	case none
-		// specific type: delete a Location, for which we want the location and a completion closure
-	case confirmDeleteLocation(Location, (() -> Void)?)
-}
-
-class AlertModel: ObservableObject {
-	
-		// we keep the isPresented variable used to present the associated alert
-		// right here in the AlertModel and make it @Published.  so potentially
-		// a view that uses such an alert has a @StateObject viewModel of type
-		// AlertModel and references viewModel.isPresented in the .alert() syntax
-	@Published var isPresented = false
-	
-		// defaults for the String title and a Text for the message.  you will want
-		// to set these when you call alertModel.updateAndPresent()
-	var title = ""
-	var message = Text("")
-	
-		// data to support agreement to do something destructive (title + what to do + a completion)
-	var destructiveTitle: String = "OK"
-	var destructiveAction: (() -> Void)?
-
-		// data to support not agreeing to do the destructive thing (title + what to do + a completion)
-//	var nonDestructiveTitle: String = "Cancel"
-//	var nonDestructiveAction: (() -> Void)?
-		
-		// a @ViewBuilder function on how to produce actions for the alert's View.  this may not
-		// be general enough, though: the previous confirmationAlert structure allowed an
-		// override possibility, despite never actually overriding it.
-	@ViewBuilder
-	func actions() -> some View {
-		Button(destructiveTitle, role: .destructive) { [self] in
-			destructiveAction?()
-		}
-	}
-	
-		// call this function with an appropriate type as defined above, which updates the
-		// model's variables for the type using associated data for the type.  you will need
-		// to add cases, of course, for each type you define.
-		// the alert will be presented when isPresented = true is executed.
-	func updateAndPresent(for type: AlertModelType, dataManager: DataManager) {
-		switch type {
-				
-			case .none:	// nothing to do!
-				return
-				
-			case .confirmDeleteLocation(let location, let completion):
-				title = "Delete \'\(location.name)\'?"
-				message = Text("Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
-				destructiveAction = {
-					dataManager.delete(location: location)
-					completion?()
-				}
-
-				// add future cases here ...
-		}
-		isPresented = true	// this is what presents the alert
-	}
-	
-}
+//
+//enum AlertModelType {
+//		// default type (which will never be shown)
+//	case none
+//		// specific type: delete a Location, for which we want the location and a completion closure
+//	case confirmDeleteLocation(Location, (() -> Void)?)
+//}
+//
+//class AlertModel: ObservableObject {
+//	
+//		// we keep the isPresented variable used to present the associated alert
+//		// right here in the AlertModel and make it @Published.  so potentially
+//		// a view that uses such an alert has a @StateObject viewModel of type
+//		// AlertModel and references viewModel.isPresented in the .alert() syntax
+//	@Published var isPresented = false
+//	
+//		// defaults for the String title and a Text for the message.  you will want
+//		// to set these when you call alertModel.updateAndPresent()
+//	var title = ""
+//	var message = Text("")
+//	
+//		// data to support agreement to do something destructive (title + what to do + a completion)
+//	var destructiveTitle: String = "OK"
+//	var destructiveAction: (() -> Void)?
+//
+//		// data to support not agreeing to do the destructive thing (title + what to do + a completion)
+////	var nonDestructiveTitle: String = "Cancel"
+////	var nonDestructiveAction: (() -> Void)?
+//		
+//		// a @ViewBuilder function on how to produce actions for the alert's View.  this may not
+//		// be general enough, though: the previous confirmationAlert structure allowed an
+//		// override possibility, despite never actually overriding it.
+//	@ViewBuilder
+//	func actions() -> some View {
+//		Button(destructiveTitle, role: .destructive) { [self] in
+//			destructiveAction?()
+//		}
+//	}
+//	
+//		// call this function with an appropriate type as defined above, which updates the
+//		// model's variables for the type using associated data for the type.  you will need
+//		// to add cases, of course, for each type you define.
+//		// the alert will be presented when isPresented = true is executed.
+//	func updateAndPresent(for type: AlertModelType, dataManager: DataManager) {
+//		switch type {
+//				
+//			case .none:	// nothing to do!
+//				return
+//				
+//			case .confirmDeleteLocation(let location, let completion):
+//				title = "Delete \'\(location.name)\'?"
+//				message = Text("Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
+//				destructiveAction = {
+//					dataManager.delete(location: location)
+//					completion?()
+//				}
+//
+//				// add future cases here ...
+//		}
+//		isPresented = true	// this is what presents the alert
+//	}
+//	
+//}
 

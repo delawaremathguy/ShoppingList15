@@ -16,10 +16,12 @@ struct ModifyExistingLocationView: View {
 	
 		// draftLocation will be initialized from the incoming DraftLocation
 	@StateObject private var draftLocation: DraftLocation
+	var associatedLocation: Location? { dataManager.location(withID: draftLocation.id) }
 	
 		// alert trigger item to confirm deletion of a Location
 //	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
-	@StateObject private var alertModel = AlertModel()
+//	@StateObject private var alertModel = AlertModel()
+	@State private var isDeleteConfirmationPresented = false
 
 	init(location: Location, dataManager: DataManager) {
 		self.dataManager = dataManager
@@ -32,30 +34,48 @@ struct ModifyExistingLocationView: View {
 			// opted to delete the location, namely "trigger an alert whose destructive action is to delete the
 			// Location, and whose destructive completion is to dismiss this view,"
 			// so we "go back" up the navigation stack
-		DraftLocationView(draftLocation: draftLocation) {
-			alertModel.updateAndPresent(
-				for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }), dataManager: dataManager)
+		DraftLocationView(draftLocation: draftLocation)
+		//{
+//			alertModel.updateAndPresent(for: .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() }),
+//					 dataManager: dataManager)
+//			isDeleteConfirmationPresented = true
 //			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(
 //				location: draftLocation.associatedLocation) {
 //					dismiss()
 //				}
-		}
+//		}
 			.navigationBarTitle(Text("Modify Location"), displayMode: .inline)
 //			.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
-			.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
-						 actions: { model in model.actions() },
-						 message: { model in model.message })
+//			.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
+//						 actions: { model in model.actions() },
+//						 message: { model in model.message })
+		
+			.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
+				Button("OK", role: .destructive) {
+					dataManager.delete(location: associatedLocation)
+				}
+			} message: { Text(alertMessage()) }
 
 			.onDisappear {
-					// we have been doing a pseudo-live edit, so update the associated location of
-					// the draftLocation when finished with this view (i.e., when dismissed).
-					// note that if
-				if draftLocation.representsExistingLocation {
+					// we have been doing a pseudo-live edit for the associated  and we're leaving
+					// the screen ... but one of the actions we may have performed is to delete the
+					// Location ... and we would not want to do any updating with this draftLocation
+					// if we deleted the underlying Location.
+				if associatedLocation != nil {
 					dataManager.updateAndSave(using: draftLocation)
-					dataManager.saveData()
 				}
+				dataManager.saveData()
 			}
 	}
+	
+	func alertTitle() -> String {
+		return "Delete \(draftLocation.name)?"
+	}
+	
+	func alertMessage() -> String {
+		"Are you sure you want to delete the Location named \'\(draftLocation.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+	}
+
 	
 }
 

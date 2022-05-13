@@ -20,9 +20,9 @@ struct LocationsView: View {
 		// state to trigger a sheet to appear that adds a new location
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
-	// state to trigger an Alert to confirm deleting a Location
-//	@State private var confirmDeleteLocationAlert: ConfirmDeleteLocationAlert?
-	@StateObject private var alertModel = AlertModel()
+		// states to trigger an alert to appear to delete a location and set up title and message
+	@State private var isDeleteConfirmationPresented = false
+	@State private var locationToDelete: Location?
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -50,10 +50,11 @@ struct LocationsView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
-//		.alert(item: $confirmDeleteLocationAlert) { item in item.alert() }
-		.alert(alertModel.title, isPresented: $alertModel.isPresented, presenting: alertModel,
-					 actions: { model in model.actions() },
-					 message: { model in model.message })
+		.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
+			Button("OK", role: .destructive) {
+				withAnimation { dataManager.delete(location: locationToDelete!) }
+			}
+		} message: { Text(alertMessage()) }
 		.sheet(item: $identifiableSheetItem) { item in
 			item.content().environmentObject(dataManager)
 		}
@@ -68,12 +69,26 @@ struct LocationsView: View {
 		
 	} // end of var body: some View
 	
+	func alertTitle() -> String {
+		if let location = locationToDelete {
+			return "Delete \(location.name)?"
+		}
+		return ""
+	}
+	
+	func alertMessage() -> String {
+		if let location = locationToDelete {
+			return "Are you sure you want to delete the Location named \'\(location.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+		}
+		return ""
+	}
+	
 	func deleteLocations(at offsets: IndexSet) {
 		guard let firstIndex = offsets.first else { return }
 		let location = locations[firstIndex]
 		if !location.isUnknownLocation {
-//			confirmDeleteLocationAlert = ConfirmDeleteLocationAlert(location: location)
-			alertModel.updateAndPresent(for: .confirmDeleteLocation(location, nil), dataManager: dataManager)
+			locationToDelete = location
+			isDeleteConfirmationPresented = true
 		}
 	}
 	

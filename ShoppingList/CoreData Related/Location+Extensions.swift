@@ -197,7 +197,7 @@ extension Location: Comparable {
 	func updateValues(from draftLocation: DraftLocation) {
 		
 		// we first make these changes directly in Core Data
-		name_ = draftLocation.locationName
+		name_ = draftLocation.name
 		visitationOrder_ = Int32(draftLocation.visitationOrder)
 		if let components = draftLocation.color.cgColor?.components {
 			red_ = Double(components[0])
