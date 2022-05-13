@@ -27,9 +27,6 @@ struct PurchasedItemsView: View {
 		// the usual @State variables to handle the Search field
 	@State private var searchText: String = ""
 	
-		// trigger for any alert we will put up
-	@State private var identifiableAlertItem: IdentifiableAlertItem?
-
 		// trigger for sheet used to add a new shopping item
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 
@@ -57,7 +54,6 @@ struct PurchasedItemsView: View {
 			} else {
 				ItemListView(sections: sectionData(), //items: items,
 										 sfSymbolName: "cart",
-										 identifiableAlertItem: $identifiableAlertItem,
 										 multiSectionDisplay: $multiSectionDisplay)
 			} // end of if-else
 			
@@ -77,7 +73,6 @@ struct PurchasedItemsView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
-		.alert(item: $identifiableAlertItem) { item in item.alert() }
 		.sheet(item: $identifiableSheetItem) { item in item.content() }
 		
 	}

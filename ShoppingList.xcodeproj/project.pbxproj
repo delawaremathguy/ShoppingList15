@@ -36,7 +36,6 @@
 		D65C931824C5DC9B003E6EB7 /* GlobalTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C931724C5DC9B003E6EB7 /* GlobalTimer.swift */; };
 		D65F938B282C34D60014CCC5 /* DataManager-Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65F9389282C34D60014CCC5 /* DataManager-Development.swift */; };
 		D65F938C282C34D60014CCC5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65F938A282C34D60014CCC5 /* DataManager.swift */; };
-		D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */; };
 		D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */; };
 		D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */; };
 		D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6931D6B24C4C60900A61BB6 /* TimerTabView.swift */; };
@@ -52,7 +51,6 @@
 		D6C7685C2572B3B500E0F4B0 /* SelectableItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */; };
 		D6C783D925A0BCF900B7148D /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */; };
 		D6CD65E025D09AA5006F8FAF /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */; };
-		D6DBE724258A7F93007679E8 /* ConfirmationAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */; };
 		D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */; };
 		D6EF557D246D7421007D636B /* PurchasedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF557C246D7421007D636B /* PurchasedItemsView.swift */; };
 		D6EF5587246D97C3007D636B /* Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF5586246D97C3007D636B /* Development.swift */; };
@@ -94,7 +92,6 @@
 		D65C931724C5DC9B003E6EB7 /* GlobalTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTimer.swift; sourceTree = "<group>"; };
 		D65F9389282C34D60014CCC5 /* DataManager-Development.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager-Development.swift"; sourceTree = "<group>"; };
 		D65F938A282C34D60014CCC5 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableAlertItem.swift; sourceTree = "<group>"; };
 		D6661E0A25645D2200BA47E9 /* ShoppingList 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 2.xcdatamodel"; sourceTree = "<group>"; };
 		D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTabView.swift; sourceTree = "<group>"; };
 		D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCenteredButton.swift; sourceTree = "<group>"; };
@@ -110,7 +107,6 @@
 		D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableItemRowView.swift; sourceTree = "<group>"; };
 		D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
-		D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAlerts.swift; sourceTree = "<group>"; };
 		D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLFormLabelText.swift; sourceTree = "<group>"; };
 		D6EE985F2573EE1900439500 /* ShoppingList 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 3.xcdatamodel"; sourceTree = "<group>"; };
 		D6EF557C246D7421007D636B /* PurchasedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasedItemsView.swift; sourceTree = "<group>"; };
@@ -244,8 +240,6 @@
 		D663A32D2762E0ED00D62574 /* Identifiable Alerts and Sheets */ = {
 			isa = PBXGroup;
 			children = (
-				D6DBE723258A7F93007679E8 /* ConfirmationAlerts.swift */,
-				D6603E3927664FBB008F1667 /* IdentifiableAlertItem.swift */,
 				D614343C2763B95A009CC73B /* IdentifiableSheetItem.swift */,
 				D614343D2763B95B009CC73B /* IdentifiableSheets.swift */,
 			);
@@ -401,9 +395,7 @@
 				D6B8A9562463693D005F8EF2 /* LocationsView.swift in Sources */,
 				D614343E2763B95B009CC73B /* IdentifiableSheetItem.swift in Sources */,
 				D6FC7A0A24635D950096F018 /* ShoppingList.xcdatamodeld in Sources */,
-				D6DBE724258A7F93007679E8 /* ConfirmationAlerts.swift in Sources */,
 				D648D349246388C100CD881B /* Location+Extensions.swift in Sources */,
-				D6603E3B27664FBB008F1667 /* IdentifiableAlertItem.swift in Sources */,
 				D61434412763BAA1009CC73B /* AddNewLocationView.swift in Sources */,
 				D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */,
 				D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */,

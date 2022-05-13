@@ -17,10 +17,7 @@ import SwiftUI
 	//
 	// each item that appears has a NavigationLink to a detail view and has a contextMenu
 	// associated with it; an action from the contextMenu  to delete an Item will require bringing
-	// up an alert to confirm the deletion, but we will not do that here in this view.  we will simply
-	// set the @Binding variable identifiableAlertItem from the parent view appropriately and let
-	// the parent deal with it (e.g., because the parent uses the same identifiableAlertItem structure
-	// to present its own alerts.
+	// up an alert to confirm the deletion
 	//
 struct ItemListView: View {
 	
@@ -32,9 +29,8 @@ struct ItemListView: View {
 		// the symbol to show for an Item that is tapped
 	var sfSymbolName: String
 	
-		// this is an incoming binding to the parent view's alert trigger mechanism, which lets us
-		// post an alert on the parent view, just by setting it here
-	@Binding var identifiableAlertItem: IdentifiableAlertItem?
+	@State private var isDeleteItemShowing = false
+	@State private var itemToDelete: Item?
 	
 	// whether we're multi-section or single section
 	@Binding var multiSectionDisplay: Bool
@@ -60,7 +56,8 @@ struct ItemListView: View {
 						}
 						.contextMenu {
 							ItemContextMenu(item: item) {
-								identifiableAlertItem = ConfirmDeleteItemAlert(item: item, dataManager: dataManager)
+								itemToDelete = item
+								isDeleteItemShowing = true
 							} // end of itemContextMenu
 						} // end of contextMenu
 					} // end of ForEach
@@ -69,8 +66,30 @@ struct ItemListView: View {
 		}  // end of List ... phew!
 		.listStyle(InsetGroupedListStyle())
 		.animation(.default, value: sections)
+		.alert(alertTitle(), isPresented: $isDeleteItemShowing) {
+			Button("OK", role: .destructive) {
+				withAnimation { dataManager.delete(item: itemToDelete) }
+				dataManager.saveData()
+			}
+		} message: {
+			Text(alertMessage())
+		}
 		
 	} // end of body: some View
+	
+	func alertTitle() -> String {
+		if let item = itemToDelete {
+			return "Delete \'\(item.name)\'?"
+		}
+		return ""
+	}
+	
+	func alertMessage() -> String {
+		if let item = itemToDelete {
+			return "Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone."
+		}
+		return ""
+	}
 	
 	@ViewBuilder
 	func sectionHeader(section: ItemsSectionData) -> some View {

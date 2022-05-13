@@ -15,14 +15,6 @@ struct ShoppingListView: View {
 	@EnvironmentObject private var dataManager: DataManager
 	var items: [Item] { dataManager.itemsOnList }
 		
-	// this is the @FetchRequest that ties this view to CoreData Items
-//	@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
-//	private var items: FetchedResults<Item>
-
-	// alert to move all items off the shopping list, and it is also used to trigger an
-	// alert to delete an item in the shopping list
-	@State private var identifiableAlertItem: IdentifiableAlertItem?
-	
 	// sheet used to add a new item
 	@State private var identifiableSheetItem: IdentifiableSheetItem?
 	
@@ -55,7 +47,6 @@ of the sectioning, so we push it off to a specialized View.
 				} else {
 					ItemListView(sections: sectionData(),
 											 sfSymbolName: "purchased",
-											 identifiableAlertItem: $identifiableAlertItem,
 											 multiSectionDisplay: $multiSectionDisplay)
 				}
 				
@@ -75,7 +66,6 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
-		.alert(item: $identifiableAlertItem) { item in item.alert() }
 		.sheet(item: $identifiableSheetItem) { item in item.content() }
 
 		.onAppear {
