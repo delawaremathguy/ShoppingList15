@@ -18,17 +18,13 @@ struct PurchasedItemsView: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
 	var items: [Item] { dataManager.itemsOffList }
-
-	
-		// this is the @FetchRequest that ties this view to CoreData
-//	@FetchRequest(fetchRequest: Item.allItemsFR(onList: false))
-//	private var items: FetchedResults<Item>
 	
 		// the usual @State variables to handle the Search field
 	@State private var searchText: String = ""
 	
 		// trigger for sheet used to add a new shopping item
-	@State private var identifiableSheetItem: IdentifiableSheetItem?
+	@State private var isAddNewItemSheetShowing = false
+
 
 		// whether are we a multi-section display or not.
 	@State var multiSectionDisplay: Bool = false
@@ -73,8 +69,11 @@ struct PurchasedItemsView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
-		.sheet(item: $identifiableSheetItem) { item in item.content() }
-		
+		.sheet(isPresented: $isAddNewItemSheetShowing) {
+			AddNewItemView(dataManager: dataManager) {
+				isAddNewItemSheetShowing = false
+			}
+		}
 	}
 	
 	func handleOnAppear() {
@@ -84,8 +83,8 @@ struct PurchasedItemsView: View {
 	
 		// makes a simple "+" to add a new item.  yapping on the button triggers a sheet to add a new item.
 	func addNewButton() -> some View {
-		NavBarImageButton("plus") {
-			identifiableSheetItem = AddNewItemSheetItem(dataManager: dataManager) { identifiableSheetItem = nil }
+		SystemImageButton("plus") {
+			isAddNewItemSheetShowing = true
 		}
 	}
 	

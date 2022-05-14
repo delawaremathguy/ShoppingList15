@@ -142,12 +142,16 @@ class DataManager: NSObject, ObservableObject {
 	
 		// MARK: - Location Handling
 	
-		// idea: move all class functions off Location since they refer to the singleton PersistentStore.shared
-	
-	func addNewLocation() -> Location {
+	func addNewLocation(isUnknownLocation: Bool = false) -> Location {
 		let newLocation = Location(context: managedObjectContext)
 		newLocation.id = UUID()
-		// default values here ?
+		#warning("This is a hack to be fixed")
+		if isUnknownLocation {
+			// what we could do here is handle the case that we already have an unknown location;
+			// and if so, because this is an initialization-development level operation, use the
+			// one we have ... ???
+			unknownLocation_ = newLocation
+		}
 		return newLocation
 	}
 	
@@ -225,6 +229,10 @@ class DataManager: NSObject, ObservableObject {
 	
 	func locationCount() -> Int {
 		Location.count(context: managedObjectContext)
+	}
+	
+	func location(matching draftLocation: DraftLocation) -> Location? {
+		location(withID: draftLocation.id)
 	}
 	
 	func item(withID id: UUID?) -> Item? {

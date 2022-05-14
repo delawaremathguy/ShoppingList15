@@ -16,7 +16,7 @@ struct ShoppingListView: View {
 	var items: [Item] { dataManager.itemsOnList }
 		
 	// sheet used to add a new item
-	@State private var identifiableSheetItem: IdentifiableSheetItem?
+	@State private var isAddNewItemSheetShowing = false
 	
 	// local state for are we a multi-section display or not.  the default here is false,
 	// but an eager developer could easily store this default value in UserDefaults (?)
@@ -66,7 +66,11 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 			}
-		.sheet(item: $identifiableSheetItem) { item in item.content() }
+		.sheet(isPresented: $isAddNewItemSheetShowing) {
+			AddNewItemView(dataManager: dataManager) {
+				isAddNewItemSheetShowing = false
+			}
+		}
 
 		.onAppear {
 			logAppear(title: "ShoppingListView")
@@ -118,8 +122,8 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			.activitySheet($activityItem)
 			.disabled(items.count == 0)
 
-			NavBarImageButton("plus") {
-				identifiableSheetItem = AddNewItemSheetItem(dataManager: dataManager) { identifiableSheetItem = nil }
+			SystemImageButton("plus") {
+				isAddNewItemSheetShowing = true
 			}
 		}
 	}

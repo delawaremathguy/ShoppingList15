@@ -1,5 +1,5 @@
 	//
-	//  NavBarImageButton.swift
+	//  SystemImageButton.swift
 	//  ShoppingList
 	//
 	//  Created by Jerry on 12/13/21.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct NavBarImageButton: View {
+struct SystemImageButton: View {
 	private var systemName: String
 	private var action: () -> Void
 	

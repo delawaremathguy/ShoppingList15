@@ -59,7 +59,7 @@ extension DataManager {
 	func insertNewLocations(from codableLocations: [LocationCodableProxy]) -> [Location] {
 		var newLocations = [Location]()
 		for codableLocation in codableLocations {
-			let newLocation = addNewLocation() // new UUID created here
+			let newLocation = addNewLocation(isUnknownLocation: codableLocation.visitationOrder == kUnknownLocationVisitationOrder) // new UUID created here
 			newLocation.name = codableLocation.name
 			newLocation.visitationOrder = codableLocation.visitationOrder
 			newLocation.red_ = codableLocation.red
@@ -67,6 +67,8 @@ extension DataManager {
 			newLocation.blue_ = codableLocation.blue
 			newLocation.opacity_ = codableLocation.opacity
 			newLocations.append(newLocation)
+			// if this was the "Unknown Location," then we need to tell ourself that we just brought
+			// in a well-formed "Unknown Location," since we create this lazily as needed.
 		}
 		return newLocations
 	}

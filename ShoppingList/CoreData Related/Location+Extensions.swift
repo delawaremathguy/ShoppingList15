@@ -24,9 +24,9 @@ extension Location: Comparable {
 	
 	// ** please see the associated discussion over in Item+Extensions.swift **
 	
-	// name: fronts Core Data attribute name_ that is optional
-	// if you change an location's name, its associated items may want to
-	// know that some of their computed locationName properties have been invalidated
+		// name: fronts Core Data attribute name_ that is optional
+		// if you change an location's name, its associated items may want to
+		// know that some of their computed locationName properties have been invalidated
 	var name: String {
 		get { name_ ?? "Unknown Name" }
 		set {

@@ -23,10 +23,14 @@ struct DraftLocationView: View {
 
 	//var deleteActionTrigger: (() -> ())?
 	
+	private var representsExistingLocation: Bool {
+		dataManager.location(matching: draftLocation) != nil
+	}
+	
 		// definition of whether we can offer a deletion option in this view
 		// (it's a real location that's not the unknown location)
 	private var deletionAllowed: Bool {
-		guard let location = dataManager.location(withID: draftLocation.id) else {
+		guard let location = dataManager.location(matching: draftLocation) else {
 			return false
 		}
 		return !location.isUnknownLocation
@@ -70,10 +74,10 @@ struct DraftLocationView: View {
 			} // end of Section 2
 			
 //				 Section 3: Items assigned to this Location, if we are editing a Location
-			if deletionAllowed {
-				SimpleItemsList(location: draftLocation.associatedLocation,
-												isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
-			}
+			//if deletionAllowed {
+			SimpleItemsList(location: draftLocation.associatedLocation,
+											isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
+			//}
 			
 		} // end of Form
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
@@ -123,10 +127,8 @@ struct SimpleItemsList: View {
 		HStack {
 			Text("At this Location: \(items.count) items").sectionHeader()
 			Spacer()
-			Button {
+			SystemImageButton("plus") {
 				isAddNewItemSheetShowing = true
-			} label: {
-				Image(systemName: "plus")
 			}
 		}
 	}

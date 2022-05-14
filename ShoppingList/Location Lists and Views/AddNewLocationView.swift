@@ -13,8 +13,9 @@ struct AddNewLocationView: View {
 	
 	private var dataManager: DataManager
 	
-	// incoming dismiss action.  we're a View presented as a sheet via an
-	// identifiableSheetItem, so the presenter needs to tell us how it will dismiss us
+		// incoming dismiss action.  the sheets in this app are all controlled with a
+		// boolean $isXxxxxxxPresented, so the dismiss action will typically be to
+		// set this variable to false.
 	var dismiss: () -> Void
 		// default draftLocation is initialized here
 	@StateObject private var draftLocation: DraftLocation
@@ -24,9 +25,6 @@ struct AddNewLocationView: View {
 		self.dismiss = dismiss
 		_draftLocation = StateObject(wrappedValue: dataManager.draftLocation())
 	}
-	
-//	@State private var isDeleteConfirmationPresented = false
-
 	
 	var body: some View {
 		NavigationView {
@@ -53,8 +51,8 @@ struct AddNewLocationView: View {
 		// the save button
 	func saveButton() -> some View {
 		Button {
-			dismiss()
 			dataManager.updateAndSave(using: draftLocation)
+			dismiss()
 		} label: {
 			Text("Save")
 		}

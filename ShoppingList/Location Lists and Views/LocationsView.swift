@@ -12,10 +12,7 @@ struct LocationsView: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
 	var locations: [Location] { dataManager.locations }
-	
-		// state to trigger a sheet to appear that adds a new location
-	@State private var identifiableSheetItem: IdentifiableSheetItem?
-	
+		
 		// states to trigger an alert to appear to delete a location and set up title and message
 	@State private var isDeleteConfirmationPresented = false
 	@State private var locationToDelete: Location?
@@ -53,9 +50,6 @@ struct LocationsView: View {
 				withAnimation { dataManager.delete(location: locationToDelete!) }
 			}
 		} message: { Text(alertMessage()) }
-//		.sheet(item: $identifiableSheetItem) { item in
-//			item.content().environmentObject(dataManager)
-//		}
 		.sheet(isPresented: $isSheetPresented) {
 			AddNewLocationView(dataManager: dataManager) {
 				isSheetPresented = false
@@ -109,11 +103,8 @@ struct LocationsView: View {
 	
 	// defines the usual "+" button to add a Location
 	func addNewButton() -> some View {
-		Button {
+		SystemImageButton("plus") {
 			isSheetPresented = true
-			//identifiableSheetItem = AddNewLocationSheetItem(dataManager: dataManager, dismiss: { identifiableSheetItem = nil })
-		} label: {
-			Image(systemName: "plus")
 		}
 	}
 	
