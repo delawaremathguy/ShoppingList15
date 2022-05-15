@@ -29,10 +29,12 @@ struct ItemListView: View {
 		// the symbol to show for an Item that is tapped
 	var sfSymbolName: String
 	
+		// hooks for showing a delete item confirmation, as well as which
+		// Item it is we want to delete.
 	@State private var isDeleteItemShowing = false
 	@State private var itemToDelete: Item?
 	
-	// whether we're multi-section or single section
+		// whether we're multi-section or single section
 	@Binding var multiSectionDisplay: Bool
 	
 		// this is a temporary holding array for items being moved to the other list.  it's a

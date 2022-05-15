@@ -10,10 +10,9 @@ import Foundation
 
 	// this gives me a way to collect all the data for an Item that i might want to edit
 	// (or even just display).  it defaults to having values appropriate for a new item upon
-	// creation, and can be initialized from a Item.  this is something
+	// creation, and can be initialized from an existing Item.  this is something
 	// i can then hand off to an edit view.  at some point, that edit view will
-	// want to update an Item with this data, so see the class function
-	// Item.update(using draftItem: DraftItem)
+	// want to update an Item with this data, so see the function updateAndSave below.
 
 	// ADDED 2 FEB 2022: this is now a class object that conforms to ObservableObject, with
 	// five of its properties marked @Published (these are exactly the properties that can be edited
@@ -29,7 +28,7 @@ class DraftItem: ObservableObject {
 		// (nil if data for a new item that does not yet exist)
 	var id: UUID? = nil
 		// all of the values here provide suitable defaults for a new item
-	@Published var name: String = "New Item"
+	@Published var name: String = ""
 	@Published var quantity: Int = 1
 	@Published var location: Location
 	@Published var onList: Bool = true
@@ -55,7 +54,6 @@ class DraftItem: ObservableObject {
 		} else {
 			dateText = "(Never)"
 		}
-		
 	}
 	
 		// init that sets a location and optionally a name
@@ -68,18 +66,16 @@ class DraftItem: ObservableObject {
 	
 		// to do a save/update using a DraftItem, it must have a non-empty name
 	var canBeSaved: Bool { name.count > 0 }
-		// we also want to know if this DraftItem is attached to a real Item that
-		// exists, or is data that will be used to create a new Item
-//	var representsExistingItem: Bool { dataManager?.item(withID: id) != nil }
-//		// useful to know the associated Item (which we'll force unwrap, so
-//		// be sure you check representsExistingItem first (!))
-//	var associatedItem: Item { dataManager!.item(withID: id)! }
 }
 
 extension DataManager {
 	
+		// the next three functions produce DraftItems for views.  the DM is then, essentially,
+		// a DraftItem factory.  this could change in the future, but i like it for now, just so all the
+		// DraftItem code generally resides in one place under control of the DM.
+	
 		// provides a working DraftItem from an existing Item ... it just copies fields
-		// from the Item to the DraftItem
+		// from the Item to the DraftItem.
 	func draftItem(item: Item) -> DraftItem {
 		DraftItem(item: item)
 	}
@@ -88,7 +84,7 @@ extension DataManager {
 		// (this happens in the PurchasedItemsView when a search term is still available to
 		// use as a suggested name).
 	func draftItem(initialItemName: String?) -> DraftItem {
-		return DraftItem(initialItemName: initialItemName, location: unknownLocation)
+		DraftItem(initialItemName: initialItemName, location: unknownLocation)
 	}
 	
 		// this is called to create a new DraftItem at a known location
@@ -96,7 +92,6 @@ extension DataManager {
 	func draftItem(location: Location) -> DraftItem {
 		DraftItem(location: location)
 	}
-	
 	
 		// updates data for an Item that the user has directed from an Add or Modify View.
 		// if the incoming data is not associated with an item, we need to create it first

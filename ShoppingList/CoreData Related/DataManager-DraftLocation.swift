@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-	// **** see the more lengthy discussion over in DraftItem.swift as to why we are
+	// **** see the more lengthy discussion over in DataManager-draftItem.swift as to why we are
 	// using a class that's an ObservableObject.
 
 class DraftLocation: ObservableObject {
@@ -20,7 +20,7 @@ class DraftLocation: ObservableObject {
 	@Published var visitationOrder: Int = 50
 	@Published var color: Color = .green	// we keep a Color; a location has RGB-A components
 	
-		// this init copies all the editable data from an incoming Location
+		// this init copies all the editable data from an incoming Location (one known to exist)
 	fileprivate init(location: Location, dataManager: DataManager) {
 		id = location.id!
 		name = location.name
@@ -43,4 +43,19 @@ extension DataManager {
 		}
 		return DraftLocation(location: unknownLocation, dataManager: self)
 	}
+	
+	func updateAndSave(using draftLocation: DraftLocation) {
+			// if the incoming location data represents an existing Location, this is just
+			// a straight update.  otherwise, we must create the new Location here and add it
+			// before updating it with the new values
+		if let id = draftLocation.id,
+			 let location = locations.first(where: { $0.id == id }) {
+			location.updateValues(from: draftLocation)
+		} else {
+			let newLocation = addNewLocation()
+			newLocation.updateValues(from: draftLocation)
+		}
+		saveData()
+	}
+
 }

@@ -82,11 +82,10 @@ struct PreferencesTabView: View {
 					.padding([.leading, .trailing], 10)
 					.padding(.bottom, 20)
 				
-//				Button("Write database as JSON") {
-//					writeAsJSON(items: Item.allItems(), to: kItemsFilename)
-//					writeAsJSON(items: Location.allLocations(userLocationsOnly: true), to: kLocationsFilename)
-//				}
-//				.padding(.bottom, 20)
+				Button("Write database as JSON") {
+					dataManager.exportDataToJSON()
+				}
+				.padding(.bottom, 20)
 				
 				Text("This developer's view can and should be hidden for production (see Development.swift)")
 					.italic()

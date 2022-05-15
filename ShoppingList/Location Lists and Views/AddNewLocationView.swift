@@ -35,7 +35,6 @@ struct AddNewLocationView: View {
 					ToolbarItem(placement: .cancellationAction, content: cancelButton)
 					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
 				}
-				.onDisappear { dataManager.saveData() }
 		}
 	}
 	

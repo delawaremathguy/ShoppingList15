@@ -39,7 +39,7 @@ struct LocationsView: View {
 			} // end of List
 			.listStyle(InsetGroupedListStyle())
 			
-			Divider() // keeps list from running through tab bar (!)
+			Divider() // keeps list from running through tab bar in iOS 15 (!)
 		} // end of VStack
 		.navigationBarTitle("Locations")
 		.toolbar {
@@ -76,12 +76,15 @@ struct LocationsView: View {
 	func alertMessage() -> String {
 		if let location = locationToDelete {
 			return "Are you sure you want to delete the Location named \'\(location.name)\'?" +
-							"  All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+							"  All items at this location will be moved to the Unknown Location." +
+							"This action cannot be undone."
 		}
 		return ""
 	}
 	
 	func deleteLocations(at offsets: IndexSet) {
+			// we do want to confirm doing this, so we opt to delete only the Location
+			// that's first by index.  (do we really ever get multiple offsets here?)
 		guard let firstIndex = offsets.first else { return }
 		let location = locations[firstIndex]
 		if !location.isUnknownLocation {
@@ -91,14 +94,15 @@ struct LocationsView: View {
 	}
 	
 	func handleOnAppear() {
-		// because the unknown location is created lazily, and may not have been
-		// created yet, this will make sure we have one unknown location.  this is a little
-		// bit of a stretch: we may be creating one here, and then find out that we already
-		// have one of these created in the cloud.  there are ways around that, but that's
-		// for another day, since fixing it is not very pretty.
-		if locations.count == 0 {
-			let _ = dataManager.unknownLocation
-		}
+			// because the unknown location is created lazily, and may not have been
+			// created yet, this will make sure we have an unknown location and that
+			// the view will not be empty.
+			//
+			// this introduces a little bit of a problem: we may be creating one here,
+			// and then find out that we already had one of these created in the cloud
+			// that makes its way onto the device.
+			// there are ways around that, but that's for another day.
+		dataManager.assertUnknownLocationExists()
 	}
 	
 	// defines the usual "+" button to add a Location

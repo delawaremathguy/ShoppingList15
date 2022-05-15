@@ -15,7 +15,7 @@ struct ModifyExistingLocationView: View {
 		// draftLocation will be initialized from the incoming Location
 	@StateObject private var draftLocation: DraftLocation
 		// a way to locate the Location associated with the draftLocation in real time.
-	var associatedLocation: Location? { dataManager.location(withID: draftLocation.id) }
+	var associatedLocation: Location? { dataManager.location(associatedWith: draftLocation) }
 	
 	@State private var isDeleteConfirmationPresented = false
 

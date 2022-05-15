@@ -31,10 +31,10 @@ struct ShoppingListView: View {
 	}
 	
 	var body: some View {
-			VStack(spacing: 0) {
+		VStack(spacing: 0) {
 				
-				Rectangle()
-					.frame(height: 1)
+			Rectangle()
+				.frame(height: 1)
 				
 /* ---------
 we display either a "List is Empty" view, a single-section shopping list view
@@ -42,36 +42,36 @@ or multi-section shopping list view.  the list display has some complexity to it
 of the sectioning, so we push it off to a specialized View.
 ---------- */
 
-				if items.count == 0 {
-					EmptyListView(listName: "Shopping")
-				} else {
-					ItemListView(sections: sectionData(),
-											 sfSymbolName: "purchased",
-											 multiSectionDisplay: $multiSectionDisplay)
-				}
+			if items.count == 0 {
+				EmptyListView(listName: "Shopping")
+			} else {
+				ItemListView(sections: sectionData(),
+										 sfSymbolName: "purchased",
+										 multiSectionDisplay: $multiSectionDisplay)
+			}
 				
 /* ---------
 and for non-empty lists, we have a few buttons at the end for bulk operations
 ---------- */
 
-				if items.count > 0 {
-					Divider()
-					ShoppingListBottomButtons(itemsToBePurchased: items)
-				}
-
+			if items.count > 0 {
 				Divider()
-
-			} // end of VStack
-			.navigationBarTitle("Shopping List")
-			.toolbar {
-				ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
+				ShoppingListBottomButtons(itemsToBePurchased: items)
 			}
+			
+			Divider()
+			
+		} // end of VStack
+		.navigationBarTitle("Shopping List")
+		.toolbar {
+			ToolbarItem(placement: .primaryAction, content: trailingButtons)
+		}
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
 			AddNewItemView(dataManager: dataManager) {
 				isAddNewItemSheetShowing = false
 			}
 		}
-
+		
 		.onAppear {
 			logAppear(title: "ShoppingListView")
 		}
@@ -91,8 +91,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 				// then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by name
 			let sortedItems = items
 				.sorted(by: \.location.visitationOrder)
-			return [ItemsSectionData(index: 1, title: "Items Remaining: \(items.count)", items: sortedItems)
-			]
+			return [ItemsSectionData(index: 1, title: "Items Remaining: \(items.count)", items: sortedItems)]
 		}
 		
 			// otherwise, one section for each location, please.  break the data out by location first

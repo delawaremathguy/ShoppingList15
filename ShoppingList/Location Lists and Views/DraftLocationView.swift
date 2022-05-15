@@ -18,21 +18,24 @@ struct DraftLocationView: View {
 		// incoming data = values for a Location + what action to take if the user
 		// decides to delete the Location
 	@ObservedObject var draftLocation: DraftLocation
-		//@ObservedObject var alertModel: AlertModel
+
+		// control for confirmation alert
 	@State private var isDeleteConfirmationPresented = false
 
-	//var deleteActionTrigger: (() -> ())?
-	
-	private var representsExistingLocation: Bool {
-		dataManager.location(matching: draftLocation) != nil
-	}
-	
 		// definition of whether we can offer a deletion option in this view
 		// (it's a real location that's not the unknown location)
 	private var deletionAllowed: Bool {
-		guard let location = dataManager.location(matching: draftLocation) else {
+		guard let location = dataManager.location(associatedWith: draftLocation) else {
 			return false
 		}
+		
+			// note to future self.  we cannot delete the unknownLocation.  but, when the cloud
+			// is in action, it's possible that we could wind up with more than one UL.
+			// in that case, the resolution would be to move all the items from one UL to
+			// the other, and then delete the UL with no items.  i'd not want to automate
+			// that -- just leave it to the user.  so add the condition here:
+			//
+			// dataManager.locations.count(where: { $0.isUnknownLocation }) > 1
 		return !location.isUnknownLocation
 	}
 	
@@ -74,11 +77,9 @@ struct DraftLocationView: View {
 			} // end of Section 2
 			
 //				 Section 3: Items assigned to this Location, if we are editing a Location
-			//if deletionAllowed {
 			SimpleItemsList(location: draftLocation.associatedLocation,
 											isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
-			//}
-			
+
 		} // end of Form
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
 			AddNewItemView(location: draftLocation.associatedLocation, dataManager: dataManager) {
@@ -93,8 +94,7 @@ struct DraftLocationView: View {
 			Text("Are you sure you want to delete the Location named \'\(draftLocation.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
 		}
 
-	}
-
+	} // end of var body: some View
 }
 
 struct SimpleItemsList: View {
@@ -104,6 +104,8 @@ struct SimpleItemsList: View {
 
 	var location: Location
 	
+		// our hook back to the parent view (the DraftLocationView) to add a new
+		// Item at this Location.
 	@Binding var isAddNewItemSheetShowing: Bool
 	
 	init(location: Location, isAddNewItemSheetShowing: Binding<Bool>) {

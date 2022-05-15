@@ -16,6 +16,9 @@ import SwiftUI
 
 struct PurchasedItemsView: View {
 	
+		// link in to what is the start of today
+	@EnvironmentObject var today: Today
+
 	@EnvironmentObject private var dataManager: DataManager
 	var items: [Item] { dataManager.itemsOffList }
 	
@@ -25,12 +28,9 @@ struct PurchasedItemsView: View {
 		// trigger for sheet used to add a new shopping item
 	@State private var isAddNewItemSheetShowing = false
 
-
 		// whether are we a multi-section display or not.
 	@State var multiSectionDisplay: Bool = false
 	
-		// link in to what is the start of today
-	@EnvironmentObject var today: Today
 	
 		// items currently checked, on their way to the shopping list
 	@State private var itemsChecked = [Item]()

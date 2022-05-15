@@ -62,10 +62,12 @@ struct ModifyExistingItemView: View {
 		//
 	@StateObject private var draftItem: DraftItem
 	
-		// custom init here to set up the DraftItem object.  in this case, must pass the
+		// custom init here to set up the DraftItem object.  in this case, we must pass the
 		// dataManager in directly (and not rely on it being in the environment) because
 		// we're inside the init() that runs first before everything else is available.
+	
 	private var dataManager: DataManager
+	
 	init(item: Item, dataManager: DataManager) {
 		self.dataManager = dataManager
 		_draftItem = StateObject(wrappedValue: dataManager.draftItem(item: item))
@@ -73,8 +75,6 @@ struct ModifyExistingItemView: View {
 	
 		// alert trigger to confirm deletion of an Item
 	@State private var confirmDeleteAlertShowing = false
-		// a way to locate the Item associated with the draftItem in real time.
-	var associatedItem: Item? { dataManager.item(withID: draftItem.id) }
 	
 	var body: some View {
 		DraftItemView(draftItem: draftItem)
@@ -88,7 +88,7 @@ struct ModifyExistingItemView: View {
 	func customBackButton() -> some View {
 		Button {
 			// check that we did not delete the object in the parent view !!
-			if associatedItem != nil {
+			if dataManager.item(associatedWith: draftItem) != nil {
 				dataManager.updateAndSave(using: draftItem)
 			}
 			dismiss()

@@ -23,8 +23,9 @@ struct DraftItemView: View {
 		// real Item that already exists).  in usage, calling this action only initiates
 		// a deletion sequence in which the user will be asked to confirm the deletion.
 	//var deleteActionInitiator: (() -> ())?
-	private var associatedItem: Item? { dataManager.item(withID: draftItem.id) }
+	private var associatedItem: Item? { dataManager.item(associatedWith: draftItem) }
 	
+		// needed to support showing a delete confirmation
 	@State private var isDeleteConfirmationPresented = false
 	
 		// we need all locations so we can populate the Picker.
@@ -79,7 +80,6 @@ struct DraftItemView: View {
 				Section(header: Text("Shopping Item Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Shopping Item") {
 						isDeleteConfirmationPresented = true
-//						deleteActionInitiator?()
 					}
 					.foregroundColor(Color.red)
 				} // end of Section 2

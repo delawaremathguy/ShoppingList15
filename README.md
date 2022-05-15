@@ -12,7 +12,9 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 7 May, 2022
+### Most Recent Update(s) of 14 May, 2022
+
+* (*14 May*) I have temporarily stopped work on the main branch for three reasons:  i'm going back to a simpler form of .alert() and .sheet() which no longer relies on using the IdentifiableAlertItem and IdentifiableSheetItem classes; i'm pulling all of the class-level functions on `Item` and `Location` into a new `DataManager` class that is injected into the MainView's environment; and i am removing the global singleton that was `PersistentStore.shared` in favor of a core data stack that is local to the `DataManager`.  you can see some of this (currently poorly-fleshed out) development in a new MVVM branch on the project, which has at least another week's worth of work before it will make much sense ... i'll keep you updated; but please -- it's development in process on display, so stick to the `master` branch if you're expecting to find something that really works in this project.
 
 * (*7 May*) I have introduced a new syntax idea as a possible replacement of uses of the now-deprecated `.alert(item: ...)` and `Alert` syntax, but only implemented it to confirm the deletion of Locations.  See the code in AlertModel.swift.
 * (*7 May*) Removed the context menu in LocationsView to delete a location in the LocationsView with simples *swipe to delete* code.
