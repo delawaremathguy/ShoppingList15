@@ -20,8 +20,6 @@ extension Location {
 		// MARK: - Fronting Properties (Read-only)
 	
 		// name: fronts Core Data attribute name_ that is optional
-		// if you change an location's name, its associated items may want to
-		// know that some of their computed locationName properties have been invalidated
 	var name: String { name_ ?? "Unknown Name" }
 	
 		// visitationOrder: fronts Core Data attribute visitationOrder_ that is Int32
