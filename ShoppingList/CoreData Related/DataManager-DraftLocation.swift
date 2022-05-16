@@ -50,12 +50,34 @@ extension DataManager {
 			// before updating it with the new values
 		if let id = draftLocation.id,
 			 let location = locations.first(where: { $0.id == id }) {
-			location.updateValues(from: draftLocation)
+			update(location: location, from: draftLocation)
 		} else {
 			let newLocation = addNewLocation()
-			newLocation.updateValues(from: draftLocation)
+			update(location: newLocation, from: draftLocation)
 		}
 		saveData()
+	}
+	
+	private func update(location: Location, from draftLocation: DraftLocation) {
+		
+			// let all associated Items know they are effectively being changed
+		items.forEach({ $0.objectWillChange.send() })
+		
+			// we first make these changes directly in Core Data
+		location.name_ = draftLocation.name
+		location.visitationOrder_ = Int32(draftLocation.visitationOrder)
+		if let components = draftLocation.color.cgColor?.components {
+			location.red_ = Double(components[0])
+			location.green_ = Double(components[1])
+			location.blue_ = Double(components[2])
+			location.opacity_ = Double(components[3])
+		} else {
+			location.red_ = 0.0
+			location.green_ = 1.0
+			location.blue_ = 0.0
+			location.opacity_ = 0.5
+		}
+		
 	}
 
 }

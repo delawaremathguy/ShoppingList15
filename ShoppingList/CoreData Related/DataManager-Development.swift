@@ -115,9 +115,9 @@ extension DataManager {
 				// look up matching location by name
 				// anything that doesn't match goes to the unknown location.
 			if let location = name2Location[codableItem.locationName] {
-				newItem.location = location
+				newItem.location_ = location
 			} else {
-				newItem.location = unknownLocation // if necessary, this creates the Unknown Location
+				newItem.location_ = unknownLocation // if necessary, this creates the Unknown Location
 			}
 			
 		}
@@ -129,8 +129,8 @@ extension DataManager {
 		var newLocations = [Location]()
 		for codableLocation in codableLocations {
 			let newLocation = addNewLocation() // new UUID created here
-			newLocation.name = codableLocation.name
-			newLocation.visitationOrder = codableLocation.visitationOrder
+			newLocation.name_ = codableLocation.name
+			newLocation.visitationOrder_ = Int32(codableLocation.visitationOrder)
 			newLocation.red_ = codableLocation.red
 			newLocation.green_ = codableLocation.green
 			newLocation.blue_ = codableLocation.blue

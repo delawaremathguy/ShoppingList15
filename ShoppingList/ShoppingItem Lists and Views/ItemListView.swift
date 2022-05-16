@@ -124,7 +124,7 @@ struct ItemListView: View {
 				// and we queue the actual removal long enough to allow animation to finish
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
 				withAnimation {
-					item.toggleOnListStatus()
+					dataManager.toggleOnListStatus(item: item)
 					itemsChecked.removeAll(where: { $0 == item })
 				}
 			}
@@ -165,6 +165,8 @@ struct ItemListView: View {
 	//
 struct ItemContextMenu: View {
 	
+	@EnvironmentObject private var dataManager: DataManager
+	
 	// i have tried using this both with and without marking the item as an ObservedObject; it
 	// makes no difference which way i do this; it's still the wrong display the second time
 	// the context menu comes down.  (i have filed Feedback ... i will not hold my breath.)
@@ -173,12 +175,12 @@ struct ItemContextMenu: View {
 	var affirmDeletion: () -> Void
 	
 	var body: some View {
-		Button(action: { item.toggleOnListStatus() }) {
+		Button(action: { dataManager.toggleOnListStatus(item: item) }) {
 			Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
 			Image(systemName: item.onList ? "purchased" : "cart")
 		}
 		
-		Button(action: { item.toggleAvailableStatus() }) {
+		Button(action: { dataManager.toggleAvailableStatus(item: item) }) {
 			Text(item.isAvailable ? "Mark as Unavailable" : "Mark as Available")
 			Image(systemName: item.isAvailable ? "pencil.slash" : "pencil")
 		}

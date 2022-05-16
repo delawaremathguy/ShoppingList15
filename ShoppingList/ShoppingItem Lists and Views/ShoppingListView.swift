@@ -99,7 +99,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			// then reassemble the sections by sorted keys of this dictionary
 		var completedSectionData = [ItemsSectionData]()
 		var index = 1
-		for key in dictionaryByLocation.keys.sorted() {
+		for key in dictionaryByLocation.keys.sorted(by: \.visitationOrder) {
 			completedSectionData.append(ItemsSectionData(index: index, title: key.name, items: dictionaryByLocation[key]!))
 			index += 1
 		}
@@ -137,7 +137,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			// pull out Locations appearing in the shopping list as a dictionary, keyed by location
 			// and write the shareContent message = one big string
 		let dictionary = Dictionary(grouping: items, by: { $0.location })
-		for key in dictionary.keys.sorted() {
+		for key in dictionary.keys.sorted(by: \.visitationOrder) {
 			let items = dictionary[key]!
 			message += "\n\(key.name), \(items.count) item(s)\n\n"
 			for item in items {
@@ -178,7 +178,7 @@ struct ShoppingListBottomButtons: View {
 				Spacer()
 				
 				Button {
-					itemsToBePurchased.forEach { $0.markAvailable() }
+					dataManager.markAsAvailable(items: itemsToBePurchased)
 				} label: {
 					Text("Mark All Available")
 				}

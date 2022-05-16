@@ -136,7 +136,7 @@ class DataManager: NSObject, ObservableObject {
 			// are about to change
 		itemsAtThisLocation.forEach {
 			$0.objectWillChange.send()
-			$0.location = unknownLocation
+			$0.location_ = unknownLocation
 		}
 		
 			// now finish the deletion and save
@@ -185,6 +185,23 @@ class DataManager: NSObject, ObservableObject {
 		}
 	}
 	
+	func toggleAvailableStatus(item: Item) {
+		item.isAvailable_.toggle()
+	}
+	
+	func toggleOnListStatus(item: Item) {
+		if item.onList_ {
+			item.onList_ = false
+			item.dateLastPurchased_ = Date.now
+		} else {
+			item.onList_ = true
+		}
+	}
+	
+	func markAsAvailable(items: [Item]) {
+		items.forEach { $0.isAvailable_ = true }
+	}
+
 		// note: i'd really like to put this in DataManager-DraftItem.swift, but i
 		// need the managedObjectContext, which is private
 	func item(associatedWith draftItem: DraftItem) -> Item? {
@@ -205,7 +222,7 @@ class DataManager: NSObject, ObservableObject {
 			}
 		}
 	}
-
+	
 }
 
 	// MARK: - FetchedResults Handling

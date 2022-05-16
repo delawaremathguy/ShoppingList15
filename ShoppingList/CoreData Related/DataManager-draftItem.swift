@@ -99,12 +99,21 @@ extension DataManager {
 			// if we can find an Item with the right id, use it, else create one
 		if let id = draftItem.id,
 			 let item = items.first(where: { $0.id == id }) {
-			item.updateValues(from: draftItem)
+			update(item: item, from: draftItem)
 		} else {
 			let newItem = addNewItem()
-			newItem.updateValues(from: draftItem)
+			update(item: newItem, from: draftItem)
 		}
 		saveData()
 	}
+	
+	private func update(item: Item, from draftItem: DraftItem) {
+		item.name_ = draftItem.name
+		item.quantity_ = Int32(draftItem.quantity)
+		item.onList_ = draftItem.onList
+		item.isAvailable_ = draftItem.isAvailable
+		item.location_ = draftItem.location
+	}
+
 
 }
