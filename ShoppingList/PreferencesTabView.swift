@@ -95,6 +95,7 @@ struct PreferencesTabView: View {
 			}
 			
 			Spacer()
+			Divider()
 		} // end of VStack
 		.navigationBarTitle("Preferences")
 		.onAppear { logAppear(title: "Preferences") }

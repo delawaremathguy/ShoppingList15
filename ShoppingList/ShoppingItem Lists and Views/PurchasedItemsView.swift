@@ -98,12 +98,11 @@ struct PurchasedItemsView: View {
 		
 			// do we show one big section or two (recent + everything else)?  one big section is pretty darn easy:
 		if !multiSectionDisplay {
-			if searchText.isEmpty {
-				return [ItemsSectionData(index: 1, title: "Items Purchased: \(items.count)",
-														items: items.map({ $0 }))]
-			}
-			return [ItemsSectionData(index: 1, title: "Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)",
-													items: searchQualifiedItems)]
+			let title = searchText.isEmpty ?
+				"Items Purchased: \(items.count)" :
+				"Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)"
+			
+			return [ItemsSectionData(index: 1, title: title, items: searchQualifiedItems)]
 		}
 		
 			// break these out into (Today + back historyMarker days) and (all the others)

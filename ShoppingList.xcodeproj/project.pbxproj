@@ -256,14 +256,14 @@
 		D6EF5583246D9489007D636B /* CoreData Related */ = {
 			isa = PBXGroup;
 			children = (
-				D65F9389282C34D60014CCC5 /* DataManager-Development.swift */,
 				D65F938A282C34D60014CCC5 /* DataManager.swift */,
+				D65F9389282C34D60014CCC5 /* DataManager-Development.swift */,
 				D6478113282D40EE00C7F55F /* DataManager-DraftItem.swift */,
 				D6478115282D4D8100C7F55F /* DataManager-DraftLocation.swift */,
-				D64898E824B0E95E008FE512 /* PersistentStore.swift */,
-				D6FC7A0824635D950096F018 /* ShoppingList.xcdatamodeld */,
 				D610C3BD2451D8DC009F7F36 /* Item+Extensions.swift */,
 				D648D348246388C100CD881B /* Location+Extensions.swift */,
+				D64898E824B0E95E008FE512 /* PersistentStore.swift */,
+				D6FC7A0824635D950096F018 /* ShoppingList.xcdatamodeld */,
 			);
 			path = "CoreData Related";
 			sourceTree = "<group>";

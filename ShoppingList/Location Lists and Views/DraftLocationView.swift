@@ -22,9 +22,10 @@ struct DraftLocationView: View {
 		// control for confirmation alert
 	@State private var isDeleteConfirmationPresented = false
 
-		// definition of whether we can offer a deletion option in this view
-		// (it's a real location that's not the unknown location)
-	private var deletionAllowed: Bool {
+		// we can only show a list of items associated with a draftLocation or offer
+		// an option to delete the location associated with the draftLocation if
+		// the draftLocation represents a real location.
+	private var draftRepresentsRealLocation: Bool {
 		guard let location = dataManager.location(associatedWith: draftLocation) else {
 			return false
 		}
@@ -64,8 +65,8 @@ struct DraftLocationView: View {
 				ColorPicker("Location Color", selection: $draftLocation.color)
 			} // end of Section 1
 			
-				// Section 2: Delete button, if the data is associated with an existing Location
-			if deletionAllowed {
+				// Sections 2: Delete button, if we are editing a real Location
+			if draftRepresentsRealLocation {
 				Section(header: Text("Location Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Location")  {
 						//alertModel.type = .confirmDeleteLocation(draftLocation.associatedLocation, { dismiss() })
@@ -73,28 +74,46 @@ struct DraftLocationView: View {
 						isDeleteConfirmationPresented = true
 					}
 					.foregroundColor(Color.red)
-				}
-			} // end of Section 2
+				} // end of Section
+			} // end of if
 			
-//				 Section 3: Items assigned to this Location, if we are editing a Location
-			SimpleItemsList(location: draftLocation.associatedLocation,
-											isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
+			if let location = dataManager.location(associatedWith: draftLocation) {
+				Section(header: ItemsListHeader(location: location)) {
+					SimpleItemsList(location: location, isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
+				}
+			}
+
 
 		} // end of Form
+		
+			// note to self on this .sheet: it can only be triggered if the draftLocation is associated with a real Location
 		.sheet(isPresented: $isAddNewItemSheetShowing) {
-			AddNewItemView(location: draftLocation.associatedLocation, dataManager: dataManager) {
+			AddNewItemView(dataManager: dataManager, draftLocation: draftLocation) {
 				isAddNewItemSheetShowing = false
 			}
 		}
+		
+			// note to self on this .alert: it can only be triggered if the draftLocation is associated with a real Location
 		.alert("Delete \(draftLocation.name)?", isPresented: $isDeleteConfirmationPresented) {
 			Button("OK", role: .destructive) {
-				dataManager.delete(location: draftLocation.associatedLocation)
+				dataManager.delete(location: dataManager.location(associatedWith: draftLocation)!)
 			}
 		} message: {
 			Text("Are you sure you want to delete the Location named \'\(draftLocation.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
 		}
 
 	} // end of var body: some View
+	
+	func ItemsListHeader(location: Location) -> some View {
+		HStack {
+			Text("At this Location: \(location.itemCount) items").sectionHeader()
+			Spacer()
+			SystemImageButton("plus") {
+				isAddNewItemSheetShowing = true
+			}
+		}
+	}
+
 }
 
 struct SimpleItemsList: View {
@@ -114,7 +133,7 @@ struct SimpleItemsList: View {
 	}
 	
 	var body: some View {
-		Section(header: ItemsListHeader()) {
+//		Section(header: ItemsListHeader()) {
 			ForEach(items) { item in
 				NavigationLink {
 					ModifyExistingItemView(item: item, dataManager: dataManager)
@@ -122,16 +141,16 @@ struct SimpleItemsList: View {
 					Text(item.name)
 				}
 			}
-		}
+//		}
 	}
 	
-	func ItemsListHeader() -> some View {
-		HStack {
-			Text("At this Location: \(items.count) items").sectionHeader()
-			Spacer()
-			SystemImageButton("plus") {
-				isAddNewItemSheetShowing = true
-			}
-		}
-	}
+//	func ItemsListHeader() -> some View {
+//		HStack {
+//			Text("At this Location: \(items.count) items").sectionHeader()
+//			Spacer()
+//			SystemImageButton("plus") {
+//				isAddNewItemSheetShowing = true
+//			}
+//		}
+//	}
 }

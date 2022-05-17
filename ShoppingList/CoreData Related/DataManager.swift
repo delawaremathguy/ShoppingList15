@@ -89,6 +89,7 @@ class DataManager: NSObject, ObservableObject {
 		locationsFRC.delegate = self
 		try? locationsFRC.performFetch()
 		self.locations = locationsFRC.fetchedObjects ?? []
+		
 	}
 
 		// MARK: - Location Handling
@@ -108,12 +109,21 @@ class DataManager: NSObject, ObservableObject {
 	}
 	
 	func assertUnknownLocationExists() {
-		if unknownLocation_ == nil {
+		if unknownLocation_ != nil {
+			return
+		}
+			// if unknownLocation_ not yet established, look among locations for it
+		else if let location = locations.first(where: { $0.isUnknownLocation }) {
+			unknownLocation_ = location
+		}
+			// otherwise, add the UL now
+		else {
 			unknownLocation_ = createUnknownLocation()
 		}
 	}
 
-	func addNewLocation(isUnknownLocation: Bool = false) -> Location {
+	
+	func addNewLocation() -> Location {
 		let newLocation = Location(context: managedObjectContext)
 		newLocation.id = UUID()
 		return newLocation
@@ -132,8 +142,8 @@ class DataManager: NSObject, ObservableObject {
 		
 			// reset location associated with each of these to the unknownLocation
 			// (which in turn, removes the current association with location). additionally,
-			// this could affect each item's computed properties, let each know they
-			// are about to change
+			// this will affect each item's computed properties, so let each know they
+			// are effectively "about to change"
 		itemsAtThisLocation.forEach {
 			$0.objectWillChange.send()
 			$0.location_ = unknownLocation

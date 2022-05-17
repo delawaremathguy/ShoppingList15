@@ -117,7 +117,8 @@ extension DataManager {
 			if let location = name2Location[codableItem.locationName] {
 				newItem.location_ = location
 			} else {
-				newItem.location_ = unknownLocation // if necessary, this creates the Unknown Location
+				assertUnknownLocationExists()
+				newItem.location_ = unknownLocation
 			}
 			
 		}

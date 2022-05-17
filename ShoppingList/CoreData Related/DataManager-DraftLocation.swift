@@ -14,19 +14,21 @@ import SwiftUI
 
 class DraftLocation: ObservableObject {
 	var id: UUID? = nil
-	var associatedLocation: Location
 		// all of the values here provide suitable defaults for a new Location
 	@Published var name: String = ""
 	@Published var visitationOrder: Int = 50
 	@Published var color: Color = .green	// we keep a Color; a location has RGB-A components
 	
 		// this init copies all the editable data from an incoming Location (one known to exist)
-	fileprivate init(location: Location, dataManager: DataManager) {
-		id = location.id!
-		name = location.name
-		visitationOrder = Int(location.visitationOrder)
-		color = Color(location.uiColor)
-		associatedLocation = location
+	fileprivate init(dataManager: DataManager, location: Location? = nil) {
+		if let location = location {
+			id = location.id!
+			name = location.name
+			visitationOrder = Int(location.visitationOrder)
+			color = Color(location.uiColor)
+		} else {
+			// all fields have defaults that are correct for a new Location
+		}
 	}
 	
 		// to do a save/commit of an DraftLocation, it must have a non-empty name
@@ -38,10 +40,7 @@ extension DataManager {
 	// ask the DM to provide a DraftLocation object, based on either a known location
 	// or a default DraftLocation of unknown
 	func draftLocation(location: Location? = nil) -> DraftLocation {
-		if let location = location {
-			return DraftLocation(location: location, dataManager: self)
-		}
-		return DraftLocation(location: unknownLocation, dataManager: self)
+		return DraftLocation(dataManager: self, location: location)
 	}
 	
 	func updateAndSave(using draftLocation: DraftLocation) {

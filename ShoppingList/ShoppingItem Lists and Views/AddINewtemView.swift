@@ -32,15 +32,41 @@ private var dataManager: DataManager
 		// this draftItem object contains all of the fields for a new Item that are needed from the User
 	@StateObject private var draftItem: DraftItem
 	
-		// custom init here to set up a data for an Item to be added having default values
-	init(initialItemName: String? = nil, location: Location? = nil, dataManager: DataManager, dismiss: @escaping () -> Void) {
-			// create working, editable data for a new Item, with the given suggested initial name and location
+		// there are two custom initializers here, because there are three instances of
+		// opening this view in a sheet.
+		//
+		// Case 1: if opened from the ShoppingListView (initialItemName == nil) and
+		// PurchasedItemsView (an initialName may/may not be supplied).
+		// NOTE TO SELF: because we use the searchable modifier in PurchasedItemsView,
+		// we'll never have a non-nil initialItemName: because when the search bar is
+		// active, it removes the + in the navbar to add a new item (!)
+	
+	init(dataManager: DataManager, initialItemName: String? = nil, dismiss: @escaping () -> Void) {
 		self.dataManager = dataManager
-		let initialValue = dataManager.draftItem(initialItemName: initialItemName)
-		_draftItem = StateObject(wrappedValue: initialValue)
+		let initialObjectValue = dataManager.draftItem(initialItemName: initialItemName)
+		_draftItem = StateObject(wrappedValue: initialObjectValue)
 			// and stash away the dismiss function
 		self.dismiss = dismiss
 	}
+	
+		// Case 2: if opened from the DraftLocationView, where we know we have a real
+		// location associated with the draftLocation.
+	init(dataManager: DataManager, draftLocation: DraftLocation, dismiss: @escaping () -> Void) {
+		self.dataManager = dataManager
+		let initialObjectValue = dataManager.draftItem(location: dataManager.location(associatedWith: draftLocation)!)
+		_draftItem = StateObject(wrappedValue: initialObjectValue)
+		self.dismiss = dismiss
+	}
+
+//	init(initialItemName: String? = nil, location: Location? = nil, draftLocation: DraftLocation, dismiss: @escaping () -> Void) {
+//			// create working, editable data for a new Item, with the given suggested initial name and location
+//		self.dataManager = dataManager
+//		let initialValue = dataManager.draftItem(initialItemName: initialItemName)
+//		_draftItem = StateObject(wrappedValue: initialValue)
+//			// and stash away the dismiss function
+//		self.dismiss = dismiss
+//	}
+
 	
 		// the body is pretty short -- just call up a Form, adding a Cancel and Save button
 	var body: some View {

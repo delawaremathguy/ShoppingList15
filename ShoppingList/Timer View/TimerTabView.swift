@@ -47,6 +47,7 @@ struct TimerTabView: View {
 				}
 				
 				Spacer()
+				Divider()
 				
 			}
 			.navigationBarTitle("In-Store Timer")
