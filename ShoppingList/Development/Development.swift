@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import CoreData
-import UIKit
 
 // what i previously called a "Dev Tools" tab -- now incorporated into the
 // Preferences tab -- so that if you want to use this as a real app (device or simulator),

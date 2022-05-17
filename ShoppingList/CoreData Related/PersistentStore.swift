@@ -11,7 +11,6 @@ import CoreData
 
 final class PersistentStore: ObservableObject {
 		
-	// this makes sure we're the only one who can create one of these
 	init() { }
 		
 	lazy var persistentContainer: NSPersistentContainer = {

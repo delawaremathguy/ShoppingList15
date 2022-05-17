@@ -58,16 +58,6 @@ private var dataManager: DataManager
 		self.dismiss = dismiss
 	}
 
-//	init(initialItemName: String? = nil, location: Location? = nil, draftLocation: DraftLocation, dismiss: @escaping () -> Void) {
-//			// create working, editable data for a new Item, with the given suggested initial name and location
-//		self.dataManager = dataManager
-//		let initialValue = dataManager.draftItem(initialItemName: initialItemName)
-//		_draftItem = StateObject(wrappedValue: initialValue)
-//			// and stash away the dismiss function
-//		self.dismiss = dismiss
-//	}
-
-	
 		// the body is pretty short -- just call up a Form, adding a Cancel and Save button
 	var body: some View {
 		NavigationView {
