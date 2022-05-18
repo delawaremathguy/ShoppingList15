@@ -12,16 +12,22 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of XX May, 2022 (this new MVVM branch is still **experimental** ... no final date yet determined when i can give you a fully-working version.)
+### Most Recent Update(s) of 18 May, 2022 
 
-* (*XX May*) this MVVM branch still requires some work, but i launched it to see if it makes sense to pull all the class functions from `Item` and `Location` into a single `DataManager` object, and to also pull the `PersistentStore.shared` global singleton and Core Data stack into this `DataManager` object as a local property as well.  the `DataManager` would be instantiated at the `App` level and then injected into the SwiftUI environment, and vend lists of `Item`s and `Locations` to SwiftUI Views.
+* (*18 May*) this new MVVM branch remains **EXPERIMENTAL** ... there is no projected date when i can give you a fully-working version; and it's possible that i will simply leave the repo having two branches, both to compare against each other and so that you can decide which branch you want to play with.  (i also fear merging MVVM into master, since that's one potential "conflict resolution battle" i don't want to fight with git.)
 
- - one advantage is that testability would then be possible, without a global singleton getting in the way (we'd still have to modify `PersistentStore` to work with an in-memory Core Data store).  
- - another advantage is that we can move more towards an MVVM architecture -- and in fact, as we do this, we can replace all `@FetchRequest`s using `NSFetchedResultsController` objects inside `DataManager`.
- - additionally, all exposed properties of `Item` and `Location` instances are now read-only properties, which means that SwiftUI views must go through the dataManager to make changes.  in theory, we could even vend not the actual (class) objects themselves, but read-only struct representations of them, and wouldn't that make SwiftUI happy!
- - and, just for good measure, all my previous "identifiable" sheets and alerts have been replaced by more direct uses of iOS15 style `.sheet()` and `.alert()` modifiers.
+* (*17 May*) this MVVM branch still requires some work, but i launched it to see if it makes sense to pull all the class functions from `Item` and `Location` into a single `DataManager` object, and to also pull the `PersistentStore.shared` global singleton and Core Data stack into this `DataManager` object as a local property as well.  the `DataManager` would be instantiated at the `App` level and then injected into the SwiftUI environment, and vend lists of `Item`s and `Locations` to SwiftUI Views.
 
-* (*17 May*) fixed issue with multiple Unknown Locations (an initialization problem) and cleaned up code in AddNewLocationView (although still a little quirky)
+    - one advantage is that testability would then be possible, without a global singleton getting in the way (we'd still have to modify `PersistentStore` to work with an in-memory Core Data store).  
+
+    - another advantage is that we can move more towards an MVVM architecture -- and in fact, as we do this, we replace all `@FetchRequest`s using `NSFetchedResultsController` objects inside `DataManager`.
+
+    - additionally, all exposed properties of `Item` and `Location` instances are now read-only properties, which means that SwiftUI views must go through the dataManager to make changes.  in theory, we could even vend not the actual (class) Core Data objects, but read-only, struct representations of them, and wouldn't that make SwiftUI very, very happy!
+
+    - and, just for good measure, all my previous "identifiable" sheets and alerts have been replaced by more direct uses of iOS 15 style `.sheet()` and `.alert()` modifiers.
+
+* (*17 May*) fixed issue with multiple Unknown Locations (an initialization oversight).  however, once you open the app for the first time on a second device (when using the cloud), it's possible that you will create an on-device Unknown Location before then discovering an Unknown Location already exists.  the problem is solvable ... but i'll not go there for now.  
+* (*17 May*) cleaned up code in AddNewLocationView (although still a little quirky)
 * (*16 May*) implementation of DataManager and re-tooled MVVM looking very good, but still some cleaning and testing to do.
 
 

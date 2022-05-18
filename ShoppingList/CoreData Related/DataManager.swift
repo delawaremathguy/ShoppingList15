@@ -240,7 +240,10 @@ class DataManager: NSObject, ObservableObject {
 extension DataManager: NSFetchedResultsControllerDelegate {
 	
 		// we listen for changes to Items and Locations here.
-		// it's a simple way to mimic what a @FetchRequest would do in SwiftUI for one of these objects
+		// it's a simple way to mimic what a @FetchRequest would do in SwiftUI for one of these objects.
+		// note: this is most likely the spot where we can identify the cloud latency problem
+		// of having created an Unknown Location on device and then finding we already
+		// had one in the cloud.
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		if let newItems = controller.fetchedObjects as? [Item] {
 			self.items = newItems
