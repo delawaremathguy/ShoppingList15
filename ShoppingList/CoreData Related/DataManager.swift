@@ -10,43 +10,52 @@ import CoreData
 import Foundation
 import SwiftUI
 
-// NOTE: UNDER CONSTRUCTION.  this started off as a trial balloon, based on an
-// issue opened by @santi-g-s (Santiago Garcia Santos) of how one might go about
-// adding XCTesting to a project such as this.  the major impediment to easily
-// adding testing is the app's use of a global singleton.
+/* Discussion
+ 
+ this implementation of a DataManager (DM) started off as a trial balloon, based on an issue
+ opened by @santi-g-s (Santiago Garcia Santos) of how one might go about adding
+ XCTesting to a project such as this.  (the major impediment to easily adding testing
+ was the app's use of a global singleton.)
 
-// 	the DataManagerClass is the base-level data model for SL15.
-//   - it owns the Core Data stack (the stack is no longer in a global singleton)
-// -  it acts as a centralized replacement of  multiple, distributed @FetchRequests by
-//      using NSFetchResultsControllers instead for Items and Locations
-// - it vends an array of Items and and an array of Locations
-// - it handles requests to add and delete Core Data objects
-// - it handles other "ad-hoc" data requests (although this is a little less
-//      well-defined area of responsibility, since views may make changes to
-//      the objects vended on their own in many cases)
+the DataManagerClass now becomes the base-level data model for SL15.
+   - it owns the Core Data stack (the stack is no longer in a global singleton)
+ -  it acts as a centralized replacement of  multiple, distributed @FetchRequests by
+      using NSFetchResultsControllers instead for Items and Locations
+ - it vends an array of Items and and an array of Locations
+ - it handles all requests to add and delete Core Data objects
+ - it handles other "ad-hoc" data requests (although this is a little less
+      well-defined area of responsibility, since views may make changes to
+     the objects vended on their own in many cases)
+ 
+in the process, you will see that what were class functions on Item and Location
+ are here; and you'll also see that all the "fronting" variables i use on Item
+ and Location are now read-only -- SwiftUI views no longer have authority to
+ write to Items and Locations, but instead must go through this DM to make
+ those changes.  hence, one far-flung thought i'll look at is that the DM will not
+ vend any actual Core Data objects, but instead structs that are representations
+ of those objects.  if that idea works, then all SwiftUI views would suddenly be
+ very happy, since everything they see would be structs and not (class) objects.
 
+ */
 
 class DataManager: NSObject, ObservableObject {
 	
 	// MARK: - Properties and Initialization
 	
-		// our hook into Core Data
+		// our private hook into Core Data
 	private var managedObjectContext: NSManagedObjectContext
 	
-		// NSFetchedResultsControllers to use in place of distributed @FetchRequests
+		// we use NSFetchedResultsControllers in place of distributed @FetchRequests
+		// to keep track of Items and Locations
 	private let itemsFRC: NSFetchedResultsController<Item>
 	private let locationsFRC: NSFetchedResultsController<Location>
 
-		// what we vend to the outside: arrays of Items and Locations
+		// we vend @Published arrays of Items and Locations to clients, which
+		// are updated internally by the itemsFRC and the locationsFRC in response
+		// to controllerDidChangeContent() firing (we are an NSFetchedResultsControllerDelegate)
 	@Published var items = [Item]()
 	@Published var locations = [Location]()
 	
-		// and also some variations we will vend to specific views:
-		//  -- for the ShoppingListView
-	var itemsOnList: [Item] { items.filter({ $0.onList }) }
-		//  -- and for the PurchasedItemsView
-	var itemsOffList: [Item] { items.filter({ !$0.onList }) }
-
 		// we'll return the unknownLocation through a computed variable, with a private
 		// reference to the unknownLocation, so we can lazily instantiate it ... we'll
 		// come back later to see if this is sensible (there are possible cloud issues, anyway).
@@ -60,7 +69,7 @@ class DataManager: NSObject, ObservableObject {
 	}
 	
 	override init() {
-			// set up Core Data
+			// set up Core Data (we own it)
 		let persistentStore = PersistentStore()
 		managedObjectContext = persistentStore.context
 		
@@ -90,6 +99,16 @@ class DataManager: NSObject, ObservableObject {
 		try? locationsFRC.performFetch()
 		self.locations = locationsFRC.fetchedObjects ?? []
 		
+	}
+	
+	func saveData() {
+		if managedObjectContext.hasChanges {
+			do {
+				try managedObjectContext.save()
+			} catch let error as NSError {
+				NSLog("Unresolved error saving context: \(error), \(error.userInfo)")
+			}
+		}
 	}
 
 		// MARK: - Location Handling
@@ -121,7 +140,6 @@ class DataManager: NSObject, ObservableObject {
 			unknownLocation_ = createUnknownLocation()
 		}
 	}
-
 	
 	func addNewLocation() -> Location {
 		let newLocation = Location(context: managedObjectContext)
@@ -223,16 +241,6 @@ class DataManager: NSObject, ObservableObject {
 		Item.count(context: managedObjectContext)
 	}
 	
-	func saveData() {
-		if managedObjectContext.hasChanges {
-			do {
-				try managedObjectContext.save()
-			} catch let error as NSError {
-				NSLog("Unresolved error saving context: \(error), \(error.userInfo)")
-			}
-		}
-	}
-	
 }
 
 	// MARK: - FetchedResults Handling
@@ -241,9 +249,8 @@ extension DataManager: NSFetchedResultsControllerDelegate {
 	
 		// we listen for changes to Items and Locations here.
 		// it's a simple way to mimic what a @FetchRequest would do in SwiftUI for one of these objects.
-		// note: this is most likely the spot where we can identify the cloud latency problem
-		// of having created an Unknown Location on device and then finding we already
-		// had one in the cloud.
+		// note: this is most likely the spot where we can identify any cloud latency problem of having
+		//created an Unknown Location on device and then finding we already had one in the cloud.
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		if let newItems = controller.fetchedObjects as? [Item] {
 			self.items = newItems

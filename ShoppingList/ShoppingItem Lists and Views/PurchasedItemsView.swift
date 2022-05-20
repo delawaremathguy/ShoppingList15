@@ -20,7 +20,7 @@ struct PurchasedItemsView: View {
 	@EnvironmentObject var today: Today
 
 	@EnvironmentObject private var dataManager: DataManager
-	var items: [Item] { dataManager.itemsOffList }
+	var items: [Item] { dataManager.items.filter({ $0.onList }) }
 	
 		// the usual @State variables to handle the Search field
 	@State private var searchText: String = ""

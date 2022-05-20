@@ -13,7 +13,7 @@ import SwiftUI
 struct ShoppingListView: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
-	var items: [Item] { dataManager.itemsOnList }
+	var items: [Item] { dataManager.items.filter({ $0.onList }) }
 		
 	// sheet used to add a new item
 	@State private var isAddNewItemSheetShowing = false
