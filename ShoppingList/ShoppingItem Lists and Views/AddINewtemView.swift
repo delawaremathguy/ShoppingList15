@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-	// the AddNewItemView is opened via a sheet from either the ShoppingListView and the
+	// the AddNewItemView is opened via a sheet from either the ShoppingListView or the
 	// PurchasedItemTabView, within a NavigationView, to do as it says: add a new shopping item.
 	// the strategy is simple:
 	//

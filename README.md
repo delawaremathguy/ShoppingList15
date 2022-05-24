@@ -12,10 +12,9 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 20 May, 2022 
+### Most Recent Update(s) of 24 May, 2022 
 
-* (*20 May*) Warning: the new MVVM branch under development remains **EXPERIMENTAL**, but it is in pretty decent shape right now and runs without obvious issues.  There is still some testing to be done, and i am still considering making one more under-the-hood adjustment (specifically: a change in strategy about using `DraftItem` and `DraftLocation` objects for adding and modifying Items and Locations).
-
+* (*24 May*) the new MVVM branch remains under development, but it is in pretty decent shape right now and appears to run without obvious issues.  some testing remains to be done, and i am still considering making more under-the-hood adjustments (example: a change in strategy about using `DraftItem` and `DraftLocation` objects for adding and modifying Items and Locations).
 * (*20 May*) The `DataManager` no longer vends dedicated lists to the ShoppingListView and the PurchasedItemsView ... each of those view is perfectly capable of filtering out the Items they display on their own.
 * (*17 May*) The MVVM branch was launched it to see if it makes sense to pull all the class functions from `Item` and `Location` into a single `DataManager` object, and to also pull the `PersistentStore.shared` global singleton and Core Data stack into this `DataManager` object as a local property as well.  the `DataManager` would be instantiated at the `App` level and then injected into the SwiftUI environment, and vend lists of `Item`s and `Locations` to SwiftUI Views.
 

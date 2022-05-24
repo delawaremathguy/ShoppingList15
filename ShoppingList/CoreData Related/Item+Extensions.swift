@@ -14,7 +14,7 @@ extension Item {
 	
 	/* Discussion
 	
-	Update 16 May, 2022:
+	Update 24 May, 2022:
 	
 	(1) Fronting of Core Data Attributes
 	
@@ -43,24 +43,23 @@ extension Item {
 	 offers to SwiftUI views are read-only objects (as long as the SwiftUI views do
 	 not cheat and access the underlying Core Data attributes; and now you know a
 	 little more about why we have different names for attributes and their
-	 exposed names within the app.
+	 exposed names within the app).
 	
 	
 	(2) @ObservedObject References to Items
 	
 	only the SelectableItemRowView has an @ObservedObject reference to an Item, and in early
-	 development, this view (or whatever this view was during development) had a serious problem:
+	 development, that view (or whatever this view was during development) had a serious problem:
 	
-		if a SwiftUI view holds an Item as an @ObservedObject and that object is deleted while the
-		view is still alive, the view is then holding on to a zombie object.  (when SwiftUI accesses the
-	 	object and when the object has really been deleted in Core Data are different ... because
-	 	even though we can make some educated guesses, we don't really know exactly when SwiftUI
-		wants to access the object.)  so,  depending on how view code accesses that object, your
-	 	program may crash.
+		if a SwiftUI view holds an Item as an @ObservedObject and that object is deleted
+	 	while the view is still alive, the view is then holding on to a zombie object.  if SwiftUI
+	 	tries to access this object ... yes, SwiftUI may try to access this object between the time
+	 	that your code deleted the object and SwiftUI comes around to updating the view ...
+	 	your program may crash.
 
 	if you front all your Core Data attributes as i do below, especially by nil-coalescing optional values,
-	 the problem above seems to disappear, for the most part, but it's really still there.  even though
-	 SwiftUI maybe trying to use a deleted object, every attribute in memory will be 0 (e.g., nil for
+	 the problem above seems to disappear, for the most part (but it's really still there).  even though
+	 SwiftUI maybe trying to access a deleted object, every attribute in memory will be 0 (e.g., nil for
 	 a Date, 0 for an Integer 32, and nil for every optional attribute) and so the fronting property
 	 will give SwiftUI _something_ that it can work with, even if it's about to remove the view
 	 holding the ObservedObject anyway (and you probably will never see it on screen).
@@ -88,11 +87,13 @@ extension Item {
 		// the date last purchased.  this fronts a Core Data optional attribute
 		// when no date is available, we'll set the date to ReferenceDate, for purposes of
 		// always having one for comparisons ("today" versus "earlier")
-	var dateLastPurchased: Date { dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 1) }
+	var dateLastPurchased: Date {
+		dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 1)
+	}
 	
 	var hasBeenPurchased: Bool { dateLastPurchased_ != nil }
 	
-		// MARK: - Computed Properties (from Associated Location)
+		// MARK: - Computed Properties (determined by associated Location)
 
 		// the name of its associated location
 	var locationName: String { location_?.name_ ?? "Not Available" }

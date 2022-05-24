@@ -14,13 +14,13 @@ import Foundation
 	// i can then hand off to an edit view.  at some point, that edit view will
 	// want to update an Item with this data, so see the function updateAndSave below.
 
-	// ADDED 2 FEB 2022: this is now a class object that conforms to ObservableObject, with
-	// five of its properties marked @Published (these are exactly the properties that can be edited
+	// UPDATED 24 MAY 2022: DraftItem was originally to be a struct, but is instead
+	// a class object that conforms to ObservableObject, with five of its properties marked
+	// @Published (these are exactly the properties that can be edited
 	// in the DraftItemView).  both the AddNewItemView and the ModifyExistingDataView
 	// will create these as a @StateObject.  it turns out that @State (for a struct) and @StateObject
 	// (for a class) do not exactly have the same behaviour, despite my naive belief that they did.
-	// making this change solves an updating problem discovered while editing Items, where
-	// some changes would "not seem to stick" across multiple edits.
+	// my explanation of the difference appears below.
 
 class DraftItem: ObservableObject {
 	
@@ -115,5 +115,64 @@ extension DataManager {
 		item.location_ = draftItem.location
 	}
 
-
 }
+
+
+/*
+ 
+ADDED 24 May, 2022
+ 
+ why i use a class object and not a struct here.
+ 
+when editing Items, i discovered that some edits would "not seem to stick" across
+ multiple edits ... cases where i go to the edit screen, make some changes, go back
+ to a List view (where the edits appear correctly), then come back to the edit
+ screen, and i would not find the updated Item values from the first edit, but
+ the original values prior to the first edit.
+ 
+my diagnosis is the following:
+ 
+when SwiftUI brings a list of Items on screen in the ShoppingListView, it
+probably has already created the ModifyExistingItemView structs for the
+ rows in the list.  (i say probably ... it has created only enough for each of the row
+ views on-screen and a few off-screen.)
+ 
+ if DraftItem were a struct, it would be "created" for each of those row
+ views in the sense that SwiftUI would put aside a copy of the DraftItem
+ struct as it stands when the ModifyExistingDataView is initialized.
+ 
+ when the ModifyExistingDataView comes on-screen, it is only then that
+ a copy of the initialized DraftItem struct would be moved into the heap
+ so that it could be edited as a @State variable.
+ 
+ as you edit, the values in the in-heap @State variable are modified, and when
+the ModifyExistingDataView goes off-screen, the values in the in-heap
+ @State DraftItem variable are moved to the Item as an update (so, the Item
+ is now as you expect), but more importantly, the in-heap  @State DraftItem
+ variable is released.
+ 
+ so now you go back to the ShoppingListView looks right, but you decide
+ to re-edit the Item you just edited to change something else.
+ 
+unless SwiftUI has done some serious memory cleaning,  it's likely that
+ the ModifyExistingDataView struct is still held by SwiftUI, even though it's
+ not visible on-screen.  so to bring the edit screen back to life, that copy of
+ the DraftItem we put aside when the ModifyExistingDataView was initialized
+ is still there and is not used to instantiated an in-heap version of the data
+ to be used as a @State variable.
+ 
+ but the problem is that the @State variable is being initialized using the
+ original values from the first time we edited the Item.
+ 
+ in other words, the in-heap data supporting editing of the @State variable
+ does not persist across the appear/disappear/re-appear cycle of the
+ ModifyExistingDataView.
+ 
+ however, making a DraftItem a class object means that ModifyExistingDataView
+ is using a @StateObject and it's initialized value is apparently being persisted
+ across the appear/disappear/re-appear cycle of the ModifyExistingDataView,
+ probably because it's already in the heap.
+
+ so, the internal mysteries of SwiftUI continue to amaze ...
+ 
+ */
