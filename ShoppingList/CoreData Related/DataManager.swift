@@ -23,18 +23,19 @@ the DataManagerClass now becomes the base-level data model for SL15.
       using NSFetchResultsControllers instead for Items and Locations
  - it vends an array of Items and and an array of Locations
  - it handles all requests to add and delete Core Data objects
- - it handles other "ad-hoc" data requests (although this is a little less
-      well-defined area of responsibility, since views may make changes to
-     the objects vended on their own in many cases)
+ - it handles all other data requests involving Items and Locations that go beyond
+       simple reading of Item and Location property values.
  
-in the process, you will see that what were class functions on Item and Location
+you will see that what were class functions originally defined on Item and Location
  are here; and you'll also see that all the "fronting" variables i use on Item
  and Location are now read-only -- SwiftUI views no longer have authority to
  write to Items and Locations, but instead must go through this DM to make
- those changes.  hence, one far-flung thought i'll look at is that the DM will not
- vend any actual Core Data objects, but instead structs that are representations
- of those objects.  if that idea works, then all SwiftUI views would suddenly be
- very happy, since everything they see would be structs and not (class) objects.
+ those changes.
+ 
+ for the future: one far-flung thought i'll look at is that the DM will not vend any
+ actual Core Data objects, but instead will vend structs that are representations
+ of those objects.  if that idea works, then SwiftUI would suddenly be
+ very happy, since everything the views see would be structs and not (class) objects.
 
  */
 
