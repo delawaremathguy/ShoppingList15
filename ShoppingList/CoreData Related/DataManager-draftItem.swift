@@ -18,8 +18,16 @@ import Foundation
 	// a class object that conforms to ObservableObject, with five of its properties marked
 	// @Published (these are exactly the properties that can be edited
 	// in the DraftItemView).  both the AddNewItemView and the ModifyExistingDataView
-	// will create these as a @StateObject.  it turns out that @State (for a struct) and @StateObject
-	// (for a class) do not exactly have the same behaviour, despite my naive belief that they did.
+	// will create these as a @StateObject.
+
+	// in effect, DraftItem becomes a view model for the DraftItemView, where one can
+	// edit properties of an Item, without actually committing those edits to the
+	// backing Item (if there is one) until the user accepts the edits.  this is an idea that
+	// i have seen in a recent Stewart Lynch video named "Dual Purpose Form and FocusState in SwiftUI"
+	// https://www.youtube.com/watch?v=VEHn4WanW5g
+
+	// of interest: it turns out that @State (for a struct) and @StateObject (for a class) do not
+	// exactly have the same behaviour, despite my naive belief that they did.
 	// my explanation of the difference appears below.
 
 class DraftItem: ObservableObject {

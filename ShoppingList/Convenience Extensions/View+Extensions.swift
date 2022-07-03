@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-// define a sectionHeader View modifier (to avoid iOS 14 ALL-CAPS style, which i do not like)
+	// define a sectionHeader View modifier (to avoid iOS 14 ALL-CAPS style, which i do not like)
 struct SectionHeader: ViewModifier {
 	func body(content: Content) -> some View {
 		content

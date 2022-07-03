@@ -14,6 +14,7 @@ Feel free to use this as is, to develop further, to completely ignore, or even j
 
 ### Most Recent Update(s) of 24 May, 2022 
 
+* (*03 Jul*) minor comment updates, with added references to a Swift Evolution proposal (SE-0220) on my use of `count(where:)` and my use of the notion of a draftItem or a draftLocation that turns out to be somewhat the same as i saw in [a recent Stewart Lynch video](https://www.youtube.com/watch?v=VEHn4WanW5g). 
 * (*24 May*) the new MVVM branch remains under development, but it is in pretty decent shape right now and appears to run without obvious issues.  some testing remains to be done, and i am still considering making more under-the-hood adjustments (example: a change in strategy about using `DraftItem` and `DraftLocation` objects for adding and modifying Items and Locations).
 * (*20 May*) The `DataManager` no longer vends dedicated lists to the ShoppingListView and the PurchasedItemsView ... each of those view is perfectly capable of filtering out the Items they display on their own.
 * (*17 May*) The MVVM branch was launched it to see if it makes sense to pull all the class functions from `Item` and `Location` into a single `DataManager` object, and to also pull the `PersistentStore.shared` global singleton and Core Data stack into this `DataManager` object as a local property as well.  the `DataManager` would be instantiated at the `App` level and then injected into the SwiftUI environment, and vend lists of `Item`s and `Locations` to SwiftUI Views.
