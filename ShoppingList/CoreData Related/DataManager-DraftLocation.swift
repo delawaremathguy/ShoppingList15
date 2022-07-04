@@ -25,7 +25,7 @@ class DraftLocation: ObservableObject {
 			id = location.id!
 			name = location.name
 			visitationOrder = Int(location.visitationOrder)
-			color = Color(location.uiColor)
+			color = location.color // Color(location.uiColor)
 		} else {
 			// all fields have defaults that are correct for a new Location
 		}
@@ -62,7 +62,7 @@ extension DataManager {
 			// let all associated Items know they are effectively being changed
 		items.forEach({ $0.objectWillChange.send() })
 		
-			// we first make these changes directly in Core Data
+			// we then make these changes directly in Core Data
 		location.name_ = draftLocation.name
 		location.visitationOrder_ = Int32(draftLocation.visitationOrder)
 		if let components = draftLocation.color.cgColor?.components {

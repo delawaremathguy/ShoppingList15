@@ -8,7 +8,8 @@
 
 import Foundation
 import CoreData
-import UIKit
+import SwiftUI
+//import UIKit
 
 extension Item {
 	
@@ -102,9 +103,12 @@ extension Item {
 	var visitationOrder: Int { Int(location_?.visitationOrder_ ?? 0) }
 	
 		// the color = the color of its associated location
-	var uiColor: UIColor {
-		location_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-	}
+//	var uiColor: UIColor {
+//		location_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+//	}
+	
+		// hey, this is SwiftUI ... just define a Color!
+	var color: Color { location_?.color ?? Color(.sRGB, white: 0.5, opacity: 0.5) }
 	
 }
 

@@ -38,7 +38,7 @@ struct SelectableItemRowView: View {
 						.font(.title)
 				}
 				Image(systemName: "circle")
-					.foregroundColor(Color(item.uiColor))
+					.foregroundColor(item.color) // Color(item.uiColor))
 					.font(.title)
 				if selected {
 					Image(systemName: sfSymbolName)
@@ -51,7 +51,7 @@ struct SelectableItemRowView: View {
 			.onTapGesture(perform: handleTap)
 			
 			// color bar is next
-			Color(item.uiColor)
+			item.color // Color(item.uiColor)
 				.frame(width: 10, height: 36)
 			
 			// name and location

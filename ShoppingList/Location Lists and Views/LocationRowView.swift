@@ -17,13 +17,15 @@ struct LocationRowData {
 	let name: String
 	let itemCount: Int
 	let visitationOrder: Int
-	let uiColor: UIColor
+	//let uiColor: UIColor
+	let color: Color
 	
 	init(location: Location) {
 		name = location.name
 		itemCount = location.itemCount
 		visitationOrder = location.visitationOrder
-		uiColor = location.uiColor
+		//uiColor = location.uiColor
+		color = location.color
 	}
 }
 
@@ -35,7 +37,7 @@ struct LocationRowView: View {
 	var body: some View {
 		HStack {
 			// color bar at left (new in this code)
-			Color(rowData.uiColor)
+			rowData.color // Color(rowData.uiColor)
 				.frame(width: 10, height: 36)
 			
 			VStack(alignment: .leading) {

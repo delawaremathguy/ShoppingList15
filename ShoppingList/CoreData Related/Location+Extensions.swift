@@ -6,8 +6,9 @@
 //  Copyright © 2020 Jerry. All rights reserved.
 //
 
-import UIKit
 import CoreData
+import SwiftUI
+//import UIKit
 
 // constants
 let kUnknownLocationName = "Unknown Location"
@@ -41,6 +42,9 @@ extension Location {
 	var isUnknownLocation: Bool { visitationOrder_ == kUnknownLocationVisitationOrder }
 	
 		// this collects the four uiColor components into a single uiColor.
-	var uiColor: UIColor { UIColor(red: red_, green: green_, blue: blue_, alpha: opacity_) }
+//	var uiColor: UIColor { UIColor(red: red_, green: green_, blue: blue_, alpha: opacity_) }
+	
+		// hey, this is SwiftUI ... just define a Color!
+	var color: Color { Color(.sRGB, red: red_, green: green_, blue: blue_, opacity: opacity_) }
 	
 } // end of extension Location

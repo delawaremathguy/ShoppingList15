@@ -12,8 +12,9 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 24 May, 2022 
+### Most Recent Update(s) of 4 July, 2022 
 
+* (*04 Jul*) replaced references to uiColor: UIColor properties of Item and Location in favor of native SwiftUI properties color: Color.
 * (*03 Jul*) minor comment updates, with added references to a Swift Evolution proposal (SE-0220) on my use of `count(where:)` and my use of the notion of a draftItem or a draftLocation that turns out to be somewhat the same as i saw in [a recent Stewart Lynch video](https://www.youtube.com/watch?v=VEHn4WanW5g). 
 * (*24 May*) the new MVVM branch remains under development, but it is in pretty decent shape right now and appears to run without obvious issues.  some testing remains to be done, and i am still considering making more under-the-hood adjustments (example: a change in strategy about using `DraftItem` and `DraftLocation` objects for adding and modifying Items and Locations).
 * (*20 May*) The `DataManager` no longer vends dedicated lists to the ShoppingListView and the PurchasedItemsView ... each of those view is perfectly capable of filtering out the Items they display on their own.

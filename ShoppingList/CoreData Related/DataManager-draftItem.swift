@@ -22,8 +22,11 @@ import Foundation
 
 	// in effect, DraftItem becomes a view model for the DraftItemView, where one can
 	// edit properties of an Item, without actually committing those edits to the
-	// backing Item (if there is one) until the user accepts the edits.  this is an idea that
-	// i have seen in a recent Stewart Lynch video named "Dual Purpose Form and FocusState in SwiftUI"
+	// backing Item (if there is one) until the user accepts the edits.  i originally got this "draft"
+	// notion from Stanford's CS193p course
+	// https://cs193p.sites.stanford.edu
+	// and this "view-model idea" is one that i saw mentioned in a recent Stewart Lynch video
+	// named "Dual Purpose Form and FocusState in SwiftUI"
 	// https://www.youtube.com/watch?v=VEHn4WanW5g
 
 	// of interest: it turns out that @State (for a struct) and @StateObject (for a class) do not
@@ -134,7 +137,7 @@ ADDED 24 May, 2022
  
 when editing Items, i discovered that some edits would "not seem to stick" across
  multiple edits ... cases where i go to the edit screen, make some changes, go back
- to a List view (where the edits appear correctly), then come back to the edit
+ to a List view (where the edits appear correctly), then come back right away to the edit
  screen, and i would not find the updated Item values from the first edit, but
  the original values prior to the first edit.
  
@@ -162,11 +165,12 @@ the ModifyExistingDataView goes off-screen, the values in the in-heap
  so now you go back to the ShoppingListView looks right, but you decide
  to re-edit the Item you just edited to change something else.
  
-unless SwiftUI has done some serious memory cleaning,  it's likely that
- the ModifyExistingDataView struct is still held by SwiftUI, even though it's
+unless SwiftUI has done some serious memory cleaning ... maybe you scrolled
+ around some or moved to a different tab ... t's likely that the ModifyExistingDataView
+ struct has not been released and is still held by SwiftUI, even though it's
  not visible on-screen.  so to bring the edit screen back to life, that copy of
  the DraftItem we put aside when the ModifyExistingDataView was initialized
- is still there and is not used to instantiated an in-heap version of the data
+ is still there and is now used once more to instantiated an in-heap version of the data
  to be used as a @State variable.
  
  but the problem is that the @State variable is being initialized using the
@@ -177,10 +181,16 @@ unless SwiftUI has done some serious memory cleaning,  it's likely that
  ModifyExistingDataView.
  
  however, making a DraftItem a class object means that ModifyExistingDataView
- is using a @StateObject and it's initialized value is apparently being persisted
- across the appear/disappear/re-appear cycle of the ModifyExistingDataView,
- probably because it's already in the heap.
+ is using a @StateObject and this lives in the heap exactly as long as the
+ ModifyExistingDataView struct is alive, so if the ModifyExistingDataView struct is
+ still in memory, so is the @StateObject and the values you changed the last time
+ the view was on screen are exactly as you changed them previously.
 
- so, the internal mysteries of SwiftUI continue to amaze ...
+ so, the internal mysteries of SwiftUI continue to amaze ... but if you think this
+ through, it makes perfect sense.  SwiftUI determines when view structs are created
+ and destroyed ... when i was using @State, i was assuming that the view struct was
+ released when the modify view went off-screen and was being recreated when it
+ came on screen; but using @StateObject guarantees the view struct and the
+ @StateObject in the heap have consistent lifetimes.
  
  */
