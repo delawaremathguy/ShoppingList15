@@ -181,7 +181,8 @@ class DataManager: NSObject, ObservableObject {
 	}
 	
 	func locationCount() -> Int {
-		Location.count(context: managedObjectContext)
+		locations.count
+		// Location.count(context: managedObjectContext)
 	}
 	
 		// MARK: - Item Handling
@@ -239,7 +240,8 @@ class DataManager: NSObject, ObservableObject {
 	}
 	
 	func itemCount() -> Int {
-		Item.count(context: managedObjectContext)
+		items.count
+		// Item.count(context: managedObjectContext)
 	}
 	
 }

@@ -60,7 +60,7 @@ extension Item {
 
 	if you front all your Core Data attributes as i do below, especially by nil-coalescing optional values,
 	 the problem above seems to disappear, for the most part (but it's really still there).  even though
-	 SwiftUI maybe trying to access a deleted object, every attribute in memory will be 0 (e.g., nil for
+	 SwiftUI may be trying to access a deleted object, every attribute in memory will be 0 (e.g., nil for
 	 a Date, 0 for an Integer 32, and nil for every optional attribute) and so the fronting property
 	 will give SwiftUI _something_ that it can work with, even if it's about to remove the view
 	 holding the ObservedObject anyway (and you probably will never see it on screen).
