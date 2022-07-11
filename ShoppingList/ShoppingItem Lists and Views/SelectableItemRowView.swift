@@ -17,7 +17,8 @@ struct SelectableItemRowView: View {
 	// to use for animation, and what to do if the selector is tapped.  we treat
 	// the item as an @ObservedObject: we want to get redrawn if any property changes.
 	
-	@ObservedObject var item: Item
+	//@ObservedObject
+	var item: ItemStruct
 	var selected: Bool
 	var sfSymbolName: String
 	var handleTap: () -> ()

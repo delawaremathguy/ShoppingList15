@@ -32,7 +32,7 @@ struct ItemListView: View {
 		// hooks for showing a delete item confirmation, as well as which
 		// Item it is we want to delete.
 	@State private var isDeleteItemShowing = false
-	@State private var itemToDelete: Item?
+	@State private var itemToDelete: ItemStruct?
 	
 		// whether we're multi-section or single section
 	@Binding var multiSectionDisplay: Bool
@@ -42,23 +42,23 @@ struct ItemListView: View {
 		// to this array, we will get some redrawing + animation; and we'll also have queued
 		// the actual execution of the move to the purchased list to follow after the animation
 		// completes -- and that deletion will again change this array and redraw.
-	@State private var itemsChecked = [Item]()
+	@State private var itemsChecked = [ItemStruct]()
 		
 	var body: some View {
 		List {
 			ForEach(sections) { section in
 				Section(header: sectionHeader(section: section)) {
-					ForEach(section.items) { item in
+					ForEach(section.items) { itemStruct in
 						NavigationLink {
-							ModifyExistingItemView(item: item, dataManager: dataManager)
+							ModifyExistingItemView(itemStruct: itemStruct, dataManager: dataManager)
 						} label: {
-							SelectableItemRowView(item: item,
-																		selected: itemsChecked.contains(item),
-																		sfSymbolName: sfSymbolName) { handleItemTapped(item) }
+							SelectableItemRowView(item: itemStruct,
+																		selected: itemsChecked.contains(itemStruct),
+																		sfSymbolName: sfSymbolName) { handleItemTapped(itemStruct) }
 						}
 						.contextMenu {
-							ItemContextMenu(item: item) {
-								itemToDelete = item
+							ItemContextMenu(item: itemStruct) {
+								itemToDelete = itemStruct
 								isDeleteItemShowing = true
 							} // end of itemContextMenu
 						} // end of contextMenu
@@ -70,7 +70,7 @@ struct ItemListView: View {
 		.animation(.default, value: sections)
 		.alert(alertTitle(), isPresented: $isDeleteItemShowing) {
 			Button("OK", role: .destructive) {
-				withAnimation { dataManager.delete(item: itemToDelete) }
+				withAnimation { dataManager.delete(itemStruct: itemToDelete) }
 				dataManager.saveData()
 			}
 		} message: {
@@ -115,17 +115,17 @@ struct ItemListView: View {
 		} // end of HStack
 	}
 	
-	func handleItemTapped(_ item: Item) {
-		if !itemsChecked.contains(item) {
+	func handleItemTapped(_ itemStruct: ItemStruct) {
+		if !itemsChecked.contains(itemStruct) {
 				// put the item into our list of what's about to be removed, and because
 				// itemsChecked is a @State variable, we will see a momentary
 				// animation showing the change.
-			itemsChecked.append(item)
+			itemsChecked.append(itemStruct)
 				// and we queue the actual removal long enough to allow animation to finish
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
 				withAnimation {
-					dataManager.toggleOnListStatus(item: item)
-					itemsChecked.removeAll(where: { $0 == item })
+					dataManager.toggleOnListStatus(item: itemStruct)
+					itemsChecked.removeAll(where: { $0 == itemStruct })
 				}
 			}
 		}
@@ -171,7 +171,7 @@ struct ItemContextMenu: View {
 	// makes no difference which way i do this; it's still the wrong display the second time
 	// the context menu comes down.  (i have filed Feedback ... i will not hold my breath.)
 	// @ObservedObject
-	var item: Item
+	var item: ItemStruct
 	var affirmDeletion: () -> Void
 	
 	var body: some View {
@@ -180,7 +180,7 @@ struct ItemContextMenu: View {
 			Image(systemName: item.onList ? "purchased" : "cart")
 		}
 		
-		Button(action: { dataManager.toggleAvailableStatus(item: item) }) {
+		Button(action: { dataManager.toggleAvailableStatus(itemStruct: item) }) {
 			Text(item.isAvailable ? "Mark as Unavailable" : "Mark as Available")
 			Image(systemName: item.isAvailable ? "pencil.slash" : "pencil")
 		}

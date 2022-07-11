@@ -1,5 +1,5 @@
 	//
-	//  DraftItemView.swift
+	//  ItemEditView.swift
 	//  ShoppingList
 	//
 	//  Created by Jerry on 12/8/21.
@@ -8,22 +8,23 @@
 
 import SwiftUI
 
-	// the DraftItemView is a simple Form that allows the user to edit the default fields
-	// for a new Item, or the fields associated with an Item that already exists.
-struct DraftItemView: View {
+	// the ItemEditView is a simple Form that allows the user to edit the fields
+	// for either a new Item, or those associated with an Item that already exists.
+	// its view model holds a "draft" that is used during the editing; that draft can
+	// then be used to update the original Item that underlies the data when either
+	// tapping the save button (if presented in an "add new" operation, or by
+	// navigating back (this is essentially a live edit) in a "modify" operation.
+struct ItemEditView: View {
 	
+		// usual environment values
 	@EnvironmentObject private var dataManager: DataManager
 	@Environment(\.dismiss) var dismiss: DismissAction
 
-		// incoming data representing an about-to-be created Item, or an
-		// existing Item.
-	@ObservedObject var draftItem: DraftItem
-		// a closure to call should the user try to delete the associated
-		// Item (should be supplied only the draftItem represents a
-		// real Item that already exists).  in usage, calling this action only initiates
-		// a deletion sequence in which the user will be asked to confirm the deletion.
-	//var deleteActionInitiator: (() -> ())?
-	private var associatedItem: Item? { dataManager.item(associatedWith: draftItem) }
+		// we use a view model to drive the data in the view, as passed in from
+		// the parent view.  we're editing the values in that view model.
+	@ObservedObject var viewModel: ItemViewModel
+
+	private var associatedItem: Item? { dataManager.item(associatedWith: viewModel) }
 	
 		// needed to support showing a delete confirmation
 	@State private var isDeleteConfirmationPresented = false
@@ -33,35 +34,37 @@ struct DraftItemView: View {
 
 	var body: some View {
 		Form {
+			
 				// Section 1. Basic Information Fields
 			Section(header: Text("Basic Information").sectionHeader()) {
 				
 				HStack(alignment: .firstTextBaseline) {
 					SLFormLabelText(labelText: "Name: ")
-					TextField("Item name", text: $draftItem.name)
+					TextField("Item name", text: $viewModel.draft.name)
 				}
 				
-				Stepper(value: $draftItem.quantity, in: 1...10) {
+				Stepper(value: $viewModel.draft.quantity, in: 1...10) {
 					HStack {
 						SLFormLabelText(labelText: "Quantity: ")
-						Text("\(draftItem.quantity)")
+						Text("\(viewModel.draft.quantity)")
 					}
 				}
 				
-				Picker(selection: $draftItem.location, label: SLFormLabelText(labelText: "Location: ")) {
+				Picker(selection: $viewModel.associatedLocation,
+							 label: SLFormLabelText(labelText: "Location: ")) {
 					ForEach(locations) { location in
 						Text(location.name).tag(location)
 					}
 				}
 				
 				HStack(alignment: .firstTextBaseline) {
-					Toggle(isOn: $draftItem.onList) {
+					Toggle(isOn: $viewModel.draft.onList) {
 						SLFormLabelText(labelText: "On Shopping List: ")
 					}
 				}
 				
 				HStack(alignment: .firstTextBaseline) {
-					Toggle(isOn: $draftItem.isAvailable) {
+					Toggle(isOn: $viewModel.draft.isAvailable) {
 						SLFormLabelText(labelText: "Is Available: ")
 					}
 				}
@@ -69,7 +72,7 @@ struct DraftItemView: View {
 				if associatedItem != nil {
 					HStack(alignment: .firstTextBaseline) {
 						SLFormLabelText(labelText: "Last Purchased: ")
-						Text("\(draftItem.dateText)")
+						Text("\(viewModel.dateText)")
 					}
 				}
 				
@@ -98,11 +101,11 @@ struct DraftItemView: View {
 	}
 	
 	func alertTitle() -> String {
-		"Delete \(draftItem.name)?"
+		"Delete \(viewModel.draft.name)?"
 	}
 	
 	func alertMessage() -> String {
-		"Are you sure you want to delete the Location named \'\(draftItem.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+		"Are you sure you want to delete the Location named \'\(viewModel.draft.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
 	}
 
 }

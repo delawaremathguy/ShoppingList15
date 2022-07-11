@@ -76,8 +76,9 @@ extension DataManager {
 	}
 
 	func exportDataToJSON() {
-		writeAsJSON(items: items, to: kItemsFilename)
-		writeAsJSON(items: locations.filter({ !$0.isUnknownLocation }), to: kLocationsFilename)
+		#warning("need to fix this")
+//		writeAsJSON(items: items, to: kItemsFilename)
+//		writeAsJSON(items: locations.filter({ !$0.isUnknownLocation }), to: kLocationsFilename)
 	}
 	
 	// MARK: - Data IMPORT

@@ -25,8 +25,8 @@
 		D63FE41F25D09E760090F6C1 /* ItemsSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */; };
 		D640329D24BB2F4A00CC0B94 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */; };
 		D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC2276182D50001371D /* AddINewtemView.swift */; };
-		D641BAC52761855C0001371D /* DraftItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC42761855C0001371D /* DraftItemView.swift */; };
-		D6478114282D40EE00C7F55F /* DataManager-DraftItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6478113282D40EE00C7F55F /* DataManager-DraftItem.swift */; };
+		D641BAC52761855C0001371D /* ItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D641BAC42761855C0001371D /* ItemEditView.swift */; };
+		D6478114282D40EE00C7F55F /* DataManager-ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6478113282D40EE00C7F55F /* DataManager-ItemViewModel.swift */; };
 		D6478116282D4D8100C7F55F /* DataManager-DraftLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6478115282D4D8100C7F55F /* DataManager-DraftLocation.swift */; };
 		D64898E924B0E95E008FE512 /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64898E824B0E95E008FE512 /* PersistentStore.swift */; };
 		D648D349246388C100CD881B /* Location+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D648D348246388C100CD881B /* Location+Extensions.swift */; };
@@ -42,6 +42,7 @@
 		D6ADB3B2247C266F00376271 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = D6ADB3B1247C266E00376271 /* locations.json */; };
 		D6ADB3B4247C267900376271 /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = D6ADB3B3247C267900376271 /* items.json */; };
 		D6AE3643246F035400F7A237 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE3642246F035400F7A237 /* Bundle+Extensions.swift */; };
+		D6AEEA53287B326E009ED13D /* DataManager-ItemStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEEA52287B326E009ED13D /* DataManager-ItemStruct.swift */; };
 		D6B753162766976C0050AF52 /* SectionHeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B753152766976C0050AF52 /* SectionHeaderButton.swift */; };
 		D6B8A95424636711005F8EF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A95324636711005F8EF2 /* MainView.swift */; };
 		D6B8A9562463693D005F8EF2 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8A9552463693D005F8EF2 /* LocationsView.swift */; };
@@ -78,8 +79,8 @@
 		D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsSectionData.swift; sourceTree = "<group>"; };
 		D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		D641BAC2276182D50001371D /* AddINewtemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddINewtemView.swift; sourceTree = "<group>"; };
-		D641BAC42761855C0001371D /* DraftItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftItemView.swift; sourceTree = "<group>"; };
-		D6478113282D40EE00C7F55F /* DataManager-DraftItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager-DraftItem.swift"; sourceTree = "<group>"; };
+		D641BAC42761855C0001371D /* ItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditView.swift; sourceTree = "<group>"; };
+		D6478113282D40EE00C7F55F /* DataManager-ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager-ItemViewModel.swift"; sourceTree = "<group>"; };
 		D6478115282D4D8100C7F55F /* DataManager-DraftLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager-DraftLocation.swift"; sourceTree = "<group>"; };
 		D64898E824B0E95E008FE512 /* PersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
 		D648D348246388C100CD881B /* Location+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extensions.swift"; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 		D6ADB3B1247C266E00376271 /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		D6ADB3B3247C267900376271 /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
 		D6AE3642246F035400F7A237 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
+		D6AEEA52287B326E009ED13D /* DataManager-ItemStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataManager-ItemStruct.swift"; sourceTree = "<group>"; };
 		D6B753152766976C0050AF52 /* SectionHeaderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderButton.swift; sourceTree = "<group>"; };
 		D6B8A95324636711005F8EF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6B8A9552463693D005F8EF2 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
@@ -214,7 +216,7 @@
 				D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */,
 				D641BAC2276182D50001371D /* AddINewtemView.swift */,
 				D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */,
-				D641BAC42761855C0001371D /* DraftItemView.swift */,
+				D641BAC42761855C0001371D /* ItemEditView.swift */,
 				D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */,
 			);
 			path = "ShoppingItem Lists and Views";
@@ -257,8 +259,9 @@
 			isa = PBXGroup;
 			children = (
 				D65F938A282C34D60014CCC5 /* DataManager.swift */,
+				D6AEEA52287B326E009ED13D /* DataManager-ItemStruct.swift */,
 				D65F9389282C34D60014CCC5 /* DataManager-Development.swift */,
-				D6478113282D40EE00C7F55F /* DataManager-DraftItem.swift */,
+				D6478113282D40EE00C7F55F /* DataManager-ItemViewModel.swift */,
 				D6478115282D4D8100C7F55F /* DataManager-DraftLocation.swift */,
 				D610C3BD2451D8DC009F7F36 /* Item+Extensions.swift */,
 				D648D348246388C100CD881B /* Location+Extensions.swift */,
@@ -355,7 +358,7 @@
 				D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */,
 				D65A509F2565789900D43229 /* String+Extensions.swift in Sources */,
 				D6F375D62485593D005559E6 /* LocationRowView.swift in Sources */,
-				D641BAC52761855C0001371D /* DraftItemView.swift in Sources */,
+				D641BAC52761855C0001371D /* ItemEditView.swift in Sources */,
 				D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */,
 				D6CD65E025D09AA5006F8FAF /* ItemListView.swift in Sources */,
 				D641BAC3276182D50001371D /* AddINewtemView.swift in Sources */,
@@ -363,6 +366,7 @@
 				D60F14A924686D710077AD3F /* LocationCodableProxy.swift in Sources */,
 				D62B88322451162D0051A7CE /* ShoppingListView.swift in Sources */,
 				D6AE3643246F035400F7A237 /* Bundle+Extensions.swift in Sources */,
+				D6AEEA53287B326E009ED13D /* DataManager-ItemStruct.swift in Sources */,
 				D6AAFF8A2582778E00B1CBAC /* View+Extensions.swift in Sources */,
 				D61EABFF27679C9B008186CF /* SystemImageButton.swift in Sources */,
 				D63FE41F25D09E760090F6C1 /* ItemsSectionData.swift in Sources */,
@@ -374,7 +378,7 @@
 				D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */,
 				D61434432763BB65009CC73B /* DraftLocationView.swift in Sources */,
 				D65C931824C5DC9B003E6EB7 /* GlobalTimer.swift in Sources */,
-				D6478114282D40EE00C7F55F /* DataManager-DraftItem.swift in Sources */,
+				D6478114282D40EE00C7F55F /* DataManager-ItemViewModel.swift in Sources */,
 				D640329D24BB2F4A00CC0B94 /* EmptyListView.swift in Sources */,
 				D6EF557D246D7421007D636B /* PurchasedItemsView.swift in Sources */,
 				D6C783D925A0BCF900B7148D /* NSManagedObject+Extensions.swift in Sources */,

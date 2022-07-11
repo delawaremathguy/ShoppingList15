@@ -20,7 +20,7 @@ struct PurchasedItemsView: View {
 	@EnvironmentObject var today: Today
 
 	@EnvironmentObject private var dataManager: DataManager
-	var items: [Item] { dataManager.items.filter({ $0.onList }) }
+	var itemStructs: [ItemStruct] { dataManager.itemStructs.filter({ !$0.onList }) }
 	
 		// the usual @State variables to handle the Search field
 	@State private var searchText: String = ""
@@ -45,7 +45,7 @@ struct PurchasedItemsView: View {
 				.frame(height: 1)
 			
 				// display either a "List is Empty" view, or the sectioned list of purchased items.
-			if items.count == 0 {
+			if itemStructs.count == 0 {
 				EmptyListView(listName: "Purchased")
 			} else {
 				ItemListView(sections: sectionData(), //items: items,
@@ -94,12 +94,12 @@ struct PurchasedItemsView: View {
 		// -- and everything else
 	func sectionData() -> [ItemsSectionData] {
 			// reduce items by search criteria
-		let searchQualifiedItems = items.filter({ searchText.appearsIn($0.name) })
+		let searchQualifiedItems = itemStructs.filter({ searchText.appearsIn($0.name) })
 		
 			// do we show one big section or two (recent + everything else)?  one big section is pretty darn easy:
 		if !multiSectionDisplay {
 			let title = searchText.isEmpty ?
-				"Items Purchased: \(items.count)" :
+				"Items Purchased: \(itemStructs.count)" :
 				"Items Purchased containing: \"\(searchText)\": \(searchQualifiedItems.count)"
 			
 			return [ItemsSectionData(index: 1, title: title, items: searchQualifiedItems)]

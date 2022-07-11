@@ -12,24 +12,11 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 4 July, 2022 
+### Most Recent Update(s) of 11 July, 2022 
 
-* (*04 Jul*) replaced references to uiColor: UIColor properties of Item and Location in favor of native SwiftUI properties color: Color.
-* (*03 Jul*) minor comment updates, with added references to a Swift Evolution proposal (SE-0220) on my use of `count(where:)` and my use of the notion of a draftItem or a draftLocation that turns out to be somewhat the same as i saw in [a recent Stewart Lynch video](https://www.youtube.com/watch?v=VEHn4WanW5g). 
-* (*24 May*) the new MVVM branch remains under development, but it is in pretty decent shape right now and appears to run without obvious issues.  some testing remains to be done, and i am still considering making more under-the-hood adjustments (example: a change in strategy about using `DraftItem` and `DraftLocation` objects for adding and modifying Items and Locations).
-* (*20 May*) The `DataManager` no longer vends dedicated lists to the ShoppingListView and the PurchasedItemsView ... each of those view is perfectly capable of filtering out the Items they display on their own.
-* (*17 May*) The MVVM branch was launched it to see if it makes sense to pull all the class functions from `Item` and `Location` into a single `DataManager` object, and to also pull the `PersistentStore.shared` global singleton and Core Data stack into this `DataManager` object as a local property as well.  the `DataManager` would be instantiated at the `App` level and then injected into the SwiftUI environment, and vend lists of `Item`s and `Locations` to SwiftUI Views.
-
-    - one advantage is that testability would then be possible, without a global singleton getting in the way (we'd still have to modify `PersistentStore` to work with an in-memory Core Data store).  
-
-    - another advantage is that we can move more towards an MVVM architecture -- and in fact, as we do this, we replace all `@FetchRequest`s using `NSFetchedResultsController` objects inside `DataManager`.
-
-    - additionally, all exposed properties of `Item` and `Location` instances are now read-only properties, which means that SwiftUI views must go through the dataManager to make changes.  in theory, we could even vend not the actual (class) Core Data objects, but read-only, struct representations of them, and wouldn't that make SwiftUI very, very happy!
-
-    - and, just for good measure, all my previous "identifiable" sheets and alerts have been replaced by more direct uses of iOS 15 style `.sheet()` and `.alert()` modifiers.
-* (*17 May*) Fixed an issue with multiple Unknown Locations (an initialization oversight).  However, once you open the app for the first time on a second device (when using the cloud), it's possible that you will create an on-device Unknown Location before then discovering an Unknown Location already exists in the cloud.  The problem is solvable ... but i'll not go there for now.  
-* (*17 May*) Cleaned up code in AddNewLocationView (although still a little quirky)
-* (*16 May*) Implementation of DataManager and re-tooled MVVM design is off to a good start, but there is still development, cleaning, and testing to do.  Note that all new development is being done on the `MVVM` branch and not on the `master` branch, so be sure to "checkout" the new branch to use it. (*If you get a save/stash change message before switching branches, just do it -- I continue having trouble with the .xcuserstate file, and i will probably add a .gitignore file.  If you get an "unable to switch branch" error, please let me know*.)
+* (*11 Jul*) this is a major update underway in this experimental branch: the DataManager no longer vends an array of Items (Core Data objects) to views, but instead vends an array of struct representations of those objects -- for the moment, called `ItemStruct`s -- which makes SwiftUI very happy.  
+* (*11 Jul*) the notion of "draft," as in `DraftItem`, is more clearly defined, since this type functions as a mini-viewModel for an edit screen.
+* (*11 Jul*) soon to follow (if all goes well): a similar reworking of `DraftLocation`, so that all SwiftUI views deal with only struct data.
 
 Please be sure to consult the ChangeLog below for a list of all updates since the initial release of the project on 23 December, 2021.
 
@@ -165,3 +152,19 @@ Subsequent initial-release-fixes:
 * (*3 May*) Other variable names have changed and some syntax has been updated (e.g., `NavigationLink(destination: ...)` has been replaced by `NavigationLink { ... } { ... }`).
 * (*7 May*) I have introduced a new syntax idea as a possible replacement of uses of the now-deprecated `.alert(item: ...)` and `Alert` syntax, but only implemented it to confirm the deletion of Locations.  See the code in AlertModel.swift.
 * (*7 May*) Removed the context menu in LocationsView to delete a location in the LocationsView with simples *swipe to delete* code.
+* (*16 May*) Implementation of DataManager and re-tooled MVVM design is off to a good start, but there is still development, cleaning, and testing to do.  Note that all new development is being done on the `MVVM` branch and not on the `master` branch, so be sure to "checkout" the new branch to use it. (*If you get a save/stash change message before switching branches, just do it -- I continue having trouble with the .xcuserstate file, and i will probably add a .gitignore file.  If you get an "unable to switch branch" error, please let me know*.)
+* (*17 May*) The MVVM branch was launched it to see if it makes sense to pull all the class functions from `Item` and `Location` into a single `DataManager` object, and to also pull the `PersistentStore.shared` global singleton and Core Data stack into this `DataManager` object as a local property as well.  the `DataManager` would be instantiated at the `App` level and then injected into the SwiftUI environment, and vend lists of `Item`s and `Locations` to SwiftUI Views.
+
+    - one advantage is that testability would then be possible, without a global singleton getting in the way (we'd still have to modify `PersistentStore` to work with an in-memory Core Data store).  
+
+    - another advantage is that we can move more towards an MVVM architecture -- and in fact, as we do this, we replace all `@FetchRequest`s using `NSFetchedResultsController` objects inside `DataManager`.
+
+    - additionally, all exposed properties of `Item` and `Location` instances are now read-only properties, which means that SwiftUI views must go through the dataManager to make changes.  in theory, we could even vend not the actual (class) Core Data objects, but read-only, struct representations of them, and wouldn't that make SwiftUI very, very happy!
+
+    - and, just for good measure, all my previous "identifiable" sheets and alerts have been replaced by more direct uses of iOS 15 style `.sheet()` and `.alert()` modifiers.
+* (*17 May*) Fixed an issue with multiple Unknown Locations (an initialization oversight).  However, once you open the app for the first time on a second device (when using the cloud), it's possible that you will create an on-device Unknown Location before then discovering an Unknown Location already exists in the cloud.  The problem is solvable ... but i'll not go there for now.  
+* (*17 May*) Cleaned up code in AddNewLocationView (although still a little quirky)
+* (*20 May*) The `DataManager` no longer vends dedicated lists to the ShoppingListView and the PurchasedItemsView ... each of those view is perfectly capable of filtering out the Items they display on their own.
+* (*24 May*) the new MVVM branch remains under development, but it is in pretty decent shape right now and appears to run without obvious issues.  some testing remains to be done, and i am still considering making more under-the-hood adjustments (example: a change in strategy about using `DraftItem` and `DraftLocation` objects for adding and modifying Items and Locations).
+* (*03 Jul*) minor comment updates, with added references to a Swift Evolution proposal (SE-0220) on my use of `count(where:)` and my use of the notion of a draftItem or a draftLocation that turns out to be somewhat the same as i saw in [a recent Stewart Lynch video](https://www.youtube.com/watch?v=VEHn4WanW5g). 
+* (*04 Jul*) replaced references to uiColor: UIColor properties of Item and Location in favor of native SwiftUI properties color: Color.

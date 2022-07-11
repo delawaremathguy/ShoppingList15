@@ -40,6 +40,6 @@ struct ItemsSectionData: Identifiable, Hashable {
 	var id: Int { hashValue }  // so, this will work with ForEach, as if using id: \.self 
 	let index: Int  // 1 for section 1, 2 for section 2, ...
 	let title: String
-	let items: [Item]
+	let items: [ItemStruct]
 }
 

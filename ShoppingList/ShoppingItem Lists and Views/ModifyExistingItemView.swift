@@ -33,7 +33,8 @@ struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
 	
-		// an editable copy of the Item's data -- a "draft."  it's important that this be a
+		// the view model for this view holds an editable copy of the Item's data -- it is
+		// somewhat a "draft" opened for editing.  it's important that this be a
 		// @StateObject, because it is treated somewhat differently than @State.
 		//
 		// my observations/guesses:
@@ -60,24 +61,22 @@ struct ModifyExistingItemView: View {
 		//
 		// the mysteries of SwiftUI do indeed continue for me, even as we're now in version 3.
 		//
-	@StateObject private var draftItem: DraftItem
+	@StateObject private var viewModel: ItemViewModel
+	private var dataManager: DataManager
 	
 		// custom init here to set up the DraftItem object.  in this case, we must pass the
 		// dataManager in directly (and not rely on it being in the environment) because
 		// we're inside the init() that runs first before everything else is available.
-	
-	private var dataManager: DataManager
-	
-	init(item: Item, dataManager: DataManager) {
+	init(itemStruct: ItemStruct, dataManager: DataManager) {
 		self.dataManager = dataManager
-		_draftItem = StateObject(wrappedValue: dataManager.draftItem(item: item))
+		_viewModel = StateObject(wrappedValue: dataManager.draftItem(itemStruct: itemStruct))
 	}
 	
 		// alert trigger to confirm deletion of an Item
 	@State private var confirmDeleteAlertShowing = false
 	
 	var body: some View {
-		DraftItemView(draftItem: draftItem)
+		ItemEditView(viewModel: viewModel)
 			.navigationBarTitle(Text("Modify Item"), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.toolbar {
@@ -88,8 +87,8 @@ struct ModifyExistingItemView: View {
 	func customBackButton() -> some View {
 		Button {
 			// check that we did not delete the object in the parent view !!
-			if dataManager.item(associatedWith: draftItem) != nil {
-				dataManager.updateAndSave(using: draftItem)
+			if dataManager.item(associatedWith: viewModel) != nil {
+				dataManager.updateAndSave(using: viewModel)
 			}
 			dismiss()
 		} label: {

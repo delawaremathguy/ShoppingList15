@@ -60,7 +60,7 @@ extension DataManager {
 	private func update(location: Location, from draftLocation: DraftLocation) {
 		
 			// let all associated Items know they are effectively being changed
-		items.forEach({ $0.objectWillChange.send() })
+		location.items.forEach({ $0.objectWillChange.send() })
 		
 			// we then make these changes directly in Core Data
 		location.name_ = draftLocation.name

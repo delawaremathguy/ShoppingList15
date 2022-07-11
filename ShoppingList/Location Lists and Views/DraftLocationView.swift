@@ -119,7 +119,7 @@ struct DraftLocationView: View {
 struct SimpleItemsList: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
-	var items: [Item] { dataManager.items.filter({ $0.location == location }) }
+	var itemStructs: [ItemStruct] { dataManager.itemStructs.filter({ $0.locationName == location.name }) }
 
 	var location: Location
 	
@@ -134,11 +134,11 @@ struct SimpleItemsList: View {
 	
 	var body: some View {
 //		Section(header: ItemsListHeader()) {
-			ForEach(items) { item in
+			ForEach(itemStructs) { itemStruct in
 				NavigationLink {
-					ModifyExistingItemView(item: item, dataManager: dataManager)
+					ModifyExistingItemView(itemStruct: itemStruct, dataManager: dataManager)
 				} label: {
-					Text(item.name)
+					Text(itemStruct.name)
 				}
 			}
 //		}

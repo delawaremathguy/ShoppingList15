@@ -6,7 +6,7 @@
 //  Copyright © 2022 Jerry. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 
 	// this gives me a way to collect all the data for an Item that i might want to edit
 	// (or even just display).  it defaults to having values appropriate for a new item upon
@@ -33,97 +33,72 @@ import Foundation
 	// exactly have the same behaviour, despite my naive belief that they did.
 	// my explanation of the difference appears below.
 
-class DraftItem: ObservableObject {
+	// UPDATED JULY 2022
+	// for truth in advertising, "DraftItem" has become "ItemViewModel," because it really
+	// does act as a view model for the Add/Modify Item views.  this is more in keeping with
+	// Stewart Lynch's video mentioned above, but also in response to some sample code
+	// due to Santiago Garcia Santos.
+
+class ItemViewModel: ObservableObject {
 	
-		// the id of the Item, if any, associated with this data collection
-		// (nil if data for a new item that does not yet exist)
-	var id: UUID? = nil
-		// all of the values here provide suitable defaults for a new item
-	@Published var name: String = ""
-	@Published var quantity: Int = 1
-	@Published var location: Location
-	@Published var onList: Bool = true
-	@Published var isAvailable: Bool = true
-	var dateText = "" // for display only, not actually editable
+		// an updated strategy (thank you Santiago!): we don't spell out all the fields
+		// individually, but we'll make use of a simple copy of the ItemStruct that we want
+		// to mirror for editing purposes.
+	@Published var draft: ItemStruct
 	
-		// this copies all the editable data from an incoming Item.  this looks fairly
-		// benign, but its in the lines below that crashes did/could occur in earlier versions
-		// because of the main, underlying problem: if an item is deleted somewhere outside
-		// a view showing a list of items, the list view may wind up calling this with an item
-		// that's a zombie: the data behind it has been deleted, but it could still be present
-		// as a fault in Core Data.  i still don't quite get this -- it has to do
-		// with how SwiftUI updates views.
-	fileprivate init(item: Item) {
-		id = item.id
-		name = item.name
-		quantity = Int(item.quantity)
-		location = item.location
-		onList = item.onList
-		isAvailable = item.isAvailable
-		if item.hasBeenPurchased {
-			dateText = item.dateLastPurchased.formatted(date: .long, time: .omitted)
+		// it's also convenient to have a real Location reference for the ItemStruct
+		// that we are editing
+	@Published var associatedLocation: Location
+	
+		// useful computed property
+	var dateText: String {
+		if draft.hasBeenPurchased {
+			return draft.dateLastPurchased.formatted(date: .long, time: .omitted)
 		} else {
-			dateText = "(Never)"
+			return "(Never)"
 		}
 	}
 	
-		// init that sets a location and optionally a name
+	fileprivate init(itemStruct: ItemStruct, location: Location) {
+		draft = itemStruct
+		self.associatedLocation = location
+	}
+	
+		// init that sets a location and optionally a name for what will be a new Item.
 	fileprivate init(initialItemName: String? = nil, location: Location) {
-		if let initialItemName = initialItemName, initialItemName.count > 0 {
-			name = initialItemName
-		}
-		self.location = location
+		draft = ItemStruct(initialItemName: initialItemName, location: location)
+		self.associatedLocation = location
 	}
 	
 		// to do a save/update using a DraftItem, it must have a non-empty name
-	var canBeSaved: Bool { name.count > 0 }
+	var canBeSaved: Bool { draft.name.count > 0 }
 }
 
 extension DataManager {
 	
-		// the next three functions produce DraftItems for views.  the DM is then, essentially,
-		// a DraftItem factory.  this could change in the future, but i like it for now, just so all the
-		// DraftItem code generally resides in one place under control of the DM.
+		// the next three functions produce ItemViewModels for views.  the DM is then, essentially,
+		// a ItemViewModel factory.  this could change in the future, but i like it for now, just so all the
+		// ItemViewModel code generally resides in one place under control of the DM.
 	
-		// provides a working DraftItem from an existing Item ... it just copies fields
-		// from the Item to the DraftItem.
-	func draftItem(item: Item) -> DraftItem {
-		DraftItem(item: item)
+		// provides a working ItemViewModel from an existing ItemStruct ... it just copies data
+		// from the Item to an ItemViewModel, while taking the liberty right now to identify
+		// the location associated with the Item.
+	func draftItem(itemStruct: ItemStruct) -> ItemViewModel {
+		let location = location(associatedWith: itemStruct) ?? unknownLocation
+		return ItemViewModel(itemStruct: itemStruct, location: location)
 	}
 	
 		// this is called to create a new DraftItem with a suggested initialName is available
 		// (this happens in the PurchasedItemsView when a search term is still available to
 		// use as a suggested name).
-	func draftItem(initialItemName: String?) -> DraftItem {
-		DraftItem(initialItemName: initialItemName, location: unknownLocation)
+	func draftItem(initialItemName: String?) -> ItemViewModel {
+		ItemViewModel(initialItemName: initialItemName, location: unknownLocation)
 	}
 	
 		// this is called to create a new DraftItem at a known location
 		// (this happens in the ModifyExistingLocationView)
-	func draftItem(location: Location) -> DraftItem {
-		DraftItem(location: location)
-	}
-	
-		// updates data for an Item that the user has directed from an Add or Modify View.
-		// if the incoming data is not associated with an item, we need to create it first
-	func updateAndSave(using draftItem: DraftItem) {
-			// if we can find an Item with the right id, use it, else create one
-		if let id = draftItem.id,
-			 let item = items.first(where: { $0.id == id }) {
-			update(item: item, from: draftItem)
-		} else {
-			let newItem = addNewItem()
-			update(item: newItem, from: draftItem)
-		}
-		saveData()
-	}
-	
-	private func update(item: Item, from draftItem: DraftItem) {
-		item.name_ = draftItem.name
-		item.quantity_ = Int32(draftItem.quantity)
-		item.onList_ = draftItem.onList
-		item.isAvailable_ = draftItem.isAvailable
-		item.location_ = draftItem.location
+	func draftItem(location: Location) -> ItemViewModel {
+		ItemViewModel(location: location)
 	}
 
 }
@@ -162,11 +137,11 @@ the ModifyExistingDataView goes off-screen, the values in the in-heap
  is now as you expect), but more importantly, the in-heap  @State DraftItem
  variable is released.
  
- so now you go back to the ShoppingListView looks right, but you decide
+ so now you go back to the ShoppingListView and it looks right, but you decide
  to re-edit the Item you just edited to change something else.
  
 unless SwiftUI has done some serious memory cleaning ... maybe you scrolled
- around some or moved to a different tab ... t's likely that the ModifyExistingDataView
+ around some or moved to a different tab ... it's likely that the ModifyExistingDataView
  struct has not been released and is still held by SwiftUI, even though it's
  not visible on-screen.  so to bring the edit screen back to life, that copy of
  the DraftItem we put aside when the ModifyExistingDataView was initialized

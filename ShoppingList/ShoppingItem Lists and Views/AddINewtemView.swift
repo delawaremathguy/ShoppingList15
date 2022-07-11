@@ -21,7 +21,7 @@ import SwiftUI
 	//
 struct AddNewItemView: View {
 	
-private var dataManager: DataManager
+	private var dataManager: DataManager
 	
 		// a dismiss action.  we're a View presented using .sheet(item:) that was triggered by setting a
 		// @State variable to something non-nil, so we need to be given a way to dismiss ourself (which
@@ -29,8 +29,9 @@ private var dataManager: DataManager
 		// by the caller).
 	private var dismiss: () -> Void
 	
-		// this draftItem object contains all of the fields for a new Item that are needed from the User
-	@StateObject private var draftItem: DraftItem
+		// this itemViewModel object contains a draft for a new Item, containing the data  that are
+		// needed from the User to create a new Item.
+	@StateObject private var itemViewModel: ItemViewModel
 	
 		// there are two custom initializers here, because there are three instances of
 		// opening this view in a sheet.
@@ -44,7 +45,7 @@ private var dataManager: DataManager
 	init(dataManager: DataManager, initialItemName: String? = nil, dismiss: @escaping () -> Void) {
 		self.dataManager = dataManager
 		let initialObjectValue = dataManager.draftItem(initialItemName: initialItemName)
-		_draftItem = StateObject(wrappedValue: initialObjectValue)
+		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 			// and stash away the dismiss function
 		self.dismiss = dismiss
 	}
@@ -54,14 +55,14 @@ private var dataManager: DataManager
 	init(dataManager: DataManager, draftLocation: DraftLocation, dismiss: @escaping () -> Void) {
 		self.dataManager = dataManager
 		let initialObjectValue = dataManager.draftItem(location: dataManager.location(associatedWith: draftLocation)!)
-		_draftItem = StateObject(wrappedValue: initialObjectValue)
+		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 		self.dismiss = dismiss
 	}
 
 		// the body is pretty short -- just call up a Form, adding a Cancel and Save button
 	var body: some View {
 		NavigationView {
-			DraftItemView(draftItem: draftItem)
+			ItemEditView(viewModel: itemViewModel)
 				.navigationBarTitle("Add New Item", displayMode: .inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction, content: cancelButton)
@@ -70,7 +71,7 @@ private var dataManager: DataManager
 		}
 	}
 	
-		// the cancel button just dismisses ourself
+		// the cancel button just dismisses us
 	func cancelButton() -> some View {
 		Button {
 			dismiss()
@@ -82,12 +83,12 @@ private var dataManager: DataManager
 		// the save button saves the new item to the persistent store and dismisses ourself
 	func saveButton() -> some View {
 		Button {
-			dataManager.updateAndSave(using: draftItem)
+			dataManager.updateAndSave(using: itemViewModel)
 			dismiss()
 		} label: {
 			Text("Save")
 		}
-		.disabled(!draftItem.canBeSaved)
+		.disabled(!itemViewModel.canBeSaved)
 	}
 	
 }

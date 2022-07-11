@@ -51,10 +51,21 @@ class DataManager: NSObject, ObservableObject {
 	private let itemsFRC: NSFetchedResultsController<Item>
 	private let locationsFRC: NSFetchedResultsController<Location>
 
-		// we vend @Published arrays of Items and Locations to clients, which
-		// are updated internally by the itemsFRC and the locationsFRC in response
-		// to controllerDidChangeContent() firing (we are an NSFetchedResultsControllerDelegate)
-	@Published var items = [Item]()
+		// we maintain arrays of Items and Locations, that are updated internally by the
+		// itemsFRC and the locationsFRC in response to controllerDidChangeContent()
+		// firing (we are an NSFetchedResultsControllerDelegate)
+	
+		// (a) the list of items (the actual Core Data objects) is now private, and should
+		// only be used on the data-processing, business side of the app.  to keep SwiftUI
+		// happy, we vend struct representations of these objects with the data needed for
+		// the UI.  the UI-facing array is reconstructed whenever the FRCs fire, so the
+		// second should always be a true representation of the first.
+	private var items = [Item]()
+	@Published var itemStructs = [ItemStruct]()
+
+		// (b) for now, we make Core Data Location objects available to everyone, although
+		// the hope is that this will soon follow the route of the distinction between the
+		// array of Items above and their UI-facing, struct representations.
 	@Published var locations = [Location]()
 	
 		// we'll return the unknownLocation through a computed variable, with a private
@@ -99,6 +110,8 @@ class DataManager: NSObject, ObservableObject {
 		locationsFRC.delegate = self
 		try? locationsFRC.performFetch()
 		self.locations = locationsFRC.fetchedObjects ?? []
+		
+		itemStructs = items.map { ItemStruct(from: $0) }
 		
 	}
 	
@@ -201,9 +214,18 @@ class DataManager: NSObject, ObservableObject {
 	
 		// deletes an Item.  an incoming nil is allowed to provide for syntactic
 		// convenience at the call site.
+	func delete(itemStruct: ItemStruct?) {
+		guard let item = itemStruct,
+					let referencedItem = Item.object(id: item.id, context: managedObjectContext) else {
+			return
+		}
+				//item.location.objectWillChange.send()
+		managedObjectContext.delete(referencedItem)
+		saveData()
+	}
+	
 	func delete(item: Item?) {
 		guard let item = item else { return }
-		item.location.objectWillChange.send()
 		managedObjectContext.delete(item)
 		saveData()
 	}
@@ -215,34 +237,74 @@ class DataManager: NSObject, ObservableObject {
 		}
 	}
 	
-	func toggleAvailableStatus(item: Item) {
-		item.isAvailable_.toggle()
-	}
-	
-	func toggleOnListStatus(item: Item) {
-		if item.onList_ {
-			item.onList_ = false
-			item.dateLastPurchased_ = Date.now
-		} else {
-			item.onList_ = true
+	func toggleAvailableStatus(itemStruct: ItemStruct) {
+		if let referencedItem = Item.object(id: itemStruct.id, context: managedObjectContext) {
+			referencedItem.isAvailable_.toggle()
 		}
 	}
 	
-	func markAsAvailable(items: [Item]) {
-		items.forEach { $0.isAvailable_ = true }
+	func toggleOnListStatus(item: ItemStruct) {
+		guard let referencedItem = Item.object(id: item.id, context: managedObjectContext) else {
+			return
+		}
+		if referencedItem.onList_ {
+			referencedItem.onList_ = false
+			referencedItem.dateLastPurchased_ = Date.now
+		} else {
+			referencedItem.onList_ = true
+		}
+	}
+	
+	func markAsAvailable(items: [ItemStruct]) {
+		for item in items {
+			// find the Item we reference
+			if let referencedItem = Item.object(id: item.id, context: managedObjectContext) {
+				referencedItem.isAvailable_ = true
+			}
+		}
 	}
 
 		// note: i'd really like to put this in DataManager-DraftItem.swift, but i
 		// need the managedObjectContext, which is private
-	func item(associatedWith draftItem: DraftItem) -> Item? {
-		guard let id = draftItem.id else { return nil }
-		return Item.object(id: id, context: managedObjectContext)
+	func item(associatedWith draftItem: ItemViewModel) -> Item? {
+		return Item.object(id: draftItem.draft.id, context: managedObjectContext)
+	}
+	
+	func location(associatedWith itemStruct: ItemStruct) -> Location? {
+		Location.object(id: itemStruct.locationID, context: managedObjectContext)
 	}
 	
 	func itemCount() -> Int {
 		items.count
-		// Item.count(context: managedObjectContext)
 	}
+	
+}
+
+extension DataManager {
+	
+		// updates data for an Item that the user has directed from an Add or Modify View.
+		// if the incoming data is not associated with an item, we need to create it first
+	func updateAndSave(using itemViewModel: ItemViewModel) {
+			// if we can find an Item with the right id, use it, else create one
+		if let item = items.first(where: { $0.id == itemViewModel.draft.id }) {
+			update(item: item, from: itemViewModel)
+		} else {
+			let newItem = addNewItem()
+			update(item: newItem, from: itemViewModel)
+		}
+		saveData()
+	}
+	
+	private func update(item: Item, from itemViewModel: ItemViewModel) {
+		item.name_ = itemViewModel.draft.name
+		item.quantity_ = Int32(itemViewModel.draft.quantity)
+		item.onList_ = itemViewModel.draft.onList
+		item.isAvailable_ = itemViewModel.draft.isAvailable
+		
+			// re-associate this item to the right location
+		item.location_ = itemViewModel.associatedLocation
+	}
+
 	
 }
 
@@ -256,10 +318,14 @@ extension DataManager: NSFetchedResultsControllerDelegate {
 		//created an Unknown Location on device and then finding we already had one in the cloud.
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		if let newItems = controller.fetchedObjects as? [Item] {
-			self.items = newItems
+			items = newItems
 		} else if let newLocations = controller.fetchedObjects as? [Location] {
-			self.locations = newLocations
+			locations = newLocations
 		}
+		
+			// this has to be done in both cases, although if we just changed some locations,
+			// we'd only change those items that were affected ?
+		itemStructs = items.map { ItemStruct(from: $0) }
 	}
 
 }

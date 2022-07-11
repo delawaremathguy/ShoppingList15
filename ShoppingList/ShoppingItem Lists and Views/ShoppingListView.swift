@@ -13,7 +13,7 @@ import SwiftUI
 struct ShoppingListView: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
-	var items: [Item] { dataManager.items.filter({ $0.onList }) }
+	var itemStructs: [ItemStruct] { dataManager.itemStructs.filter({ $0.onList }) }
 		
 	// sheet used to add a new item
 	@State private var isAddNewItemSheetShowing = false
@@ -42,7 +42,7 @@ or multi-section shopping list view.  the list display has some complexity to it
 of the sectioning, so we push it off to a specialized View.
 ---------- */
 
-			if items.count == 0 {
+			if itemStructs.count == 0 {
 				EmptyListView(listName: "Shopping")
 			} else {
 				ItemListView(sections: sectionData(),
@@ -54,9 +54,9 @@ of the sectioning, so we push it off to a specialized View.
 and for non-empty lists, we have a few buttons at the end for bulk operations
 ---------- */
 
-			if items.count > 0 {
+			if itemStructs.count > 0 {
 				Divider()
-				ShoppingListBottomButtons(itemsToBePurchased: items)
+				ShoppingListBottomButtons(itemsToBePurchased: itemStructs)
 			}
 			
 			Divider()
@@ -89,18 +89,25 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		if !multiSectionDisplay {
 				// if you want to change the sorting when this is a single section to "by name"
 				// then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by name
-			let sortedItems = items
-				.sorted(by: \.location.visitationOrder)
-			return [ItemsSectionData(index: 1, title: "Items Remaining: \(items.count)", items: sortedItems)]
+			let sortedItems = itemStructs
+				.sorted(by: \.visitationOrder)
+			return [ItemsSectionData(index: 1,
+															 title: "Items Remaining: \(itemStructs.count)",
+															 items: sortedItems)]
 		}
 		
-			// otherwise, one section for each location, please.  break the data out by location first
-		let dictionaryByLocation = Dictionary(grouping: items, by: { $0.location })
+			// otherwise, we want one section for each location, according to visitation order
+		let dictionaryByVisitationOder =
+			Dictionary(grouping: itemStructs, by: { $0.visitationOrder })
+		
 			// then reassemble the sections by sorted keys of this dictionary
 		var completedSectionData = [ItemsSectionData]()
 		var index = 1
-		for key in dictionaryByLocation.keys.sorted(by: \.visitationOrder) {
-			completedSectionData.append(ItemsSectionData(index: index, title: key.name, items: dictionaryByLocation[key]!))
+		for key in dictionaryByVisitationOder.keys.sorted() {
+			let keyItems = dictionaryByVisitationOder[key]!
+			let title = keyItems.first!.locationName
+			completedSectionData
+				.append(ItemsSectionData(index: index, title: title, items: keyItems))
 			index += 1
 		}
 		return completedSectionData
@@ -119,7 +126,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			}
 				// this is where the share sheet is controlled (see ActivityView package)
 			.activitySheet($activityItem)
-			.disabled(items.count == 0)
+			.disabled(itemStructs.count == 0)
 
 			SystemImageButton("plus") {
 				isAddNewItemSheetShowing = true
@@ -136,10 +143,11 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		
 			// pull out Locations appearing in the shopping list as a dictionary, keyed by location
 			// and write the shareContent message = one big string
-		let dictionary = Dictionary(grouping: items, by: { $0.location })
-		for key in dictionary.keys.sorted(by: \.visitationOrder) {
+		let sortedItems = itemStructs.sorted(by: \.visitationOrder)
+		let dictionary = Dictionary(grouping: sortedItems, by: { $0.locationName })
+		for key in dictionary.keys {
 			let items = dictionary[key]!
-			message += "\n\(key.name), \(items.count) item(s)\n\n"
+			message += "\n\(key), \(items.count) item(s)\n\n"
 			for item in items {
 				message += "  \(item.name)\n"
 			}
@@ -156,7 +164,7 @@ struct ShoppingListBottomButtons: View {
 	@EnvironmentObject private var dataManager: DataManager
 	
 		// incoming list of items to be purchased
-	var itemsToBePurchased: [Item]
+	var itemsToBePurchased: [ItemStruct]
 		// determines whether to show the "Mark All Available" button
 	var showMarkAllAvailable: Bool { !itemsToBePurchased.allSatisfy({ $0.isAvailable }) }
 		// trigger for alert to confirm you want to move all items off the shopping list
