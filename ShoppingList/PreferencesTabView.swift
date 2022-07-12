@@ -48,58 +48,58 @@ struct PreferencesTabView: View {
 				}
 			}
 			
-			// all of what follows is not the best of code -- hey, it's quick and dirty so i
-			// can add sample data to the app for testing, and also dump data from the app
-			// in case i want to reseed the data in the future.  setting kDevTools = false in
-			// Development.swift will remove this (and you should for real usage, although
-			// leaving this in on a device gives you a good way to suck out its data and later
-			// restore it after a re-install).
-			if kShowDevTools {
-				Rectangle()
-					.frame(height: 1)
-				
-				
-				Text("This button will add some sample data so you can test out the app. Presumably, you'll delete the app from a device after doing this, and then reinstall it later to start with a clean slate.")
-					.padding([.leading, .trailing], 10)
-					.padding(.bottom, 20)
-				
-				Button("Load sample data") {
-					let currentLocationCount = dataManager.locationCount() // what it is now
-					let currentItemCount = dataManager.itemCount() // what it is now
-					dataManager.populateDatabaseFromJSON()
-					self.locationsAdded = dataManager.locationCount() - currentLocationCount // now the differential
-					self.itemsAdded = dataManager.itemCount() - currentItemCount // now the differential
-					self.confirmDataHasBeenAdded = true
-				}
-				.padding(.bottom, 20)
-				.alert("Data Added", isPresented: $confirmDataHasBeenAdded) {
-					Button("OK", role: .cancel) {}
-				} message: {
-					Text("Sample data for the app (\(locationsAdded) locations and \(itemsAdded) shopping items) have been added.")
-				}
-				
-				Text("This button lets you offload existing data to JSON. On the simulator, it will dump to files on the Desktop (see Development.swift to get the path right); on a device, it will simply print to the console.  You can use that JSON output later to re-seed the app data.")
-					.padding([.leading, .trailing], 10)
-					.padding(.bottom, 20)
-				
-				Button("Write database as JSON") {
-					dataManager.exportDataToJSON()
-				}
-				.padding(.bottom, 20)
-				
-				Text("This developer's view can and should be hidden for production (see Development.swift)")
-					.italic()
-					.padding([.leading, .trailing, .bottom], 10)
-				
-				Spacer()
-			}
+#if targetEnvironment(simulator)
+//			// all of what follows is not the best of code -- hey, it's quick and dirty so i
+//			// can add sample data to the app for testing, and also dump data from the app
+//			// in case i want to reseed the data in the future.  setting kDevTools = false in
+//			// Development.swift will remove this (and you should for real usage, although
+//			// leaving this in on a device gives you a good way to suck out its data and later
+//			// restore it after a re-install).
+////			if kShowDevTools {
+//				Rectangle()
+//					.frame(height: 1)
+//
+//
+//				Text("This button will add some sample data so you can test out the app. Presumably, you'll delete the app from a device after doing this, and then reinstall it later to start with a clean slate.")
+//					.padding([.leading, .trailing], 10)
+//					.padding(.bottom, 20)
+//
+//				Button("Load sample data") {
+//					let currentLocationCount = dataManager.locationCount() // what it is now
+//					let currentItemCount = dataManager.itemCount() // what it is now
+//					dataManager.populateDatabaseFromJSON()
+//					self.locationsAdded = dataManager.locationCount() - currentLocationCount // now the differential
+//					self.itemsAdded = dataManager.itemCount() - currentItemCount // now the differential
+//					self.confirmDataHasBeenAdded = true
+//				}
+//				.padding(.bottom, 20)
+//				.alert("Data Added", isPresented: $confirmDataHasBeenAdded) {
+//					Button("OK", role: .cancel) {}
+//				} message: {
+//					Text("Sample data for the app (\(locationsAdded) locations and \(itemsAdded) shopping items) have been added.")
+//				}
+//
+//				Text("This button lets you offload existing data to JSON. On the simulator, it will dump to files on the Desktop (see Development.swift to get the path right); on a device, it will simply print to the console.  You can use that JSON output later to re-seed the app data.")
+//					.padding([.leading, .trailing], 10)
+//					.padding(.bottom, 20)
+//
+//				Button("Write database as JSON") {
+//					dataManager.exportDataToJSON()
+//				}
+//				.padding(.bottom, 20)
+//
+//				Text("This developer's view can and should be hidden for production (see Development.swift)")
+//					.italic()
+//					.padding([.leading, .trailing, .bottom], 10)
+//
+////				Spacer()
+////			}
+#endif
 			
 			Spacer()
 			Divider()
 		} // end of VStack
 		.navigationBarTitle("Preferences")
-		.onAppear { logAppear(title: "Preferences") }
-		.onDisappear { logDisappear(title: "Preferences") }
 	} // end of body
 	
 }

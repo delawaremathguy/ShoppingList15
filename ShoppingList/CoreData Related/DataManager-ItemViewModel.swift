@@ -43,12 +43,15 @@ class ItemViewModel: ObservableObject {
 	
 		// an updated strategy (thank you Santiago!): we don't spell out all the fields
 		// individually, but we'll make use of a simple copy of the ItemStruct that we want
-		// to mirror for editing purposes.
+		// to use for editing purposes.
 	@Published var draft: ItemStruct
 	
 		// it's also convenient to have a real Location reference for the ItemStruct
-		// that we are editing
+		// that we are editing, as well as the Item, if it's available.  a late addition:
+		// a weak reference back to the Dm that created this ItemViewModel.
 	@Published var associatedLocation: Location
+	var associatedItem: Item?
+	private weak var dataManager: DataManager?
 	
 		// useful computed property
 	var dateText: String {
@@ -59,24 +62,40 @@ class ItemViewModel: ObservableObject {
 		}
 	}
 	
-	fileprivate init(itemStruct: ItemStruct, location: Location) {
+	fileprivate init(itemStruct: ItemStruct, item: Item?,
+									 location: Location, dataManager: DataManager) {
 		draft = itemStruct
-		self.associatedLocation = location
+		associatedItem = item
+		associatedLocation = location
+		self.dataManager = dataManager
 	}
 	
 		// init that sets a location and optionally a name for what will be a new Item.
-	fileprivate init(initialItemName: String? = nil, location: Location) {
+	fileprivate init(initialItemName: String? = nil,
+									 location: Location, dataManager: DataManager) {
 		draft = ItemStruct(initialItemName: initialItemName, location: location)
-		self.associatedLocation = location
+		associatedItem = nil
+		associatedLocation = location
+		self.dataManager = dataManager
 	}
 	
 		// to do a save/update using a DraftItem, it must have a non-empty name
 	var canBeSaved: Bool { draft.name.count > 0 }
+	
+	func updateAndSave() {
+		dataManager?.updateAndSave(draft: draft, location: associatedLocation)
+	}
+	
+	func deleteItem() {
+		guard let item = associatedItem else { return }
+		dataManager?.delete(item: item)
+		associatedItem = nil
+	}
 }
 
 extension DataManager {
 	
-		// the next three functions produce ItemViewModels for views.  the DM is then, essentially,
+		// the next three functions produce ItemViewModels for item editing views.  the DM is then, essentially,
 		// a ItemViewModel factory.  this could change in the future, but i like it for now, just so all the
 		// ItemViewModel code generally resides in one place under control of the DM.
 	
@@ -84,21 +103,22 @@ extension DataManager {
 		// from the Item to an ItemViewModel, while taking the liberty right now to identify
 		// the location associated with the Item.
 	func draftItem(itemStruct: ItemStruct) -> ItemViewModel {
+		let item = item(withID: itemStruct.id)
 		let location = location(associatedWith: itemStruct) ?? unknownLocation
-		return ItemViewModel(itemStruct: itemStruct, location: location)
+		return ItemViewModel(itemStruct: itemStruct, item: item, location: location, dataManager: self)
 	}
 	
 		// this is called to create a new DraftItem with a suggested initialName is available
 		// (this happens in the PurchasedItemsView when a search term is still available to
 		// use as a suggested name).
 	func draftItem(initialItemName: String?) -> ItemViewModel {
-		ItemViewModel(initialItemName: initialItemName, location: unknownLocation)
+		ItemViewModel(initialItemName: initialItemName, location: unknownLocation, dataManager: self)
 	}
 	
-		// this is called to create a new DraftItem at a known location
+		// this is called to create a new, default ItemViewModel at a known location
 		// (this happens in the ModifyExistingLocationView)
 	func draftItem(location: Location) -> ItemViewModel {
-		ItemViewModel(location: location)
+		ItemViewModel(location: location, dataManager: self)
 	}
 
 }

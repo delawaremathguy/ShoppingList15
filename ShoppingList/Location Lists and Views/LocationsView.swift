@@ -56,11 +56,9 @@ struct LocationsView: View {
 			}
 		}
 		.onAppear {
-			logAppear(title: "LocationsTabView")
 			handleOnAppear()
 		}
 		.onDisappear() {
-			logDisappear(title: "LocationsTabView")
 			dataManager.saveData()
 		}
 		

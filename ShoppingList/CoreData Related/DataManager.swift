@@ -18,10 +18,10 @@ import SwiftUI
  was the app's use of a global singleton.)
 
 the DataManagerClass now becomes the base-level data model for SL15.
-   - it owns the Core Data stack (the stack is no longer in a global singleton)
- -  it acts as a centralized replacement of  multiple, distributed @FetchRequests by
+   - it owns the Core Data stack (the stack is no longer a global singleton)
+ -  it acts as a centralized replacement of multiple, distributed @FetchRequests by
       using NSFetchResultsControllers instead for Items and Locations
- - it vends an array of Items and and an array of Locations
+ - it vends an array of _struct_ representations of Items and an array of Locations
  - it handles all requests to add and delete Core Data objects
  - it handles all other data requests involving Items and Locations that go beyond
        simple reading of Item and Location property values.
@@ -32,11 +32,9 @@ you will see that what were class functions originally defined on Item and Locat
  write to Items and Locations, but instead must go through this DM to make
  those changes.
  
- for the future: one far-flung thought i'll look at is that the DM will not vend any
- actual Core Data objects, but instead will vend structs that are representations
- of those objects.  if that idea works, then SwiftUI would suddenly be
- very happy, since everything the views see would be structs and not (class) objects.
-
+ ** UPDATED 12 July: SwiftUI Views never see Items, only their _struct_
+ ** representations.  the same will be for Locations real soon.
+ 
  */
 
 class DataManager: NSObject, ObservableObject {
@@ -224,8 +222,7 @@ class DataManager: NSObject, ObservableObject {
 		saveData()
 	}
 	
-	func delete(item: Item?) {
-		guard let item = item else { return }
+	func delete(item: Item) {
 		managedObjectContext.delete(item)
 		saveData()
 	}
@@ -263,11 +260,15 @@ class DataManager: NSObject, ObservableObject {
 			}
 		}
 	}
+	
+	func item(withID id: UUID) -> Item? {
+		Item.object(id: id, context: managedObjectContext)
+	}
 
 		// note: i'd really like to put this in DataManager-DraftItem.swift, but i
 		// need the managedObjectContext, which is private
 	func item(associatedWith draftItem: ItemViewModel) -> Item? {
-		return Item.object(id: draftItem.draft.id, context: managedObjectContext)
+		Item.object(id: draftItem.draft.id, context: managedObjectContext)
 	}
 	
 	func location(associatedWith itemStruct: ItemStruct) -> Location? {
@@ -284,14 +285,24 @@ extension DataManager {
 	
 		// updates data for an Item that the user has directed from an Add or Modify View.
 		// if the incoming data is not associated with an item, we need to create it first
-	func updateAndSave(using itemViewModel: ItemViewModel) {
-			// if we can find an Item with the right id, use it, else create one
-		if let item = items.first(where: { $0.id == itemViewModel.draft.id }) {
-			update(item: item, from: itemViewModel)
+	func updateAndSave(draft: ItemStruct, location: Location) {
+			// first, figure out what it is that we're updating: and existing item, or
+			// must we create a new one?
+		var itemToUpdate: Item
+		if let item = items.first(where: { $0.id == draft.id }) {
+			itemToUpdate = item
 		} else {
-			let newItem = addNewItem()
-			update(item: newItem, from: itemViewModel)
+			itemToUpdate = addNewItem()
 		}
+		
+		itemToUpdate.name_ = draft.name
+		itemToUpdate.quantity_ = Int32(draft.quantity)
+		itemToUpdate.onList_ = draft.onList
+		itemToUpdate.isAvailable_ = draft.isAvailable
+		
+			// re-associate this item to the right location
+		itemToUpdate.location_ = location
+
 		saveData()
 	}
 	

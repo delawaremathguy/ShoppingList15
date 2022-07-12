@@ -12,23 +12,32 @@ import SwiftUI
 
 struct ShoppingListView: View {
 	
+		// MARK: - Incoming Data Source
+	
 	@EnvironmentObject private var dataManager: DataManager
-	var itemStructs: [ItemStruct] { dataManager.itemStructs.filter({ $0.onList }) }
-		
-	// sheet used to add a new item
+	
+	// MARK: - @State Values
+	
+		// sheet used to add a new item
 	@State private var isAddNewItemSheetShowing = false
 	
-	// local state for are we a multi-section display or not.  the default here is false,
-	// but an eager developer could easily store this default value in UserDefaults (?)
+		// local state for are we a multi-section display or not.  the default here is false,
+		// but an eager developer could easily store this default value in UserDefaults (?)
 	@State var multiSectionDisplay: Bool = false
-		
-	// trigger to bring up a share sheet (see the ActivityView package)
+	
+		// trigger to bring up a share sheet (see the ActivityView package)
 	@State private var activityItem: ActivityItem?
 	
+		// MARK: - Computed Variables
+
+	var itemStructs: [ItemStruct] { dataManager.itemStructs.filter({ $0.onList }) }
+		
 	// we use an init, just to track when this view is initialized.  it can be removed (!)
-	init() {
-		print("ShoppingListView initialized")
-	}
+//	init() {
+//		print("ShoppingListView initialized")
+//	}
+
+		// MARK: - Body
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -72,15 +81,13 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 			}
 		}
 		
-		.onAppear {
-			logAppear(title: "ShoppingListView")
-		}
 		.onDisappear {
-			logDisappear(title: "ShoppingListView")
 			dataManager.saveData()
 		}
 		
 	} // end of body: some View
+	
+	// MARK: - Support Functions
 	
 	func sectionData() -> [ItemsSectionData] {
 		
@@ -106,8 +113,7 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 		for key in dictionaryByVisitationOder.keys.sorted() {
 			let keyItems = dictionaryByVisitationOder[key]!
 			let title = keyItems.first!.locationName
-			completedSectionData
-				.append(ItemsSectionData(index: index, title: title, items: keyItems))
+			completedSectionData.append(ItemsSectionData(index: index, title: title, items: keyItems))
 			index += 1
 		}
 		return completedSectionData
@@ -159,49 +165,3 @@ and for non-empty lists, we have a few buttons at the end for bulk operations
 } // end of ShoppingListView
 
 
-struct ShoppingListBottomButtons: View {
-	
-	@EnvironmentObject private var dataManager: DataManager
-	
-		// incoming list of items to be purchased
-	var itemsToBePurchased: [ItemStruct]
-		// determines whether to show the "Mark All Available" button
-	var showMarkAllAvailable: Bool { !itemsToBePurchased.allSatisfy({ $0.isAvailable }) }
-		// trigger for alert to confirm you want to move all items off the shopping list
-	@State private var isConfirmMoveAllPresented = false
-	
-	var body: some View {
-		
-		HStack {
-			Spacer()
-			
-			Button {
-				isConfirmMoveAllPresented = true
-				//moveAllItemsOffShoppingList()
-			} label: {
-				Text("Move All Off List")
-			}
-			
-			if showMarkAllAvailable {
-				Spacer()
-				
-				Button {
-					dataManager.markAsAvailable(items: itemsToBePurchased)
-				} label: {
-					Text("Mark All Available")
-				}
-			}
-			
-			Spacer()
-		}
-		.padding(.vertical, 6)
-		.animation(.easeInOut(duration: 0.4), value: showMarkAllAvailable)
-		.alert("Move All Items Off-List", isPresented: $isConfirmMoveAllPresented) {
-			Button("Yes", role: .destructive) {
-				dataManager.moveAllItemsOffShoppingList()
-			}
-		}
-
-	}
-	
-} // end of ShoppingListBottomButtons

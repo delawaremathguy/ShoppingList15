@@ -87,8 +87,8 @@ struct ModifyExistingItemView: View {
 	func customBackButton() -> some View {
 		Button {
 			// check that we did not delete the object in the parent view !!
-			if dataManager.item(associatedWith: viewModel) != nil {
-				dataManager.updateAndSave(using: viewModel)
+			if viewModel.associatedItem != nil {
+				viewModel.updateAndSave()
 			}
 			dismiss()
 		} label: {

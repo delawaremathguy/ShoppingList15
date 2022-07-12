@@ -58,11 +58,9 @@ struct PurchasedItemsView: View {
 		.searchable(text: $searchText)
 
 		.onAppear {
-			logAppear(title: "PurchasedTabView")
 			handleOnAppear()
 		}
 		.onDisappear() {
-			logDisappear(title: "PurchasedTabView")
 			dataManager.saveData()
 		}
 		.navigationBarTitle("Purchased List")

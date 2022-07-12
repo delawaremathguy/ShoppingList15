@@ -24,8 +24,6 @@ struct ItemEditView: View {
 		// the parent view.  we're editing the values in that view model.
 	@ObservedObject var viewModel: ItemViewModel
 
-	private var associatedItem: Item? { dataManager.item(associatedWith: viewModel) }
-	
 		// needed to support showing a delete confirmation
 	@State private var isDeleteConfirmationPresented = false
 	
@@ -69,7 +67,7 @@ struct ItemEditView: View {
 					}
 				}
 				
-				if associatedItem != nil {
+				if viewModel.associatedItem != nil {
 					HStack(alignment: .firstTextBaseline) {
 						SLFormLabelText(labelText: "Last Purchased: ")
 						Text("\(viewModel.dateText)")
@@ -79,7 +77,7 @@ struct ItemEditView: View {
 			} // end of Section 1
 			
 				// Section 2. Item Management (Delete), if present
-			if associatedItem != nil {
+			if viewModel.associatedItem != nil {
 				Section(header: Text("Shopping Item Management").sectionHeader()) {
 					SLCenteredButton(title: "Delete This Shopping Item") {
 						isDeleteConfirmationPresented = true
@@ -91,7 +89,7 @@ struct ItemEditView: View {
 		} // end of Form
 		.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
 			Button("OK", role: .destructive) {
-				dataManager.delete(item: associatedItem)
+				viewModel.deleteItem()
 				dismiss()
 			}
 		} message: {

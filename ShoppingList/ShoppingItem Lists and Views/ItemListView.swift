@@ -21,21 +21,24 @@ import SwiftUI
 	//
 struct ItemListView: View {
 	
+		// MARK: - Incoming Data Source
+	
 	@EnvironmentObject private var dataManager: DataManager
 	
 		// this is the incoming section layout from the ShoppingListView or the PurchasedItemsView
 	var sections: [ItemsSectionData]
-
 		// the symbol to show for an Item that is tapped
 	var sfSymbolName: String
+		// whether we're multi-section or single section
+	@Binding var multiSectionDisplay: Bool
+
+		// MARK: - @State Values
 	
 		// hooks for showing a delete item confirmation, as well as which
 		// Item it is we want to delete.
 	@State private var isDeleteItemShowing = false
 	@State private var itemToDelete: ItemStruct?
 	
-		// whether we're multi-section or single section
-	@Binding var multiSectionDisplay: Bool
 	
 		// this is a temporary holding array for items being moved to the other list.  it's a
 		// @State variable, so if any SelectableItemRowView or a context menu adds an Item
@@ -43,6 +46,8 @@ struct ItemListView: View {
 		// the actual execution of the move to the purchased list to follow after the animation
 		// completes -- and that deletion will again change this array and redraw.
 	@State private var itemsChecked = [ItemStruct]()
+	
+	// MARK: - Body
 		
 	var body: some View {
 		List {

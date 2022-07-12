@@ -51,8 +51,6 @@ struct TimerTabView: View {
 				
 			}
 			.navigationBarTitle("In-Store Timer")
-		.onAppear { logAppear(title: "TimerTabView") }
-		.onDisappear { logDisappear(title: "TimerTabView") }
 		
 	}
 	

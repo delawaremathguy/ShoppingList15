@@ -36,6 +36,7 @@
 		D65F938C282C34D60014CCC5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65F938A282C34D60014CCC5 /* DataManager.swift */; };
 		D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */; };
 		D66FF3562492E67100B3ABC8 /* SLCenteredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */; };
+		D687A61B287DCF4D001FC975 /* ShoppingListBottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = D687A61A287DCF4D001FC975 /* ShoppingListBottomButtons.swift */; };
 		D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6931D6B24C4C60900A61BB6 /* TimerTabView.swift */; };
 		D6997DDE27619673007B4C1C /* ModifyExistingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */; };
 		D6AAFF8A2582778E00B1CBAC /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AAFF892582778E00B1CBAC /* View+Extensions.swift */; };
@@ -52,7 +53,6 @@
 		D6CD65E025D09AA5006F8FAF /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */; };
 		D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */; };
 		D6EF557D246D7421007D636B /* PurchasedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF557C246D7421007D636B /* PurchasedItemsView.swift */; };
-		D6EF5587246D97C3007D636B /* Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF5586246D97C3007D636B /* Development.swift */; };
 		D6F375D62485593D005559E6 /* LocationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F375D52485593D005559E6 /* LocationRowView.swift */; };
 		D6FC7A0A24635D950096F018 /* ShoppingList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6FC7A0824635D950096F018 /* ShoppingList.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -92,6 +92,7 @@
 		D6661E0A25645D2200BA47E9 /* ShoppingList 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 2.xcdatamodel"; sourceTree = "<group>"; };
 		D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTabView.swift; sourceTree = "<group>"; };
 		D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCenteredButton.swift; sourceTree = "<group>"; };
+		D687A61A287DCF4D001FC975 /* ShoppingListBottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListBottomButtons.swift; sourceTree = "<group>"; };
 		D6931D6B24C4C60900A61BB6 /* TimerTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTabView.swift; sourceTree = "<group>"; };
 		D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyExistingItemView.swift; sourceTree = "<group>"; };
 		D6AAFF892582778E00B1CBAC /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
@@ -108,7 +109,6 @@
 		D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLFormLabelText.swift; sourceTree = "<group>"; };
 		D6EE985F2573EE1900439500 /* ShoppingList 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShoppingList 3.xcdatamodel"; sourceTree = "<group>"; };
 		D6EF557C246D7421007D636B /* PurchasedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasedItemsView.swift; sourceTree = "<group>"; };
-		D6EF5586246D97C3007D636B /* Development.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Development.swift; sourceTree = "<group>"; };
 		D6F375D52485593D005559E6 /* LocationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRowView.swift; sourceTree = "<group>"; };
 		D6FC7A0924635D950096F018 /* ShoppingList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ShoppingList.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,7 +200,6 @@
 		D64B5DD12768FC4F00D249BC /* Development */ = {
 			isa = PBXGroup;
 			children = (
-				D6EF5586246D97C3007D636B /* Development.swift */,
 				D60F14A624686BA80077AD3F /* ItemCodableProxy.swift */,
 				D60F14A824686D710077AD3F /* LocationCodableProxy.swift */,
 			);
@@ -211,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				D62B88312451162D0051A7CE /* ShoppingListView.swift */,
+				D687A61A287DCF4D001FC975 /* ShoppingListBottomButtons.swift */,
 				D6EF557C246D7421007D636B /* PurchasedItemsView.swift */,
 				D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */,
 				D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */,
@@ -358,6 +358,7 @@
 				D6DE39BD247314B40013F9B4 /* SLFormLabelText.swift in Sources */,
 				D65A509F2565789900D43229 /* String+Extensions.swift in Sources */,
 				D6F375D62485593D005559E6 /* LocationRowView.swift in Sources */,
+				D687A61B287DCF4D001FC975 /* ShoppingListBottomButtons.swift in Sources */,
 				D641BAC52761855C0001371D /* ItemEditView.swift in Sources */,
 				D6931D6C24C4C60900A61BB6 /* TimerTabView.swift in Sources */,
 				D6CD65E025D09AA5006F8FAF /* ItemListView.swift in Sources */,
@@ -373,7 +374,6 @@
 				D63C05562566B9DE000A63FC /* ShoppingListApp.swift in Sources */,
 				D6997DDE27619673007B4C1C /* ModifyExistingItemView.swift in Sources */,
 				D612E16124898EBB007E1412 /* Sequence+Extensions.swift in Sources */,
-				D6EF5587246D97C3007D636B /* Development.swift in Sources */,
 				D61434452764E0C1009CC73B /* ModifyExistingLocationView.swift in Sources */,
 				D66FF35424926B6400B3ABC8 /* PreferencesTabView.swift in Sources */,
 				D61434432763BB65009CC73B /* DraftLocationView.swift in Sources */,

@@ -21,7 +21,7 @@ import SwiftUI
 	//
 struct AddNewItemView: View {
 	
-	private var dataManager: DataManager
+	//private var dataManager: DataManager
 	
 		// a dismiss action.  we're a View presented using .sheet(item:) that was triggered by setting a
 		// @State variable to something non-nil, so we need to be given a way to dismiss ourself (which
@@ -43,7 +43,7 @@ struct AddNewItemView: View {
 		// active, it removes the + in the navbar to add a new item (!)
 	
 	init(dataManager: DataManager, initialItemName: String? = nil, dismiss: @escaping () -> Void) {
-		self.dataManager = dataManager
+		//self.dataManager = dataManager
 		let initialObjectValue = dataManager.draftItem(initialItemName: initialItemName)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 			// and stash away the dismiss function
@@ -53,7 +53,7 @@ struct AddNewItemView: View {
 		// Case 2: if opened from the DraftLocationView, where we know we have a real
 		// location associated with the draftLocation.
 	init(dataManager: DataManager, draftLocation: DraftLocation, dismiss: @escaping () -> Void) {
-		self.dataManager = dataManager
+		//self.dataManager = dataManager
 		let initialObjectValue = dataManager.draftItem(location: dataManager.location(associatedWith: draftLocation)!)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 		self.dismiss = dismiss
@@ -83,7 +83,8 @@ struct AddNewItemView: View {
 		// the save button saves the new item to the persistent store and dismisses ourself
 	func saveButton() -> some View {
 		Button {
-			dataManager.updateAndSave(using: itemViewModel)
+			itemViewModel.updateAndSave()
+			//dataManager.updateAndSave(using: itemViewModel)
 			dismiss()
 		} label: {
 			Text("Save")
