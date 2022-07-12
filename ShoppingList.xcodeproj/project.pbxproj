@@ -189,10 +189,10 @@
 			isa = PBXGroup;
 			children = (
 				D6AE3642246F035400F7A237 /* Bundle+Extensions.swift */,
+				D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */,
 				D612E16024898EBB007E1412 /* Sequence+Extensions.swift */,
 				D65A509E2565789900D43229 /* String+Extensions.swift */,
 				D6AAFF892582778E00B1CBAC /* View+Extensions.swift */,
-				D6C783D825A0BCF900B7148D /* NSManagedObject+Extensions.swift */,
 			);
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
@@ -209,15 +209,15 @@
 		D6618D9B24D9B00E003523B5 /* ShoppingItem Lists and Views */ = {
 			isa = PBXGroup;
 			children = (
-				D62B88312451162D0051A7CE /* ShoppingListView.swift */,
-				D687A61A287DCF4D001FC975 /* ShoppingListBottomButtons.swift */,
-				D6EF557C246D7421007D636B /* PurchasedItemsView.swift */,
+				D641BAC2276182D50001371D /* AddINewtemView.swift */,
+				D641BAC42761855C0001371D /* ItemEditView.swift */,
 				D6CD65DF25D09AA5006F8FAF /* ItemListView.swift */,
 				D63FE41E25D09E760090F6C1 /* ItemsSectionData.swift */,
-				D641BAC2276182D50001371D /* AddINewtemView.swift */,
 				D6997DDD27619673007B4C1C /* ModifyExistingItemView.swift */,
-				D641BAC42761855C0001371D /* ItemEditView.swift */,
+				D6EF557C246D7421007D636B /* PurchasedItemsView.swift */,
 				D6C7685B2572B3B500E0F4B0 /* SelectableItemRowView.swift */,
+				D687A61A287DCF4D001FC975 /* ShoppingListBottomButtons.swift */,
+				D62B88312451162D0051A7CE /* ShoppingListView.swift */,
 			);
 			path = "ShoppingItem Lists and Views";
 			sourceTree = "<group>";
@@ -225,11 +225,11 @@
 		D6618D9C24D9B043003523B5 /* Location Lists and Views */ = {
 			isa = PBXGroup;
 			children = (
-				D6B8A9552463693D005F8EF2 /* LocationsView.swift */,
-				D6F375D52485593D005559E6 /* LocationRowView.swift */,
 				D61434402763BAA1009CC73B /* AddNewLocationView.swift */,
-				D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */,
 				D61434422763BB65009CC73B /* DraftLocationView.swift */,
+				D6F375D52485593D005559E6 /* LocationRowView.swift */,
+				D6B8A9552463693D005F8EF2 /* LocationsView.swift */,
+				D61434442764E0C1009CC73B /* ModifyExistingLocationView.swift */,
 			);
 			path = "Location Lists and Views";
 			sourceTree = "<group>";
@@ -237,10 +237,10 @@
 		D6DD785F259BC08B0004478A /* Custom Views and Other */ = {
 			isa = PBXGroup;
 			children = (
-				D6B753152766976C0050AF52 /* SectionHeaderButton.swift */,
-				D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */,
-				D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */,
 				D640329C24BB2F4A00CC0B94 /* EmptyListView.swift */,
+				D6B753152766976C0050AF52 /* SectionHeaderButton.swift */,
+				D66FF3552492E67100B3ABC8 /* SLCenteredButton.swift */,
+				D6DE39BC247314B40013F9B4 /* SLFormLabelText.swift */,
 				D61EABFE27679C9B008186CF /* SystemImageButton.swift */,
 			);
 			path = "Custom Views and Other";
@@ -259,10 +259,10 @@
 			isa = PBXGroup;
 			children = (
 				D65F938A282C34D60014CCC5 /* DataManager.swift */,
-				D6AEEA52287B326E009ED13D /* DataManager-ItemStruct.swift */,
 				D65F9389282C34D60014CCC5 /* DataManager-Development.swift */,
-				D6478113282D40EE00C7F55F /* DataManager-ItemViewModel.swift */,
 				D6478115282D4D8100C7F55F /* DataManager-DraftLocation.swift */,
+				D6AEEA52287B326E009ED13D /* DataManager-ItemStruct.swift */,
+				D6478113282D40EE00C7F55F /* DataManager-ItemViewModel.swift */,
 				D610C3BD2451D8DC009F7F36 /* Item+Extensions.swift */,
 				D648D348246388C100CD881B /* Location+Extensions.swift */,
 				D64898E824B0E95E008FE512 /* PersistentStore.swift */,

@@ -223,6 +223,10 @@ class DataManager: NSObject, ObservableObject {
 	}
 	
 	func delete(item: Item) {
+			// this Item is going away, so we will let its associated Location know ...
+			// however, we will probably rebuild the locationStructs array anyway
+			// and this may not be needed.
+		item.location_?.objectWillChange.send()
 		managedObjectContext.delete(item)
 		saveData()
 	}

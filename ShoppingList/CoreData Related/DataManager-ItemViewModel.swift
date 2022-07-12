@@ -35,9 +35,9 @@ import SwiftUI
 
 	// UPDATED JULY 2022
 	// for truth in advertising, "DraftItem" has become "ItemViewModel," because it really
-	// does act as a view model for the Add/Modify Item views.  this is more in keeping with
-	// Stewart Lynch's video mentioned above, but also in response to some sample code
-	// due to Santiago Garcia Santos.
+	// does act as a view model for the Add/Modify Item views (specifically for the ItemEditView
+	// subview).  this is more in keeping with Stewart Lynch's video mentioned above, but also in
+	// response to some sample code written by Santiago Garcia Santos.
 
 class ItemViewModel: ObservableObject {
 	

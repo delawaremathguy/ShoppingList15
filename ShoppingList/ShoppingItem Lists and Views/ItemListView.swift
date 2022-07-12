@@ -57,9 +57,10 @@ struct ItemListView: View {
 						NavigationLink {
 							ModifyExistingItemView(itemStruct: itemStruct, dataManager: dataManager)
 						} label: {
-							SelectableItemRowView(item: itemStruct,
+							SelectableItemRowView(itemStruct: itemStruct,
 																		selected: itemsChecked.contains(itemStruct),
-																		sfSymbolName: sfSymbolName) { handleItemTapped(itemStruct) }
+																		sfSymbolName: sfSymbolName,
+																		handleTap: { handleItemTapped(itemStruct) })
 						}
 						.contextMenu {
 							ItemContextMenu(item: itemStruct) {

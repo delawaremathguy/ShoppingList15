@@ -48,6 +48,9 @@ extension Item {
 	
 	
 	(2) @ObservedObject References to Items
+	 
+	 -- discussion below is not particularly relevant, since there are no
+	     @ObservedObject references to any Core Data Item in any SwiftUI view.
 	
 	only the SelectableItemRowView has an @ObservedObject reference to an Item, and in early
 	 development, that view (or whatever this view was during development) had a serious problem:

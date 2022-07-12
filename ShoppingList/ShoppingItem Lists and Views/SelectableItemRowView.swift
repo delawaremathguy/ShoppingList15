@@ -18,7 +18,7 @@ struct SelectableItemRowView: View {
 	// the item as an @ObservedObject: we want to get redrawn if any property changes.
 	
 	//@ObservedObject
-	var item: ItemStruct
+	var itemStruct: ItemStruct
 	var selected: Bool
 	var sfSymbolName: String
 	var handleTap: () -> ()
@@ -39,7 +39,7 @@ struct SelectableItemRowView: View {
 						.font(.title)
 				}
 				Image(systemName: "circle")
-					.foregroundColor(item.color) // Color(item.uiColor))
+					.foregroundColor(itemStruct.color) // Color(item.uiColor))
 					.font(.title)
 				if selected {
 					Image(systemName: sfSymbolName)
@@ -52,21 +52,21 @@ struct SelectableItemRowView: View {
 			.onTapGesture(perform: handleTap)
 			
 			// color bar is next
-			item.color // Color(item.uiColor)
+			itemStruct.color // Color(item.uiColor)
 				.frame(width: 10, height: 36)
 			
 			// name and location
 			VStack(alignment: .leading) {
 				
-				if item.isAvailable {
-					Text(item.name)
+				if itemStruct.isAvailable {
+					Text(itemStruct.name)
 				} else {
-					Text(item.name)
+					Text(itemStruct.name)
 						.italic()
 						.strikethrough()
 				}
 				
-				Text(item.locationName)
+				Text(itemStruct.locationName)
 					.font(.caption)
 					.foregroundColor(.secondary)
 			}
@@ -74,7 +74,7 @@ struct SelectableItemRowView: View {
 			Spacer()
 			
 				// quantity at the right
-			Text("\(item.quantity)")
+			Text("\(itemStruct.quantity)")
 				.font(.headline)
 				.foregroundColor(Color.blue)
 			
