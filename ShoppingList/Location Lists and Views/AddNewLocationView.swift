@@ -18,22 +18,22 @@ struct AddNewLocationView: View {
 		// set this variable to false.
 	var dismiss: () -> Void
 		// default locationViewModel is initialized here
-	@StateObject private var locationViewModel: LocationViewModel
+	@StateObject private var viewModel: LocationViewModel
 	
 	init(dataManager: DataManager, dismiss: @escaping () -> Void) {
 		self.dataManager = dataManager
 		self.dismiss = dismiss
-		_locationViewModel = StateObject(wrappedValue: dataManager.locationViewModel())
+		_viewModel = StateObject(wrappedValue: dataManager.locationViewModel())
 	}
 	
 	var body: some View {
 		NavigationView {
-			LocationEditView(viewModel: locationViewModel)
+			LocationEditView(viewModel: viewModel)
 				.navigationBarTitle(Text("Add New Location"), displayMode: .inline)
 				.navigationBarBackButtonHidden(true)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction, content: cancelButton)
-					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!locationViewModel.canBeSaved) }
+					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!viewModel.canBeSaved) }
 				}
 		}
 	}
@@ -50,7 +50,7 @@ struct AddNewLocationView: View {
 		// the save button
 	func saveButton() -> some View {
 		Button {
-			dataManager.updateAndSave(using: locationViewModel)
+			viewModel.updateAndSave()
 			dismiss()
 		} label: {
 			Text("Save")

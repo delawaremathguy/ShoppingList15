@@ -23,9 +23,9 @@ struct ModifyExistingLocationView: View {
 		// dataManager in directly (and not rely on it being in the environment) because
 		// we're inside the init() that runs first before everything else is available.
 	private var dataManager: DataManager
-	init(location: Location, dataManager: DataManager) {
+	init(locationStruct: LocationStruct, dataManager: DataManager) {
 		self.dataManager = dataManager
-		_locationViewModel = StateObject(wrappedValue: dataManager.locationViewModel(location: location))
+		_locationViewModel = StateObject(wrappedValue: dataManager.locationViewModel(locationStruct: locationStruct))
 	}
 	
 	var body: some View {
@@ -46,11 +46,11 @@ struct ModifyExistingLocationView: View {
 	}
 	
 	func alertTitle() -> String {
-		return "Delete \(locationViewModel.name)?"
+		return "Delete \(locationViewModel.draft.name)?"
 	}
 	
 	func alertMessage() -> String {
-		"Are you sure you want to delete the Location named \'\(locationViewModel.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+		"Are you sure you want to delete the Location named \'\(locationViewModel.draft.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
 	}
 
 	

@@ -11,11 +11,11 @@ import SwiftUI
 struct LocationsView: View {
 	
 	@EnvironmentObject private var dataManager: DataManager
-	var locations: [Location] { dataManager.locations }
+	var locationStructs: [LocationStruct] { dataManager.locationStructs }
 		
 		// states to trigger an alert to appear to delete a location and set up title and message
 	@State private var isDeleteConfirmationPresented = false
-	@State private var locationToDelete: Location?
+	@State private var locationToDelete: LocationStruct?
 	
 	@State private var isSheetPresented = false
 	
@@ -26,12 +26,12 @@ struct LocationsView: View {
 				.frame(height: 1)
 			
 			List {
-				Section(header: Text("Locations Listed: \(locations.count)").sectionHeader()) {
-					ForEach(locations) { location in
+				Section(header: Text("Locations Listed: \(locationStructs.count)").sectionHeader()) {
+					ForEach(locationStructs) { locationStruct in
 						NavigationLink {
-							ModifyExistingLocationView(location: location, dataManager: dataManager)
+							ModifyExistingLocationView(locationStruct: locationStruct, dataManager: dataManager)
 						} label: {
-							LocationRowView(rowData: LocationRowData(location: location))
+							LocationRowView(locationStruct: locationStruct)
 						} // end of NavigationLink
 					} // end of ForEach
 					.onDelete(perform: deleteLocations)
@@ -47,7 +47,7 @@ struct LocationsView: View {
 		}
 		.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
 			Button("OK", role: .destructive) {
-				withAnimation { dataManager.delete(location: locationToDelete!) }
+				withAnimation { dataManager.delete(locationStruct: locationToDelete!) }
 			}
 		} message: { Text(alertMessage()) }
 		.sheet(isPresented: $isSheetPresented) {
@@ -84,9 +84,9 @@ struct LocationsView: View {
 			// we do want to confirm doing this, so we opt to delete only the Location
 			// that's first by index.  (do we really ever get multiple offsets here?)
 		guard let firstIndex = offsets.first else { return }
-		let location = locations[firstIndex]
-		if !location.isUnknownLocation {
-			locationToDelete = location
+		let locationStruct = locationStructs[firstIndex]
+		if !locationStruct.isUnknownLocation {
+			locationToDelete = locationStruct
 			isDeleteConfirmationPresented = true
 		}
 	}

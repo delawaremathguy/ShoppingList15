@@ -64,7 +64,8 @@ class DataManager: NSObject, ObservableObject {
 		// (b) for now, we make Core Data Location objects available to everyone, although
 		// the hope is that this will soon follow the route of the distinction between the
 		// array of Items above and their UI-facing, struct representations.
-	@Published var locations = [Location]()
+	private var locations = [Location]()
+	@Published var locationStructs = [LocationStruct]()
 	
 		// we'll return the unknownLocation through a computed variable, with a private
 		// reference to the unknownLocation, so we can lazily instantiate it ... we'll
@@ -110,7 +111,7 @@ class DataManager: NSObject, ObservableObject {
 		self.locations = locationsFRC.fetchedObjects ?? []
 		
 		itemStructs = items.map { ItemStruct(from: $0) }
-		
+		locationStructs = locations.map { LocationStruct(from: $0) }
 	}
 	
 	func saveData() {
@@ -159,6 +160,12 @@ class DataManager: NSObject, ObservableObject {
 		return newLocation
 	}
 	
+	func delete(locationStruct: LocationStruct) {
+		if let location = Location.object(id: locationStruct.id, context: managedObjectContext) {
+			delete(location: location)
+		}
+	}
+	
 		// deletes a Location.  an incoming nil is allowed to provide for syntactic
 		// convenience at the call site.
 	func delete(location: Location?) {
@@ -186,9 +193,8 @@ class DataManager: NSObject, ObservableObject {
 	
 		// note: i'd really like to put this in DataManager-LocationViewModel.swift, but i
 		// need the managedObjectContext, which is private
-	func location(associatedWith locationViewModel: LocationViewModel) -> Location? {
-		guard let id = locationViewModel.id else { return nil }
-		return Location.object(id: id, context: managedObjectContext)
+	func location(associatedWith viewModel: LocationViewModel) -> Location? {
+			Location.object(id: viewModel.draft.id, context: managedObjectContext)
 	}
 	
 	func locationCount() -> Int {
@@ -271,8 +277,8 @@ class DataManager: NSObject, ObservableObject {
 
 		// note: i'd really like to put this in DataManager-DraftItem.swift, but i
 		// need the managedObjectContext, which is private
-	func item(associatedWith draftItem: ItemViewModel) -> Item? {
-		Item.object(id: draftItem.draft.id, context: managedObjectContext)
+	func item(associatedWith viewModel: ItemViewModel) -> Item? {
+		Item.object(id: viewModel.draft.id, context: managedObjectContext)
 	}
 	
 	func location(associatedWith itemStruct: ItemStruct) -> Location? {
@@ -281,6 +287,37 @@ class DataManager: NSObject, ObservableObject {
 	
 	func itemCount() -> Int {
 		items.count
+	}
+	
+}
+
+extension DataManager {
+	
+	func updateAndSave(using model: LocationViewModel) {
+		
+		// first, identify  case of existing or new
+		var locationToUpdate: Location
+		if let location = locations.first(where: { $0.id == model.draft.id }) {
+			locationToUpdate = location
+		} else {
+			locationToUpdate = Location(context: managedObjectContext)
+		}
+		
+			// directly update fields of the location in core data
+		locationToUpdate.id = model.draft.id
+		locationToUpdate.name_ = model.draft.name
+		locationToUpdate.visitationOrder_ = Int32(model.draft.visitationOrder)
+		if let components = model.draft.color.cgColor?.components {
+			locationToUpdate.red_ = Double(components[0])
+			locationToUpdate.green_ = Double(components[1])
+			locationToUpdate.blue_ = Double(components[2])
+			locationToUpdate.opacity_ = Double(components[3])
+		} else {
+			locationToUpdate.red_ = 0.0
+			locationToUpdate.green_ = 1.0
+			locationToUpdate.blue_ = 0.0
+			locationToUpdate.opacity_ = 0.5
+		}
 	}
 	
 }
@@ -341,6 +378,7 @@ extension DataManager: NSFetchedResultsControllerDelegate {
 			// this has to be done in both cases, although if we just changed some locations,
 			// we'd only change those items that were affected ?
 		itemStructs = items.map { ItemStruct(from: $0) }
+		locationStructs = locations.map { LocationStruct(from: $0) }
 	}
 
 }

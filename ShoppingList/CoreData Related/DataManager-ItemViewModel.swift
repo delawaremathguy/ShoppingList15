@@ -48,7 +48,7 @@ class ItemViewModel: ObservableObject {
 	
 		// it's also convenient to have a real Location reference for the ItemStruct
 		// that we are editing, as well as the Item, if it's available.  a late addition:
-		// a weak reference back to the Dm that created this ItemViewModel.
+		// a weak reference back to the DM that created this ItemViewModel.
 	@Published var associatedLocation: Location
 	var associatedItem: Item?
 	private weak var dataManager: DataManager?

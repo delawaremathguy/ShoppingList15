@@ -12,11 +12,15 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 11 July, 2022 
+### Most Recent Update(s) of 13 July, 2022 
 
 * (*11 Jul*) this is a major update underway in this experimental branch: the DataManager no longer vends an array of Items (Core Data objects) to views, but instead vends an array of struct representations of those objects -- for the moment, called `ItemStruct`s -- which makes SwiftUI very happy.  
-* (*11 Jul*) the notion of "draft," as in `DraftItem`, is more clearly defined, since this type functions as a mini-viewModel for an edit screen.
-* (*11 Jul*) soon to follow (if all goes well): a similar reworking of `LocationViewModel`, so that all SwiftUI views deal with only struct data.
+* (*11 Jul*) the notion of "draft," as in `DraftItem`, is more clearly defined and an `ItemViewModel`, since this type functions as a mini-viewModel for an edit screen now renamed as `ItemEditView`
+* (*13 Jul*) some source file reorganization has happened.
+* (*13 Jul*) a similar program has now been carried out so the the DataManager vends struct representations of Location objects, called (for now) `LocationStruct`s.  Similarly, what was previously a `DraftLocation` is now a `LocationViewModel`, used for a `LocationEditView`.  
+* (*13 Jul*) all seems to be working fine, and while there remains much testing to do and some code cleaning to do, no SwiftUI view actually sees a Core Data object; rather, it sees a struct representation of the object, and i have to say, SwiftUI is now very, very happy (although some complexity is now hidden in the DataManager to support this).
+* (*13 Jul*) reminder: this branch remains somewhat experimental, so some things are still a little bit rough!  
+
 
 Please be sure to consult the ChangeLog below for a list of all updates since the initial release of the project on 23 December, 2021.
 

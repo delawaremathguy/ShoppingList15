@@ -136,6 +136,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D62286B6287F1A3100410EE8 /* Preferences View */ = {
+			isa = PBXGroup;
+			children = (
+				D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */,
+			);
+			path = "Preferences View";
+			sourceTree = "<group>";
+		};
 		D62B881E2451162D0051A7CE = {
 			isa = PBXGroup;
 			children = (
@@ -160,15 +168,15 @@
 			children = (
 				D61434382763AA33009CC73B /* ShoppingList.entitlements */,
 				D63C05552566B9DE000A63FC /* ShoppingListApp.swift */,
-				D64B5DD12768FC4F00D249BC /* Development */,
-				D640329F24BB30BE00CC0B94 /* Convenience Extensions */,
-				D6EF5583246D9489007D636B /* CoreData Related */,
 				D6B8A95324636711005F8EF2 /* MainView.swift */,
-				D6DD785F259BC08B0004478A /* Custom Views and Other */,
 				D6618D9B24D9B00E003523B5 /* ShoppingItem Lists and Views */,
 				D6618D9C24D9B043003523B5 /* Location Lists and Views */,
 				D6DDC2FD24E6EECF00B25C9C /* Timer View */,
-				D66FF35324926B6400B3ABC8 /* PreferencesTabView.swift */,
+				D62286B6287F1A3100410EE8 /* Preferences View */,
+				D6DD785F259BC08B0004478A /* Custom Views and Other */,
+				D6EF5583246D9489007D636B /* CoreData Related */,
+				D640329F24BB30BE00CC0B94 /* Convenience Extensions */,
+				D64B5DD12768FC4F00D249BC /* Development */,
 				D62B88332451162E0051A7CE /* Assets.xcassets */,
 				D62B88382451162E0051A7CE /* LaunchScreen.storyboard */,
 				D62B883B2451162E0051A7CE /* Info.plist */,
@@ -262,10 +270,10 @@
 			children = (
 				D65F938A282C34D60014CCC5 /* DataManager.swift */,
 				D65F9389282C34D60014CCC5 /* DataManager-Development.swift */,
-				D6478115282D4D8100C7F55F /* DataManager-LocationViewModel.swift */,
 				D6AEEA52287B326E009ED13D /* DataManager-ItemStruct.swift */,
-				D6F2A811287E4A63009EB2FB /* DataManager-LocationStruct.swift */,
 				D6478113282D40EE00C7F55F /* DataManager-ItemViewModel.swift */,
+				D6F2A811287E4A63009EB2FB /* DataManager-LocationStruct.swift */,
+				D6478115282D4D8100C7F55F /* DataManager-LocationViewModel.swift */,
 				D610C3BD2451D8DC009F7F36 /* Item+Extensions.swift */,
 				D648D348246388C100CD881B /* Location+Extensions.swift */,
 				D64898E824B0E95E008FE512 /* PersistentStore.swift */,
