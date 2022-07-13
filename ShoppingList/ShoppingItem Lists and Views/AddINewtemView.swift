@@ -50,11 +50,11 @@ struct AddNewItemView: View {
 		self.dismiss = dismiss
 	}
 	
-		// Case 2: if opened from the DraftLocationView, where we know we have a real
-		// location associated with the draftLocation.
-	init(dataManager: DataManager, draftLocation: DraftLocation, dismiss: @escaping () -> Void) {
+		// Case 2: if opened from the LocationViewModelView, where we know we have a real
+		// location associated with the locationViewModel.
+	init(dataManager: DataManager, locationViewModel: LocationViewModel, dismiss: @escaping () -> Void) {
 		//self.dataManager = dataManager
-		let initialObjectValue = dataManager.draftItem(location: dataManager.location(associatedWith: draftLocation)!)
+		let initialObjectValue = dataManager.draftItem(location: dataManager.location(associatedWith: locationViewModel)!)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 		self.dismiss = dismiss
 	}

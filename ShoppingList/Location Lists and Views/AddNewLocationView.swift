@@ -17,23 +17,23 @@ struct AddNewLocationView: View {
 		// boolean $isXxxxxxxPresented, so the dismiss action will typically be to
 		// set this variable to false.
 	var dismiss: () -> Void
-		// default draftLocation is initialized here
-	@StateObject private var draftLocation: DraftLocation
+		// default locationViewModel is initialized here
+	@StateObject private var locationViewModel: LocationViewModel
 	
 	init(dataManager: DataManager, dismiss: @escaping () -> Void) {
 		self.dataManager = dataManager
 		self.dismiss = dismiss
-		_draftLocation = StateObject(wrappedValue: dataManager.draftLocation())
+		_locationViewModel = StateObject(wrappedValue: dataManager.locationViewModel())
 	}
 	
 	var body: some View {
 		NavigationView {
-			DraftLocationView(draftLocation: draftLocation)
+			LocationEditView(viewModel: locationViewModel)
 				.navigationBarTitle(Text("Add New Location"), displayMode: .inline)
 				.navigationBarBackButtonHidden(true)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction, content: cancelButton)
-					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
+					ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!locationViewModel.canBeSaved) }
 				}
 		}
 	}
@@ -50,7 +50,7 @@ struct AddNewLocationView: View {
 		// the save button
 	func saveButton() -> some View {
 		Button {
-			dataManager.updateAndSave(using: draftLocation)
+			dataManager.updateAndSave(using: locationViewModel)
 			dismiss()
 		} label: {
 			Text("Save")

@@ -184,10 +184,10 @@ class DataManager: NSObject, ObservableObject {
 		saveData()
 	}
 	
-		// note: i'd really like to put this in DataManager-DraftLocation.swift, but i
+		// note: i'd really like to put this in DataManager-LocationViewModel.swift, but i
 		// need the managedObjectContext, which is private
-	func location(associatedWith draftLocation: DraftLocation) -> Location? {
-		guard let id = draftLocation.id else { return nil }
+	func location(associatedWith locationViewModel: LocationViewModel) -> Location? {
+		guard let id = locationViewModel.id else { return nil }
 		return Location.object(id: id, context: managedObjectContext)
 	}
 	
