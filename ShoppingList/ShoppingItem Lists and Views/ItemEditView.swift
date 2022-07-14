@@ -28,7 +28,7 @@ struct ItemEditView: View {
 	@State private var isDeleteConfirmationPresented = false
 	
 		// we need all locations so we can populate the Picker.
-	var locations: [LocationStruct] { dataManager.locationStructs }
+	var locationStructs: [LocationStruct] { dataManager.locationStructs }
 
 	var body: some View {
 		Form {
@@ -48,10 +48,9 @@ struct ItemEditView: View {
 					}
 				}
 				
-				Picker(selection: $viewModel.associatedLocation,
+				Picker(selection: $viewModel.draft.locationID,
 							 label: SLFormLabelText(labelText: "Location: ")) {
-					ForEach(locations) { locationStruct in
-						#warning("fix")
+					ForEach(locationStructs) { locationStruct in
 						Text(locationStruct.name).tag(locationStruct.id)
 					}
 				}

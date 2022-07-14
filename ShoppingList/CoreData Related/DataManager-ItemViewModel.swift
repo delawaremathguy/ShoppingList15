@@ -38,6 +38,9 @@ import SwiftUI
 	// does act as a view model for the Add/Modify Item views (specifically for the ItemEditView
 	// subview).  this is more in keeping with Stewart Lynch's video mentioned above, but also in
 	// response to some sample code written by Santiago Garcia Santos.
+	//
+	// of course, now that i have properly called this a "view model," it's obvious why
+	// we're a class that's an ObservableObject
 
 class ItemViewModel: ObservableObject {
 	
@@ -49,8 +52,13 @@ class ItemViewModel: ObservableObject {
 		// it's also convenient to have a real Location reference for the ItemStruct
 		// that we are editing, as well as the Item, if it's available.  a late addition:
 		// a weak reference back to the DM that created this ItemViewModel.
-	@Published var associatedLocation: Location
-	var associatedItem: Item?
+	var associatedLocation: Location {
+		dataManager!.location(associatedWith: draft)!
+	}
+	
+	var associatedItem: Item? {
+		dataManager?.item(withID: draft.id)
+	}
 	private weak var dataManager: DataManager?
 	
 		// useful computed property
@@ -65,8 +73,6 @@ class ItemViewModel: ObservableObject {
 	fileprivate init(itemStruct: ItemStruct, item: Item?,
 									 location: Location, dataManager: DataManager) {
 		draft = itemStruct
-		associatedItem = item
-		associatedLocation = location
 		self.dataManager = dataManager
 	}
 	
@@ -74,8 +80,6 @@ class ItemViewModel: ObservableObject {
 	fileprivate init(initialItemName: String? = nil,
 									 location: Location, dataManager: DataManager) {
 		draft = ItemStruct(initialItemName: initialItemName, location: location)
-		associatedItem = nil
-		associatedLocation = location
 		self.dataManager = dataManager
 	}
 	
@@ -83,13 +87,14 @@ class ItemViewModel: ObservableObject {
 	var canBeSaved: Bool { draft.name.count > 0 }
 	
 	func updateAndSave() {
-		dataManager?.updateAndSave(draft: draft, location: associatedLocation)
+		dataManager?.updateData(using: draft)
+		dataManager?.saveData()
 	}
 	
 	func deleteItem() {
 		guard let item = associatedItem else { return }
 		dataManager?.delete(item: item)
-		associatedItem = nil
+//		associatedItem = nil
 	}
 }
 

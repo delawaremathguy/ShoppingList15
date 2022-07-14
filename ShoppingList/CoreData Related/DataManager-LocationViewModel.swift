@@ -9,8 +9,10 @@
 import Foundation
 import SwiftUI
 
-	// **** see the more lengthy discussion over in DataManager-draftItem.swift as to why we are
-	// using a class that's an ObservableObject.
+	// **** see the more lengthy discussion over in DataManager-ItemViewModel.swift
+	// as to why we are using a class that's an ObservableObject.
+	// of course, now that i have properly called this a "view model," it's obvious why
+	// we're a class that's an ObservableObject
 
 class LocationViewModel: ObservableObject {
 	
@@ -32,7 +34,8 @@ class LocationViewModel: ObservableObject {
 	var canBeSaved: Bool { draft.name.count > 0 }
 	
 	func updateAndSave() {
-		dataManager?.updateAndSave(using: self)
+		dataManager?.updateData(using: draft)
+		dataManager?.saveData()
 	}
 }
 
@@ -46,42 +49,4 @@ extension DataManager {
 		return viewModel
 	}
 	
-//	func updateAndSave(using locationViewModel: LocationViewModel) {
-			// if the incoming location data represents an existing Location, this is just
-			// a straight update.  otherwise, we must create the new Location here and add it
-			// before updating it with the new values
-		#warning("fix this")
-//		if let id = locationViewModel.id,
-//			 let location = locations.first(where: { $0.id == id }) {
-//			update(location: location, from: locationViewModel)
-//		} else {
-//			let newLocation = addNewLocation()
-//			update(location: newLocation, from: locationViewModel)
-//		}
-//		saveData()
-//	}
-	
-//	private func update(location: Location, from locationViewModel: LocationViewModel) {
-//		
-//			// let all associated Items know they are effectively being changed
-//		location.items.forEach({ $0.objectWillChange.send() })
-//		
-//			// we then make these changes directly in Core Data
-//		let draft = locationViewModel.draft
-//		location.name_ = draft.name
-//		location.visitationOrder_ = Int32(draft.visitationOrder)
-//		if let components = draft.color.cgColor?.components {
-//			location.red_ = Double(components[0])
-//			location.green_ = Double(components[1])
-//			location.blue_ = Double(components[2])
-//			location.opacity_ = Double(components[3])
-//		} else {
-//			location.red_ = 0.0
-//			location.green_ = 1.0
-//			location.blue_ = 0.0
-//			location.opacity_ = 0.5
-//		}
-//		
-//	}
-
 }

@@ -197,6 +197,14 @@ class DataManager: NSObject, ObservableObject {
 			Location.object(id: viewModel.draft.id, context: managedObjectContext)
 	}
 	
+	func location(withID id: UUID) -> Location? {
+		Location.object(id: id, context: managedObjectContext)
+	}
+	
+	func location(associatedWith itemStruct: ItemStruct) -> Location? {
+		Location.object(id: itemStruct.locationID, context: managedObjectContext)
+	}
+	
 	func locationCount() -> Int {
 		locations.count
 		// Location.count(context: managedObjectContext)
@@ -274,16 +282,6 @@ class DataManager: NSObject, ObservableObject {
 	func item(withID id: UUID) -> Item? {
 		Item.object(id: id, context: managedObjectContext)
 	}
-
-		// note: i'd really like to put this in DataManager-DraftItem.swift, but i
-		// need the managedObjectContext, which is private
-	func item(associatedWith viewModel: ItemViewModel) -> Item? {
-		Item.object(id: viewModel.draft.id, context: managedObjectContext)
-	}
-	
-	func location(associatedWith itemStruct: ItemStruct) -> Location? {
-		Location.object(id: itemStruct.locationID, context: managedObjectContext)
-	}
 	
 	func itemCount() -> Int {
 		items.count
@@ -293,21 +291,21 @@ class DataManager: NSObject, ObservableObject {
 
 extension DataManager {
 	
-	func updateAndSave(using model: LocationViewModel) {
+	func updateData(using draft: LocationStruct) {
 		
 		// first, identify  case of existing or new
 		var locationToUpdate: Location
-		if let location = locations.first(where: { $0.id == model.draft.id }) {
+		if let location = locations.first(where: { $0.id == draft.id }) {
 			locationToUpdate = location
 		} else {
 			locationToUpdate = Location(context: managedObjectContext)
 		}
 		
 			// directly update fields of the location in core data
-		locationToUpdate.id = model.draft.id
-		locationToUpdate.name_ = model.draft.name
-		locationToUpdate.visitationOrder_ = Int32(model.draft.visitationOrder)
-		if let components = model.draft.color.cgColor?.components {
+		locationToUpdate.id = draft.id
+		locationToUpdate.name_ = draft.name
+		locationToUpdate.visitationOrder_ = Int32(draft.visitationOrder)
+		if let components = draft.color.cgColor?.components {
 			locationToUpdate.red_ = Double(components[0])
 			locationToUpdate.green_ = Double(components[1])
 			locationToUpdate.blue_ = Double(components[2])
@@ -326,7 +324,13 @@ extension DataManager {
 	
 		// updates data for an Item that the user has directed from an Add or Modify View.
 		// if the incoming data is not associated with an item, we need to create it first
-	func updateAndSave(draft: ItemStruct, location: Location) {
+	func updateData(using draft: ItemStruct) { //}, location: Location) {
+		
+		// first get the location associated with this draft.  if we can't find one, it's
+		// not exactly clear what we're doing.
+		guard let location = location(withID: draft.locationID) else {
+			return
+		}
 			// first, figure out what it is that we're updating: and existing item, or
 			// must we create a new one?
 		var itemToUpdate: Item
@@ -341,22 +345,16 @@ extension DataManager {
 		itemToUpdate.onList_ = draft.onList
 		itemToUpdate.isAvailable_ = draft.isAvailable
 		
-			// re-associate this item to the right location
+			// re-associate this item to the right location.
+			// note to self: ordinarily, this is where we would worry about sending a message
+			// to all items associated with the new location and all with whatever might have
+			// been the item's previous location_ that they have changed ... but the DM's
+			// fetchedResultsController will trigger because of this updateAndSave action
+			// and the whole structure of the DM's itemStructs and locationStructs will be
+			// rewritten anyway.
 		itemToUpdate.location_ = location
 
-		saveData()
 	}
-	
-	private func update(item: Item, from itemViewModel: ItemViewModel) {
-		item.name_ = itemViewModel.draft.name
-		item.quantity_ = Int32(itemViewModel.draft.quantity)
-		item.onList_ = itemViewModel.draft.onList
-		item.isAvailable_ = itemViewModel.draft.isAvailable
-		
-			// re-associate this item to the right location
-		item.location_ = itemViewModel.associatedLocation
-	}
-
 	
 }
 

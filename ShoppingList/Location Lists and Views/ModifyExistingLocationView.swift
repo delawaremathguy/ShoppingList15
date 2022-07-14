@@ -39,7 +39,7 @@ struct ModifyExistingLocationView: View {
 			.onDisappear {
 					// a way to locate the Location associated with the locationViewModel in real time.
 				if associatedLocation != nil {
-					dataManager.updateAndSave(using: locationViewModel)
+					dataManager.updateData(using: locationViewModel.draft)
 				}
 				dataManager.saveData()
 			}

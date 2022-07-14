@@ -92,7 +92,7 @@ extension Item {
 		// when no date is available, we'll set the date to ReferenceDate, for purposes of
 		// always having one for comparisons ("today" versus "earlier")
 	var dateLastPurchased: Date {
-		dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 1)
+		dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 0)
 	}
 	
 	var hasBeenPurchased: Bool { dateLastPurchased_ != nil }

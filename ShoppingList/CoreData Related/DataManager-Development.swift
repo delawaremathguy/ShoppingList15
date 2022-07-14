@@ -76,7 +76,10 @@ extension DataManager {
 	}
 
 	func exportDataToJSON() {
-		#warning("need to fix this")
+		#warning("need to fix this (development code only)")
+		// i should probably just now use the itemStructs and locationStructs of the
+		// DM; the only kludge is separating out the Color into its components and then
+		// restricting the properties of interest in the coding keys.
 //		writeAsJSON(items: items, to: kItemsFilename)
 //		writeAsJSON(items: locations.filter({ !$0.isUnknownLocation }), to: kLocationsFilename)
 	}
