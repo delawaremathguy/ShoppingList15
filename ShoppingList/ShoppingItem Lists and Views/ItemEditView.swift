@@ -70,7 +70,7 @@ struct ItemEditView: View {
 				if viewModel.associatedItem != nil {
 					HStack(alignment: .firstTextBaseline) {
 						SLFormLabelText(labelText: "Last Purchased: ")
-						Text("\(viewModel.dateText)")
+						Text("\(viewModel.draft.dateText)")
 					}
 				}
 				

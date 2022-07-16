@@ -49,8 +49,8 @@ extension Item {
 	
 	(2) @ObservedObject References to Items
 	 
-	 -- discussion below is not particularly relevant, since there are no
-	     @ObservedObject references to any Core Data Item in any SwiftUI view.
+	 -- NOTE: the discussion below is not particularly relevant, since there are no
+	     @ObservedObject references to any Core Data Items in any SwiftUI view.
 	
 	only the SelectableItemRowView has an @ObservedObject reference to an Item, and in early
 	 development, that view (or whatever this view was during development) had a serious problem:
@@ -75,39 +75,15 @@ extension Item {
 		// the name.  this fronts a Core Data optional attribute
 	var name: String { name_ ?? "No Name" }
 	
-		// whether the item is available.  this fronts a Core Data boolean
-	var isAvailable: Bool { isAvailable_ }
-	
-		// whether the item is on the list.  this fronts a Core Data boolean
-	var onList: Bool { onList_ }
-	
-		// quantity of the item.   this fronts a Core Data Int32 attribute
-		// so we need to do an Int32 --> Int conversion
-	var quantity: Int { Int(quantity_) }
-	
 		// an item's associated location.  this fronts a Core Data optional attribute.
 	var location: Location { location_! }
 
-		// the date last purchased.  this fronts a Core Data optional attribute
-		// when no date is available, we'll set the date to ReferenceDate, for purposes of
-		// always having one for comparisons ("today" versus "earlier")
-	var dateLastPurchased: Date {
-		dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 0)
-	}
-	
-	var hasBeenPurchased: Bool { dateLastPurchased_ != nil }
-	
 		// MARK: - Computed Properties (determined by associated Location)
 
 		// the name of its associated location
 	var locationName: String {
 		get { location_?.name_ ?? "Not Available" }
 	}
-	
-	var visitationOrder: Int { Int(location_?.visitationOrder_ ?? 0) }
 		
-		// hey, this is SwiftUI ... just define a Color!
-	var color: Color { location_?.color ?? Color(.sRGB, white: 0.5, opacity: 0.5) }
-	
 }
 

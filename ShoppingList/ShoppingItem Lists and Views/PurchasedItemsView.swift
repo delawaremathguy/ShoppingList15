@@ -105,8 +105,8 @@ struct PurchasedItemsView: View {
 		
 			// break these out into (Today + back historyMarker days) and (all the others)
 		let startingMarker = Calendar.current.date(byAdding: .day, value: -historyMarker, to: today.start)!
-		let recentItems = searchQualifiedItems.filter({ $0.dateLastPurchased >= startingMarker })
-		let allOlderItems = searchQualifiedItems.filter({ $0.dateLastPurchased < startingMarker })
+		let recentItems = searchQualifiedItems.filter({ $0.hasBeenPurchased && $0.dateLastPurchased! >= startingMarker })
+		let allOlderItems = searchQualifiedItems.filter({ $0.hasBeenPurchased && $0.dateLastPurchased! < startingMarker })
 		
 			// determine titles
 		var section2Title = "Items Purchased Earlier: \(allOlderItems.count)"

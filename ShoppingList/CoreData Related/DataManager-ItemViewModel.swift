@@ -1,5 +1,5 @@
 //
-//  DataManager-draftItem.swift
+//  DataManager-ItemViewModel.swift
 //  ShoppingList
 //
 //  Created by Jerry on 5/12/22.
@@ -38,6 +38,7 @@ import SwiftUI
 	// does act as a view model for the Add/Modify Item views (specifically for the ItemEditView
 	// subview).  this is more in keeping with Stewart Lynch's video mentioned above, but also in
 	// response to some sample code written by Santiago Garcia Santos.
+	//     https://github.com/delawaremathguy/CoreDataExample
 	//
 	// of course, now that i have properly called this a "view model," it's obvious why
 	// we're a class that's an ObservableObject
@@ -49,29 +50,26 @@ class ItemViewModel: ObservableObject {
 		// to use for editing purposes.
 	@Published var draft: ItemStruct
 	
-		// it's also convenient to have a real Location reference for the ItemStruct
-		// that we are editing, as well as the Item, if it's available.  a late addition:
+		// a late addition for this design:
 		// a weak reference back to the DM that created this ItemViewModel.
-	var associatedLocation: Location {
-		dataManager!.location(associatedWith: draft)!
-	}
+		// it's easier than explicitly using the DM at call sites ... the ItemViewModel
+		// knows how to find the DM when it needs it.
 	
 	var associatedItem: Item? {
 		dataManager?.item(withID: draft.id)
 	}
 	private weak var dataManager: DataManager?
 	
-		// useful computed property
-	var dateText: String {
-		if draft.hasBeenPurchased {
-			return draft.dateLastPurchased.formatted(date: .long, time: .omitted)
-		} else {
-			return "(Never)"
-		}
-	}
+//		// useful computed property
+//	var dateText: String {
+//		if draft.hasBeenPurchased {
+//			return draft.dateLastPurchased.formatted(date: .long, time: .omitted)
+//		} else {
+//			return "(Never)"
+//		}
+//	}
 	
-	fileprivate init(itemStruct: ItemStruct, item: Item?,
-									 location: Location, dataManager: DataManager) {
+	fileprivate init(itemStruct: ItemStruct, dataManager: DataManager) {
 		draft = itemStruct
 		self.dataManager = dataManager
 	}
@@ -94,7 +92,6 @@ class ItemViewModel: ObservableObject {
 	func deleteItem() {
 		guard let item = associatedItem else { return }
 		dataManager?.delete(item: item)
-//		associatedItem = nil
 	}
 }
 
@@ -105,24 +102,22 @@ extension DataManager {
 		// ItemViewModel code generally resides in one place under control of the DM.
 	
 		// provides a working ItemViewModel from an existing ItemStruct ... it just copies data
-		// from the Item to an ItemViewModel, while taking the liberty right now to identify
-		// the location associated with the Item.
-	func draftItem(itemStruct: ItemStruct) -> ItemViewModel {
-		let item = item(withID: itemStruct.id)
-		let location = location(associatedWith: itemStruct) ?? unknownLocation
-		return ItemViewModel(itemStruct: itemStruct, item: item, location: location, dataManager: self)
+		// from the Item to an ItemViewModel.
+	func itemViewModel(itemStruct: ItemStruct) -> ItemViewModel {
+		ItemViewModel(itemStruct: itemStruct, dataManager: self)
 	}
 	
-		// this is called to create a new DraftItem with a suggested initialName is available
+		// this is called to create a new ItemViewModel with a suggested initialName is available
 		// (this happens in the PurchasedItemsView when a search term is still available to
 		// use as a suggested name).
-	func draftItem(initialItemName: String?) -> ItemViewModel {
-		ItemViewModel(initialItemName: initialItemName, location: unknownLocation, dataManager: self)
+	func itemViewModel(initialItemName: String?) -> ItemViewModel {
+		ItemViewModel(initialItemName: initialItemName, location: unknownLocation,
+									dataManager: self)
 	}
 	
 		// this is called to create a new, default ItemViewModel at a known location
 		// (this happens in the ModifyExistingLocationView)
-	func draftItem(location: Location) -> ItemViewModel {
+	func itemViewModel(location: Location) -> ItemViewModel {
 		ItemViewModel(location: location, dataManager: self)
 	}
 

@@ -26,7 +26,7 @@ struct ItemStruct: Identifiable, Hashable {
 	var isAvailable: Bool
 	var onList: Bool
 	var quantity: Int
-	var dateLastPurchased: Date
+	var dateLastPurchased: Date?
 	
 		// fields copied from the Item's associated Location, including
 		// the location's UUID, so we can find that Location later
@@ -36,17 +36,25 @@ struct ItemStruct: Identifiable, Hashable {
 	var color: Color
 	
 		// computed variable
-	var hasBeenPurchased: Bool { dateLastPurchased > Date(timeIntervalSinceReferenceDate: 0) }
+//	var hasBeenPurchased: Bool { dateLastPurchased > Date(timeIntervalSinceReferenceDate: 0) }
+	var hasBeenPurchased: Bool { dateLastPurchased != nil }
+	var dateText: String {
+		if let dateLastPurchased = dateLastPurchased {
+			return dateLastPurchased.formatted(date: .long, time: .omitted)
+		} else {
+			return "(Never)"
+		}
+	}
 
 		// initialization used by DataManager to turn a real Item from code data into
 		// a struct it can then vend to SwiftUI views.
 	init(from item: Item) {
 		id = item.id!
-		name = item.name
-		isAvailable = item.isAvailable
-		onList = item.onList
-		quantity = item.quantity
-		dateLastPurchased = item.dateLastPurchased
+		name = item.name_!	// all Items have a name, even if it's an empty string (which should not happen)
+		isAvailable = item.isAvailable_
+		onList = item.onList_
+		quantity = Int(item.quantity_)
+		dateLastPurchased = item.dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 0)
 		
 			// fields copied from the Item's associated Location
 		let location = item.location

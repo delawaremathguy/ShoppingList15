@@ -22,10 +22,10 @@ struct ItemCodableProxy: Codable {
 	var locationName: String
 	
 	init(from item: Item) {
-		name = item.name
-		onList = item.onList
-		isAvailable = item.isAvailable
-		quantity = item.quantity
+		name = item.name_ ?? "No Name"
+		onList = item.onList_
+		isAvailable = item.isAvailable_
+		quantity = Int(item.quantity_)
 		locationName = item.locationName
 	}
 

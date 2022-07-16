@@ -44,7 +44,7 @@ struct AddNewItemView: View {
 	
 	init(dataManager: DataManager, initialItemName: String? = nil, dismiss: @escaping () -> Void) {
 		//self.dataManager = dataManager
-		let initialObjectValue = dataManager.draftItem(initialItemName: initialItemName)
+		let initialObjectValue = dataManager.itemViewModel(initialItemName: initialItemName)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 			// and stash away the dismiss function
 		self.dismiss = dismiss
@@ -54,7 +54,7 @@ struct AddNewItemView: View {
 		// location associated with the locationViewModel.
 	init(dataManager: DataManager, locationViewModel: LocationViewModel, dismiss: @escaping () -> Void) {
 		//self.dataManager = dataManager
-		let initialObjectValue = dataManager.draftItem(location: dataManager.location(associatedWith: locationViewModel)!)
+		let initialObjectValue = dataManager.itemViewModel(location: dataManager.location(associatedWith: locationViewModel)!)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 		self.dismiss = dismiss
 	}

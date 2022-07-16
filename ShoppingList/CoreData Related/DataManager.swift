@@ -204,18 +204,13 @@ class DataManager: NSObject, ObservableObject {
 	func location(associatedWith itemStruct: ItemStruct) -> Location? {
 		Location.object(id: itemStruct.locationID, context: managedObjectContext)
 	}
-	
-	func locationCount() -> Int {
-		locations.count
-		// Location.count(context: managedObjectContext)
-	}
-	
+		
 		// MARK: - Item Handling
 	
 		// creates a new Item with default values, associated with the unknownLocation
 	func addNewItem() -> Item {
 		let newItem = Item(context: managedObjectContext)
-		newItem.name_ = ""
+		newItem.name_ = "New Item"
 		newItem.quantity_ = 1
 		newItem.isAvailable_ = true
 		newItem.onList_ = true
@@ -247,7 +242,7 @@ class DataManager: NSObject, ObservableObject {
 	
 		// moves all items of the shopping list
 	func moveAllItemsOffShoppingList() {
-		for item in items where item.onList {
+		for item in items where item.onList_ {
 			item.onList_ = false
 		}
 	}
@@ -283,13 +278,7 @@ class DataManager: NSObject, ObservableObject {
 		Item.object(id: id, context: managedObjectContext)
 	}
 	
-	func itemCount() -> Int {
-		items.count
-	}
-	
-}
-
-extension DataManager {
+	// MARK: - Updating Items and Locations
 	
 	func updateData(using draft: LocationStruct) {
 		
@@ -317,11 +306,7 @@ extension DataManager {
 			locationToUpdate.opacity_ = 0.5
 		}
 	}
-	
-}
-
-extension DataManager {
-	
+		
 		// updates data for an Item that the user has directed from an Add or Modify View.
 		// if the incoming data is not associated with an item, we need to create it first
 	func updateData(using draft: ItemStruct) { //}, location: Location) {

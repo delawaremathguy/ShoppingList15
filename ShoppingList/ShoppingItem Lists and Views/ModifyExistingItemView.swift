@@ -69,7 +69,7 @@ struct ModifyExistingItemView: View {
 		// we're inside the init() that runs first before everything else is available.
 	init(itemStruct: ItemStruct, dataManager: DataManager) {
 		self.dataManager = dataManager
-		_viewModel = StateObject(wrappedValue: dataManager.draftItem(itemStruct: itemStruct))
+		_viewModel = StateObject(wrappedValue: dataManager.itemViewModel(itemStruct: itemStruct))
 	}
 	
 		// alert trigger to confirm deletion of an Item

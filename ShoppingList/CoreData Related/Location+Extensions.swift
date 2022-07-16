@@ -27,22 +27,16 @@ extension Location {
 	var visitationOrder: Int { Int(visitationOrder_) }
 	
 		// items: fronts Core Data attribute items_ that is an NSSet, and turns it into
-		// a Swift array so we can use them easily
-	var items: [Item] {
-		if let items = items_ as? Set<Item> {
-			return items.sorted(by: \.name)
-		}
-		return []
+		// a Swift set so we can use them easily
+	var items: Set<Item> {
+		items_ as? Set<Item> ?? []
 	}
-	
+
 		// itemCount: computed property from Core Data items_
 	var itemCount: Int { items_?.count ?? 0 }
 	
 		// simplified test of "is the unknown location"
 	var isUnknownLocation: Bool { visitationOrder_ == kUnknownLocationVisitationOrder }
-	
-		// this collects the four uiColor components into a single uiColor.
-//	var uiColor: UIColor { UIColor(red: red_, green: green_, blue: blue_, alpha: opacity_) }
 	
 		// hey, this is SwiftUI ... just define a Color!
 	var color: Color { Color(.sRGB, red: red_, green: green_, blue: blue_, opacity: opacity_) }
