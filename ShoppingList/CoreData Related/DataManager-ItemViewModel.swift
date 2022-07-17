@@ -55,20 +55,8 @@ class ItemViewModel: ObservableObject {
 		// it's easier than explicitly using the DM at call sites ... the ItemViewModel
 		// knows how to find the DM when it needs it.
 	
-	var associatedItem: Item? {
-		dataManager?.item(withID: draft.id)
-	}
 	private weak var dataManager: DataManager?
-	
-//		// useful computed property
-//	var dateText: String {
-//		if draft.hasBeenPurchased {
-//			return draft.dateLastPurchased.formatted(date: .long, time: .omitted)
-//		} else {
-//			return "(Never)"
-//		}
-//	}
-	
+		
 	fileprivate init(itemStruct: ItemStruct, dataManager: DataManager) {
 		draft = itemStruct
 		self.dataManager = dataManager
@@ -84,14 +72,23 @@ class ItemViewModel: ObservableObject {
 		// to do a save/update using a DraftItem, it must have a non-empty name
 	var canBeSaved: Bool { draft.name.count > 0 }
 	
+	private var isDeleted = false
+	
+	var associatedItem: Item? {
+		dataManager?.item(withID: draft.id)
+	}
+	
 	func updateAndSave() {
-		dataManager?.updateData(using: draft)
+		if !isDeleted {
+			dataManager?.updateData(using: draft)
+		}
 		dataManager?.saveData()
 	}
 	
 	func deleteItem() {
 		guard let item = associatedItem else { return }
 		dataManager?.delete(item: item)
+		isDeleted = true
 	}
 }
 
@@ -102,7 +99,7 @@ extension DataManager {
 		// ItemViewModel code generally resides in one place under control of the DM.
 	
 		// provides a working ItemViewModel from an existing ItemStruct ... it just copies data
-		// from the Item to an ItemViewModel.
+		// from the ItemStruct to an ItemViewModel.
 	func itemViewModel(itemStruct: ItemStruct) -> ItemViewModel {
 		ItemViewModel(itemStruct: itemStruct, dataManager: self)
 	}

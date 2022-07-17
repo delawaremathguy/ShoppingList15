@@ -33,10 +33,26 @@ class LocationViewModel: ObservableObject {
 		// to do a save/commit of an LocationViewModel, it must have a non-empty name
 	var canBeSaved: Bool { draft.name.count > 0 }
 	
+	var associatedLocation: Location? { dataManager?.location(withID: draft.id) }
+	
+	private var isDeleted = false
+	
+	var itemsAtThisLocation: [ItemStruct] {
+		dataManager?.itemStructs.filter({ $0.locationID == draft.id }) ?? []
+	}
+	
 	func updateAndSave() {
-		dataManager?.updateData(using: draft)
+		if !isDeleted {
+			dataManager?.updateData(using: draft)
+		}
 		dataManager?.saveData()
 	}
+	
+	func deleteLocation() {
+		dataManager?.delete(location: associatedLocation)
+		isDeleted = true
+	}
+
 }
 
 extension DataManager {

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-	// the LocationViewModelView is a simple Form that allows the user to edit
+	// the LocationEditView is a simple Form that allows the user to edit
 	// the default fields for a new Location, or the fields associated with a Location
 	// that already exists.
 struct LocationEditView: View {
@@ -24,11 +24,6 @@ struct LocationEditView: View {
 		// trigger for adding a new item at this Location
 	@State private var isAddNewItemSheetShowing = false
 	
-		// items at this location, to form list to get to editing those items.
-	var itemsAtThisLocation: [ItemStruct] {
-		dataManager.itemStructs.filter({ $0.locationID == viewModel.draft.id })
-	}
-
 	var body: some View {
 		Form {
 				// 1: Name, Visitation Order, Colors.  These are shown for both an existing
@@ -61,9 +56,9 @@ struct LocationEditView: View {
 				} // end of Section
 			} // end of if
 
-			if viewModel.draft.isExistingLocation  && itemsAtThisLocation.count > 0 {
-				Section(header: ItemsListHeader(count: itemsAtThisLocation.count)) {
-					SimpleItemsList(itemStructs: itemsAtThisLocation,
+			if viewModel.draft.isExistingLocation  && viewModel.itemsAtThisLocation.count > 0 {
+				Section(header: ItemsListHeader(count: viewModel.itemsAtThisLocation.count)) {
+					SimpleItemsList(itemStructs: viewModel.itemsAtThisLocation,
 													isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
 				}
 			}
@@ -76,18 +71,29 @@ struct LocationEditView: View {
 				isAddNewItemSheetShowing = false
 			}
 		}
-		
 			// note to self on this .alert: it can only be triggered if the locationViewModel
 			// is associated with a real Location
-		.alert("Delete \(viewModel.draft.name)?", isPresented: $isDeleteConfirmationPresented) {
+		.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
 			Button("OK", role: .destructive) {
-				dataManager.delete(location: dataManager.location(associatedWith: viewModel)!)
+				viewModel.deleteLocation()
+				dismiss()
 			}
 		} message: {
-			Text("Are you sure you want to delete the Location named \'\(viewModel.draft.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
+			Text(alertMessage())
 		}
 
+
+
 	} // end of var body: some View
+	
+	func alertTitle() -> String {
+		return "Delete \(viewModel.draft.name)?"
+	}
+	
+	func alertMessage() -> String {
+		"Are you sure you want to delete the Location named \'\(viewModel.draft.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
+	}
+
 	
 	func ItemsListHeader(count: Int) -> some View {
 		HStack {

@@ -41,19 +41,18 @@ struct AddNewItemView: View {
 		// NOTE TO SELF: because we use the searchable modifier in PurchasedItemsView,
 		// we'll never have a non-nil initialItemName: because when the search bar is
 		// active, it removes the + in the navbar to add a new item (!)
-	
-	init(dataManager: DataManager, initialItemName: String? = nil, dismiss: @escaping () -> Void) {
-		//self.dataManager = dataManager
+	init(dataManager: DataManager, initialItemName: String? = nil,
+			 dismiss: @escaping () -> Void) {
 		let initialObjectValue = dataManager.itemViewModel(initialItemName: initialItemName)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 			// and stash away the dismiss function
 		self.dismiss = dismiss
 	}
 	
-		// Case 2: if opened from the LocationViewModelView, where we know we have a real
+		// Case 2: if opened from the LocationEditView, where we know we have a real
 		// location associated with the locationViewModel.
-	init(dataManager: DataManager, locationViewModel: LocationViewModel, dismiss: @escaping () -> Void) {
-		//self.dataManager = dataManager
+	init(dataManager: DataManager, locationViewModel: LocationViewModel,
+			 dismiss: @escaping () -> Void) {
 		let initialObjectValue = dataManager.itemViewModel(location: dataManager.location(associatedWith: locationViewModel)!)
 		_itemViewModel = StateObject(wrappedValue: initialObjectValue)
 		self.dismiss = dismiss
@@ -84,7 +83,6 @@ struct AddNewItemView: View {
 	func saveButton() -> some View {
 		Button {
 			itemViewModel.updateAndSave()
-			//dataManager.updateAndSave(using: itemViewModel)
 			dismiss()
 		} label: {
 			Text("Save")

@@ -59,12 +59,27 @@ class DataManager: NSObject, ObservableObject {
 		// the UI.  the UI-facing array is reconstructed whenever the FRCs fire, so the
 		// second should always be a true representation of the first.
 	private var items = [Item]()
+#if targetEnvironment(simulator)
+	var itemCount: Int {
+		// note: the only place this is used is after loading sample data in the simulator.
+		// we need to do back directly to core data, because the FRCs will not have fired
+		// to count itemStructs just loaded.
+		Item.count(context: managedObjectContext)
+	}
+#endif
 	@Published var itemStructs = [ItemStruct]()
 
 		// (b) for now, we make Core Data Location objects available to everyone, although
 		// the hope is that this will soon follow the route of the distinction between the
 		// array of Items above and their UI-facing, struct representations.
 	private var locations = [Location]()
+#if targetEnvironment(simulator)
+	var locationCount: Int {
+			// see note above on itemCount
+		Location.count(context: managedObjectContext)
+	}
+#endif
+
 	@Published var locationStructs = [LocationStruct]()
 	
 		// we'll return the unknownLocation through a computed variable, with a private
@@ -110,8 +125,7 @@ class DataManager: NSObject, ObservableObject {
 		try? locationsFRC.performFetch()
 		self.locations = locationsFRC.fetchedObjects ?? []
 		
-		itemStructs = items.map { ItemStruct(from: $0) }
-		locationStructs = locations.map { LocationStruct(from: $0) }
+		updateUIStructs()
 	}
 	
 	func saveData() {
@@ -145,7 +159,7 @@ class DataManager: NSObject, ObservableObject {
 			return
 		}
 			// if unknownLocation_ not yet established, look among locations for it
-		else if let location = locations.first(where: { $0.isUnknownLocation }) {
+		if let location = locations.first(where: { $0.isUnknownLocation }) {
 			unknownLocation_ = location
 		}
 			// otherwise, add the UL now
@@ -218,7 +232,7 @@ class DataManager: NSObject, ObservableObject {
 		newItem.location_ = unknownLocation
 		return newItem
 	}
-	
+		
 		// deletes an Item.  an incoming nil is allowed to provide for syntactic
 		// convenience at the call site.
 	func delete(itemStruct: ItemStruct?) {
@@ -226,7 +240,6 @@ class DataManager: NSObject, ObservableObject {
 					let referencedItem = Item.object(id: item.id, context: managedObjectContext) else {
 			return
 		}
-				//item.location.objectWillChange.send()
 		managedObjectContext.delete(referencedItem)
 		saveData()
 	}
@@ -280,6 +293,11 @@ class DataManager: NSObject, ObservableObject {
 	
 	// MARK: - Updating Items and Locations
 	
+	func updateUIStructs() {
+		itemStructs = items.map { ItemStruct(from: $0) }
+		locationStructs = locations.map { LocationStruct(from: $0) }
+	}
+	
 	func updateData(using draft: LocationStruct) {
 		
 		// first, identify  case of existing or new
@@ -309,8 +327,7 @@ class DataManager: NSObject, ObservableObject {
 		
 		// updates data for an Item that the user has directed from an Add or Modify View.
 		// if the incoming data is not associated with an item, we need to create it first
-	func updateData(using draft: ItemStruct) { //}, location: Location) {
-		
+	func updateData(using draft: ItemStruct) { 
 		// first get the location associated with this draft.  if we can't find one, it's
 		// not exactly clear what we're doing.
 		guard let location = location(withID: draft.locationID) else {
@@ -356,12 +373,74 @@ extension DataManager: NSFetchedResultsControllerDelegate {
 			items = newItems
 		} else if let newLocations = controller.fetchedObjects as? [Location] {
 			locations = newLocations
+			guaranteeUnknownLocationNotDuplicated()
+		}
+		updateUIStructs()
+	}
+	
+	// this function is here to correct for a cloud-syncing issue.  i run the app on device A.
+	// there is no problem; there is only one UnknownLocation.  now run the app for the
+	// first time on device B and quickly go to the Locations tab.  a local UnknownLocation
+	// will be created, but then a second will arrive shortly afterwards from the cloud.
+	// here is where you fix that problem.
+	func guaranteeUnknownLocationNotDuplicated() {
+		
+		// note: the UL may not yet exist when this is called, since it is created lazily.
+		let ulCount = locations.count(where: { $0.isUnknownLocation })
+		if ulCount < 2 {
+			return
 		}
 		
-			// this has to be done in both cases, although if we just changed some locations,
-			// we'd only change those items that were affected ?
-		itemStructs = items.map { ItemStruct(from: $0) }
-		locationStructs = locations.map { LocationStruct(from: $0) }
-	}
+		NSLog("*** MERGING MULTIPLE UNKNOWN LOCATIONS ***")
+		
+		// now, this will be fun to write, using a simple strategy:
+		// get the two (or possibly more?) ULs and look at their UUIDs as strings.
+		// example:
+		//     UL #1: "0A7C094E-3523-4168-896B-7FECA6ED1DCE"
+		//     UL #2: "593D4197-96CE-409D-B913-B455AE6B4789"
+		//
+		// take the one with the lower uuidString to be the real UL!
+		// transfer items from UL #2 to UL #1 and delete UL #2.
+		// yeah, you may lose an edit of the name and the color, because we
+		// don't know which one is more recent; but the UUID of the UL
+		// will stabilize over time across devices. (a cute strategy, not mine!)
+				
+		let allULs = locations.filter({ $0.isUnknownLocation })
+		let firstUUIDString = allULs.map({ $0.id!.uuidString }).min()!
+		let bestULChoice = allULs.first(where: { $0.id!.uuidString == firstUUIDString })!
+		for location in allULs where location.id!.uuidString != firstUUIDString {
+			let itemsToMove = location.items
+			for item in itemsToMove {
+				item.location_ = bestULChoice
+			}
+			managedObjectContext.delete(location)
+		}
+		// don't forget to keep a hook to the UL we have chosen !
+		unknownLocation_ = bestULChoice
 
+	}
 }
+
+/* Comments on other strategies to guard against multiple ULs:
+ 
+i suppose it may also be possible to do a search of the CloudKit
+container used for syncing to find what's in the cloud for one of these
+ULs ... that would be the reason we have two to begin with, since we
+had one locally and a second then arrived from the cloud, so there really
+should only be one in the cloud ... and use that info.  but even then, this
+may still lose an edit of the name and the color.
+ 
+or, we could remove the UL entirely from the core data store and just let Items
+ be allowed to roam free in the wild with location_ == nil.  then, when creating
+ structs, we could throw one extra faux LocationStruct whose list of items is
+ found through the LocationViewModel as a separate case.  but then, we'd still
+ have to transport the UL's name and color across devices ... this could be done
+ using the cloud's key-value store ... except wait: we still have a problem syncing
+ the key-value store with what would be a local UserDefaults.
+ 
+ one final thing might be to judge that if we have two ULs, the one with
+ (significantly?) more items is probably the one that came from the cloud
+ and is the real source of truth.  emphasis, however, on the word "probably,"
+ since we don't know exactly when or even if the cloud will show up.
+ 
+ */
