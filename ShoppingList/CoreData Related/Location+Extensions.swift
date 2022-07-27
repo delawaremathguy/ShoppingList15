@@ -21,7 +21,7 @@ extension Location {
 		// MARK: - Fronting Properties (Read-only)
 	
 		// name: fronts Core Data attribute name_ that is optional
-	var name: String { name_ ?? "Unknown Name" }
+	var name: String { name_ ?? "Location Name" }
 	
 		// visitationOrder: fronts Core Data attribute visitationOrder_ that is Int32
 	var visitationOrder: Int { Int(visitationOrder_) }

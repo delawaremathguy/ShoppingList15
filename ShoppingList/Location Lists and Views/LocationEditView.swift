@@ -56,7 +56,7 @@ struct LocationEditView: View {
 				} // end of Section
 			} // end of if
 
-			if viewModel.draft.isExistingLocation  && viewModel.itemsAtThisLocation.count > 0 {
+			if viewModel.draft.isExistingLocation && viewModel.itemsAtThisLocation.count > 0 {
 				Section(header: ItemsListHeader(count: viewModel.itemsAtThisLocation.count)) {
 					SimpleItemsList(itemStructs: viewModel.itemsAtThisLocation,
 													isAddNewItemSheetShowing: $isAddNewItemSheetShowing)
@@ -81,8 +81,6 @@ struct LocationEditView: View {
 		} message: {
 			Text(alertMessage())
 		}
-
-
 
 	} // end of var body: some View
 	
@@ -121,6 +119,10 @@ struct SimpleItemsList: View {
 				ModifyExistingItemView(itemStruct: itemStruct, dataManager: dataManager)
 			} label: {
 				Text(itemStruct.name)
+				if itemStruct.onList {
+					Spacer()
+					Image(systemName: "cart")
+				}
 			}
 		}
 	}

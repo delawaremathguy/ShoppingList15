@@ -32,6 +32,12 @@ extension Item {
 	
 	therefore, i choose to "front" each of them in this file, as well as perhaps provide
 	other computed properties of interest.
+	 
+	  -- one update ... not all of the properties are fronted; the DataManager is well
+	     acquainted with Core Data, and in the redesign where all Core Data objects
+	     will be exposed using structs using fully-realized values (and not the Core Data
+	     objects themselves),
+	     it does not seem as important to do this for all properties.
 	
 	doing so helps smooth out the awkwardness of nil-coalescing (we don't want SwiftUI views
 	continually writing item.name ?? "Unknown" all over the place); and in the case of an
@@ -71,9 +77,6 @@ extension Item {
 	*/
 	
 		// MARK: - Fronting Properties (Read-only)
-	
-		// the name.  this fronts a Core Data optional attribute
-	var name: String { name_ ?? "No Name" }
 	
 		// an item's associated location.  this fronts a Core Data optional attribute.
 	var location: Location { location_! }
