@@ -22,9 +22,9 @@ struct ShoppingListView: View {
 	@State private var isAddNewItemSheetShowing = false
 	
 		// local state for are we a multi-section display or not.  the default here is false,
-		// but an eager developer could easily store this default value in UserDefaults (?)
-	@State var multiSectionDisplay: Bool = false
-	
+		// and @SceneStorage then persists this value for us.
+	@SceneStorage("ShoppingListView.multiSectionDisplay") private var multiSectionDisplay: Bool = false
+
 		// trigger to bring up a share sheet (see the ActivityView package)
 	@State private var activityItem: ActivityItem?
 	

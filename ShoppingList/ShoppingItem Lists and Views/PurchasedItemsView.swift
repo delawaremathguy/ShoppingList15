@@ -29,7 +29,7 @@ struct PurchasedItemsView: View {
 	@State private var isAddNewItemSheetShowing = false
 
 		// whether are we a multi-section display or not.
-	@State var multiSectionDisplay: Bool = false
+	@SceneStorage("PurchasedItemsView.multiSectionDisplay") private var multiSectionDisplay: Bool = false
 	
 	
 		// items currently checked, on their way to the shopping list
