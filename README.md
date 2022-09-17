@@ -12,7 +12,7 @@ ShoppingList15 is a simple iOS app to process a shopping list that you can take 
 Feel free to use this as is, to develop further, to completely ignore, or even just to inspect and then send me a note or Open an Issue to tell me I am doing this all wrong.  
 
 
-### Most Recent Update(s) of 17 July, 2022 
+### Most Recent Update(s) of 17 September, 2022 
 
 * (*11 Jul*) this is a major update underway in this experimental branch: the DataManager no longer vends an array of Items (Core Data objects) to views, but instead vends an array of struct representations of those objects -- for the moment, called `ItemStruct`s -- which makes SwiftUI very happy.  
 * (*11 Jul*) the notion of "draft," as in `DraftItem`, is more clearly defined as an `ItemViewModel`, since this type functions as a mini-viewModel for an edit screen now renamed as `ItemEditView`
@@ -23,6 +23,9 @@ Feel free to use this as is, to develop further, to completely ignore, or even j
 * (*14 Jul*) fixed picker issue with ItemEditView.  cleaning and renaming done.  more consistency in handling of data updates working with both LocationStructs and ItemStructs (and maybe more to come).  prognosis is now very good, app starting to look solid again.  now we just have to figure out if it was all worth the effort (!)
 * (*17 Jul*) more cleaning as i clean up new code and how it fits in with legacy code.  `ItemViewModel` and `LocationViewModel` are now more comparable, as are the views in which they are used.
 * (*17 Jul*)  implemented a strategy to coalesce multiple "unknown locations" into one, in case there is confusion introduced when using the cloud.  over time, the identity of the unknown location will stabilize across devices.  see DataManager.swift.
+* (*17 Sep*)  the ShoppingListView and PurchasedItemsView now persist the user's choice of single/multi-section display in @SceneStorage.
+* (*17 Sep*)  the LocationEditView now indicates whether each item at the location is on the shopping list.
+
 
 
 Please be sure to consult the ChangeLog below for a list of all updates since the initial release of the project on 23 December, 2021.
