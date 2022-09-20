@@ -29,25 +29,11 @@ struct ModifyExistingLocationView: View {
 	var body: some View {
 		LocationEditView(viewModel: viewModel)
 			.navigationBarTitle(Text("Modify Location"), displayMode: .inline)
-//			.alert(alertTitle(), isPresented: $isDeleteConfirmationPresented) {
-//				Button("OK", role: .destructive) {
-//					viewModel.deleteLocation()
-//					dismiss()
-//				}
-//			} message: { Text(alertMessage()) }
-//			.onDisappear {
-//				viewModel.updateAndSave()
-//			}
+			.onDisappear {
+				viewModel.updateAndSave()
+			}
 	}
 	
-//	func alertTitle() -> String {
-//		return "Delete \(viewModel.draft.name)?"
-//	}
-//	
-//	func alertMessage() -> String {
-//		"Are you sure you want to delete the Location named \'\(viewModel.draft.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone."
-//	}
-
 	
 }
 
