@@ -79,6 +79,9 @@ extension Item {
 		// MARK: - Fronting Properties (Read-only)
 	
 		// an item's associated location.  this fronts a Core Data optional attribute.
+	// because of the possibility that we have the item, but without a cloud update (?)
+	// yet, location could be nil ... so swap in the unknownLocation in this case and
+	// hope the thing updates.
 	var location: Location { location_! }
 
 		// MARK: - Computed Properties (determined by associated Location)

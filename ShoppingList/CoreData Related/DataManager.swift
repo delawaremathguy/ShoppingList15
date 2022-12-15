@@ -294,7 +294,7 @@ class DataManager: NSObject, ObservableObject {
 	// MARK: - Updating Items and Locations
 	
 	func updateUIStructs() {
-		itemStructs = items.map { ItemStruct(from: $0) }
+		itemStructs = items.map { ItemStruct(from: $0, unknownLocation: unknownLocation) }
 		locationStructs = locations.map { LocationStruct(from: $0) }
 	}
 	

@@ -48,7 +48,12 @@ struct ItemStruct: Identifiable, Hashable {
 
 		// initialization used by DataManager to turn a real Item from code data into
 		// a struct it can then vend to SwiftUI views.
-	init(from item: Item) {
+		// NOTE: we're passing in the unknownLocation because of NSPersistentCloudKitContainer.
+		// it is possible when starting up and syncing against the cloud, that the location_ reference
+		// is (temporarily) nil, before what it should reference has arrived from the cloud.
+		// for this case, we (temporarily) set the item's location to the passed-in unknown location
+		// and expect that this will be updated once the core data record gets fully materialized..
+	init(from item: Item, unknownLocation: Location) {
 		id = item.id!
 		name = item.name_!	// all Items have a name, even if it's an empty string (which should not happen)
 		isAvailable = item.isAvailable_
@@ -57,7 +62,7 @@ struct ItemStruct: Identifiable, Hashable {
 		dateLastPurchased = item.dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 0)
 		
 			// fields copied from the Item's associated Location
-		let location = item.location
+		let location = item.location_ ?? unknownLocation
 		locationID = location.id!
 		locationName = location.name
 		visitationOrder = location.visitationOrder
