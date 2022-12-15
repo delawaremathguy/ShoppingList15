@@ -1,5 +1,7 @@
 #  About "ShoppingList15"
 
+> There are 3 branches in this project, which occasionally get bolluxed up when changing branches because of file conflicts in the .xcuserstate file. My advice: to work with this, pick the branch you want to play with, then just download the project as a zip file (so as not to bring along all the source control data).
+
 ShoppingList15 is a simple iOS app to process a shopping list that you can take to the grocery store with you, and move items off the list as you pick them up.  It persists data in Core Data (optionally, synched across your personal devices using iCloud) and uses SwiftUI.  This project was posted using XCode 13.2 and requires iOS 15.0 or later.
 
 * This repo was first made publicly available on 23 December, 2021.
